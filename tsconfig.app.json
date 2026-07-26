@@ -13,8 +13,10 @@
             "@components/*": ["./src/components/*"],
             "@layouts/*": ["./src/layouts/*"],
             "@auth/*": ["./src/auth/*"],
+            "@user/*": ["./src/user/*"],
             "@styles/*": ["./src/styles/*"],
-            "@api/*": ["./src/api/*"]
+            "@api/*": ["./src/api/*"],
+            "@routes/*": ["./src/routes/*"]
         },
 
         "allowArbitraryExtensions": true,

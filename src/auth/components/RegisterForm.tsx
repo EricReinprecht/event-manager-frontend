@@ -12,6 +12,7 @@ import { useRegister } from '@auth/hooks/useRegister';
 import { useTranslation } from 'react-i18next';
 
 import { useNavigate } from 'react-router-dom';
+import { ROUTES } from '@routes/paths';
 
 import '@styles/forms/security-form.scss';
 
@@ -24,10 +25,9 @@ export default function RegisterForm() {
 
     const registerMutation = useRegister({
         onSuccess() {
-            navigate('/complete-profile');
+            navigate(ROUTES.VERIFY_EMAIL);
         },
     });
-
     const {
         register,
         handleSubmit,

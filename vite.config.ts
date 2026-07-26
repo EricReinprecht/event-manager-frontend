@@ -7,17 +7,21 @@ export default defineConfig({
 
     resolve: {
         alias: {
-            '@': path.resolve(__dirname, 'src'),
+            '@': path.resolve(__dirname, './src'),
 
-            '@api': path.resolve(__dirname, 'src/api'),
+            '@components': path.resolve(__dirname, './src/components'),
 
-            '@auth': path.resolve(__dirname, 'src/auth'),
+            '@layouts': path.resolve(__dirname, './src/layouts'),
 
-            '@components': path.resolve(__dirname, 'src/components'),
+            '@auth': path.resolve(__dirname, './src/auth'),
 
-            '@layouts': path.resolve(__dirname, 'src/layouts'),
+            '@user': path.resolve(__dirname, './src/user'),
 
-            '@styles': path.resolve(__dirname, 'src/styles'),
+            '@styles': path.resolve(__dirname, './src/styles'),
+
+            '@api': path.resolve(__dirname, './src/api'),
+
+            '@routes': path.resolve(__dirname, './src/routes'),
         },
     },
 });
