@@ -1,64 +1,21 @@
-import type { ChangeEvent } from "react";
+import type { InputHTMLAttributes } from 'react';
 
-import "@styles/forms/input.scss";
+import '@styles/forms/input.scss';
 
-
-interface Props {
-
+interface Props extends InputHTMLAttributes<HTMLInputElement> {
     label: string;
 
-    type?: string;
-
-    value: string;
-
-    placeholder?: string;
-
     error?: string;
-
-    onChange: (
-        event: ChangeEvent<HTMLInputElement>
-    ) => void;
-
 }
 
-
-export default function FormInput({
-    label,
-    type = "text",
-    value,
-    placeholder,
-    error,
-    onChange,
-}: Props) {
-
-
+export default function FormInput({ label, error, ...props }: Props) {
     return (
-
         <div className="form-input">
+            <label>{label}</label>
 
+            <input {...props} />
 
-            <label>
-                {label}
-            </label>
-
-
-            <input
-                type={type}
-                value={value}
-                placeholder={placeholder}
-                onChange={onChange}
-            />
-
-
-            {
-                error &&
-                <span className="form-input__error">
-                    {error}
-                </span>
-            }
-
-
+            {error && <span className="form-input__error">{error}</span>}
         </div>
-
     );
 }

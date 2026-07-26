@@ -2,16 +2,16 @@ import type { ReactNode } from 'react';
 
 import PageLayout from './PageLayout';
 
-import '@styles/layouts/security-layout.scss';
+import '@styles/layouts/user-layout.scss';
 
 interface Props {
     children: ReactNode;
 }
 
-export default function SecurityLayout({ children }: Props) {
+export default function UserLayout({ children }: Props) {
     return (
         <PageLayout>
-            <section className="security-layout">{children}</section>
+            <section className="user-layout">{children}</section>
         </PageLayout>
     );
 }
