@@ -1,0 +1,12 @@
+@use "./styles/variables";
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: variables.$background;
+    color: variables.$text;
+    font-family: Arial, sans-serif;
+}
