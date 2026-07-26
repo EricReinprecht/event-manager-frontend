@@ -2,41 +2,35 @@
   "compilerOptions": {
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
 
-    "target": "ES2023",
-    "useDefineForClassFields": true,
-    "lib": [
-      "ES2023",
-      "DOM",
-      "DOM.Iterable"
-    ],
+    "target": "es2023",
+    "lib": ["ES2023", "DOM"],
 
-    "module": "ESNext",
-    "types": [
-      "vite/client"
-    ],
+    "module": "esnext",
+    "types": ["vite/client"],
 
+    "paths": {
+      "@/*": ["./src/*"],
+      "@components/*": ["./src/components/*"],
+      "@layouts/*": ["./src/layouts/*"],
+      "@auth/*": ["./src/auth/*"],
+      "@styles/*": ["./src/styles/*"],
+      "@api/*": ["./src/api/*"]
+    },
+
+    "allowArbitraryExtensions": true,
     "skipLibCheck": true,
 
-    /* Bundler */
-    "moduleResolution": "Bundler",
+    "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
     "verbatimModuleSyntax": true,
     "moduleDetection": "force",
     "noEmit": true,
-
-    /* React */
     "jsx": "react-jsx",
 
-    /* Strict TypeScript */
-    "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true,
-
-    /* Better DX */
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "allowSyntheticDefaultImports": true
+    "erasableSyntaxOnly": true,
+    "noFallthroughCasesInSwitch": true
   },
 
   "include": [

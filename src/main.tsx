@@ -9,7 +9,8 @@ import {
 import App from "./App";
 
 import "./index.scss";
-
+import "@styles/reset.scss";
+import "@styles/globals.scss";
 
 const queryClient = new QueryClient();
 

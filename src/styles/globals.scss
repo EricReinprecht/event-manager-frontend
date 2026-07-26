@@ -1,0 +1,16 @@
+@use "./variables";
+@use "./mixins";
+
+
+.container {
+
+    @include mixins.container;
+
+}
+
+
+.text-muted {
+
+    color:var(--color-text-muted);
+
+}

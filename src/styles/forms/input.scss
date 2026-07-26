@@ -1,0 +1,62 @@
+.form-input {
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:var(--space-sm);
+
+
+    label {
+
+        font-size:14px;
+
+        font-weight:600;
+
+    }
+
+
+    input {
+
+        padding:12px 14px;
+
+        border:
+
+            1px solid
+
+            var(--color-border);
+
+
+        border-radius:
+
+            var(--radius-md);
+
+
+        outline:none;
+
+
+        transition:.2s;
+
+
+        &:focus {
+
+            border-color:
+
+                var(--color-primary);
+
+        }
+
+    }
+
+
+    &__error {
+
+        color:
+
+            var(--color-danger);
+
+        font-size:13px;
+
+    }
+
+}
