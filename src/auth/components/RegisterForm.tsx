@@ -1,153 +1,114 @@
-import {
-    useState
-} from "react";
+import { useForm } from 'react-hook-form';
 
+import { z } from 'zod';
 
-import SecurityLayout from "@layouts/SecurityLayout";
-import FormInput from "@components/forms/FormInput";
-import "@styles/forms/security-form.scss";
+import { zodResolver } from '@hookform/resolvers/zod';
 
+import SecurityLayout from '@layouts/SecurityLayout';
+import FormInput from '@components/forms/FormInput';
 
-export default function RegisterForm() {
+import '@styles/forms/security-form.scss';
 
+import { useTranslation } from 'react-i18next';
 
-    const [form,setForm] = useState({
+const registerSchema = z
+    .object({
+        username: z.string().min(3, 'validation.username'),
 
-        username:"",
-        email:"",
-        password:"",
-        passwordConfirm:"",
+        email: z.string().email('validation.email'),
 
+        password: z.string().min(8, 'validation.password'),
+
+        passwordConfirm: z.string(),
+    })
+    .refine((data) => data.password === data.passwordConfirm, {
+        path: ['passwordConfirm'],
+
+        message: 'validation.passwordMatch',
     });
 
+type RegisterFormData = z.infer<typeof registerSchema>;
 
+export default function RegisterForm() {
+    const { t } = useTranslation();
 
-    function update(
-        key:keyof typeof form,
-        value:string
-    ){
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm<RegisterFormData>({
+        resolver: zodResolver(registerSchema),
 
-        setForm({
+        defaultValues: {
+            username: '',
+            email: '',
+            password: '',
+            passwordConfirm: '',
+        },
+    });
 
-            ...form,
+    function submit(data: RegisterFormData) {
+        console.log(data);
 
-            [key]:value,
+        /*
+            later:
 
-        });
+            registerMutation.mutate(data)
 
+        */
     }
-
-
-
-    function submit(
-        e:React.FormEvent
-    ){
-
-        e.preventDefault();
-
-
-        console.log(form);
-
-    }
-
-
 
     return (
-
         <SecurityLayout>
-
-
             <form
                 className="security-form"
-                onSubmit={submit}
+
+                onSubmit={handleSubmit(submit)}
             >
-
-
                 <FormInput
+                    label={t('auth.username')}
 
-                    label="Username"
+                    placeholder={t('auth.usernamePlaceholder')}
 
-                    value={form.username}
+                    error={errors.username?.message && t(errors.username.message)}
 
-                    placeholder="Your username"
-
-                    onChange={
-                        e=>update(
-                            "username",
-                            e.target.value
-                        )
-                    }
-
+                    {...register('username')}
                 />
 
-
                 <FormInput
-
-                    label="Email"
+                    label={t('auth.email')}
 
                     type="email"
 
-                    value={form.email}
+                    placeholder={t('auth.emailPlaceholder')}
 
-                    placeholder="you@example.com"
+                    error={errors.email?.message && t(errors.email.message)}
 
-                    onChange={
-                        e=>update(
-                            "email",
-                            e.target.value
-                        )
-                    }
-
+                    {...register('email')}
                 />
 
-
                 <FormInput
-
-                    label="Password"
+                    label={t('auth.password')}
 
                     type="password"
 
-                    value={form.password}
+                    error={errors.password?.message && t(errors.password.message)}
 
-                    onChange={
-                        e=>update(
-                            "password",
-                            e.target.value
-                        )
-                    }
-
+                    {...register('password')}
                 />
 
-
                 <FormInput
-
-                    label="Confirm password"
+                    label={t('auth.passwordConfirm')}
 
                     type="password"
 
-                    value={form.passwordConfirm}
+                    error={errors.passwordConfirm?.message && t(errors.passwordConfirm.message)}
 
-                    onChange={
-                        e=>update(
-                            "passwordConfirm",
-                            e.target.value
-                        )
-                    }
-
+                    {...register('passwordConfirm')}
                 />
 
-
-                <button type="submit">
-
-                    Create account
-
-                </button>
-
-
+                <button type="submit">{t('auth.createAccount')}</button>
             </form>
-
-
         </SecurityLayout>
-
     );
 }

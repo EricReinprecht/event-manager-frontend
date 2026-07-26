@@ -1,24 +1,7 @@
-import { api } from "../api/axios";
+import { api } from '@api/client';
 
-import type {
-    AuthResponse
-} from "./auth.types";
+import type { RegisterRequest } from '../types';
 
-
-export async function login(
-    email: string,
-    password: string
-) {
-
-    const response =
-        await api.post<AuthResponse>(
-            "/auth/login",
-            {
-                email,
-                password,
-            }
-        );
-
-
-    return response.data;
+export function register(data: RegisterRequest) {
+    return api.post('/auth/register', data);
 }

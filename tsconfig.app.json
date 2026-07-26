@@ -1,39 +1,37 @@
 {
-  "compilerOptions": {
-    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
+    "compilerOptions": {
+        "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
 
-    "target": "es2023",
-    "lib": ["ES2023", "DOM"],
+        "target": "es2023",
+        "lib": ["ES2023", "DOM"],
 
-    "module": "esnext",
-    "types": ["vite/client"],
+        "module": "esnext",
+        "types": ["vite/client"],
 
-    "paths": {
-      "@/*": ["./src/*"],
-      "@components/*": ["./src/components/*"],
-      "@layouts/*": ["./src/layouts/*"],
-      "@auth/*": ["./src/auth/*"],
-      "@styles/*": ["./src/styles/*"],
-      "@api/*": ["./src/api/*"]
+        "paths": {
+            "@/*": ["./src/*"],
+            "@components/*": ["./src/components/*"],
+            "@layouts/*": ["./src/layouts/*"],
+            "@auth/*": ["./src/auth/*"],
+            "@styles/*": ["./src/styles/*"],
+            "@api/*": ["./src/api/*"]
+        },
+
+        "allowArbitraryExtensions": true,
+        "skipLibCheck": true,
+
+        "moduleResolution": "bundler",
+        "allowImportingTsExtensions": true,
+        "verbatimModuleSyntax": true,
+        "moduleDetection": "force",
+        "noEmit": true,
+        "jsx": "react-jsx",
+
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "erasableSyntaxOnly": true,
+        "noFallthroughCasesInSwitch": true
     },
 
-    "allowArbitraryExtensions": true,
-    "skipLibCheck": true,
-
-    "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true,
-    "verbatimModuleSyntax": true,
-    "moduleDetection": "force",
-    "noEmit": true,
-    "jsx": "react-jsx",
-
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "erasableSyntaxOnly": true,
-    "noFallthroughCasesInSwitch": true
-  },
-
-  "include": [
-    "src"
-  ]
+    "include": ["src"]
 }
