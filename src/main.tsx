@@ -1,18 +1,24 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 
+
 import {
     QueryClient,
     QueryClientProvider
 } from "@tanstack/react-query";
 
+
 import App from "./App";
 
-import "./index.scss";
+import "@/i18n";
+
+
 import "@styles/reset.scss";
 import "@styles/globals.scss";
 
+
 const queryClient = new QueryClient();
+
 
 
 ReactDOM
@@ -23,7 +29,9 @@ ReactDOM
 
         <React.StrictMode>
 
-            <QueryClientProvider client={queryClient}>
+            <QueryClientProvider
+                client={queryClient}
+            >
 
                 <App />
 
