@@ -1,17 +1,15 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 import SecurityLayout from '@layouts/SecurityLayout';
 import FormInput from '@components/forms/FormInput';
 
 import { registerSchema } from '@auth/schemas/register.schema';
 import type { RegisterRequest } from '@auth/types/auth.types';
-
 import { useRegister } from '@auth/hooks/useRegister';
 
-import { useTranslation } from 'react-i18next';
-
-import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '@routes/paths';
 
 import '@styles/forms/security-form.scss';
@@ -19,9 +17,11 @@ import '@styles/forms/security-form.scss';
 type RegisterFormData = RegisterRequest;
 
 export default function RegisterForm() {
-    const { t } = useTranslation();
+    const { t } = useTranslation('auth');
 
     const navigate = useNavigate();
+
+    const registerMutation = useRegister();
 
     const {
         register,
@@ -39,7 +39,13 @@ export default function RegisterForm() {
         },
     });
 
-    const registerMutation = useRegister();
+    function translateError(message?: string) {
+        if (!message) {
+            return undefined;
+        }
+
+        return t(message);
+    }
 
     function submit(data: RegisterFormData) {
         registerMutation.mutate(data, {
@@ -48,33 +54,41 @@ export default function RegisterForm() {
             },
 
             onError(error: any) {
-                const message = error.response?.data?.error;
+                const response = error.response?.data;
 
-                if (!message) {
-                    return;
-                }
+                /*
+                        Password validator
+                    */
 
-                if (message.includes('email')) {
-                    setError('email', {
+                if (Array.isArray(response?.errors)) {
+                    setError('password', {
                         type: 'server',
-                        message,
+                        message: response.errors.map((e: string) => t(e)).join('\n'),
                     });
 
                     return;
                 }
 
-                if (message.includes('username')) {
-                    setError('username', {
+                /*
+                        Field errors
+                    */
+
+                if (response?.field && response?.error) {
+                    setError(response.field, {
                         type: 'server',
-                        message,
+                        message: t(response.error),
                     });
 
                     return;
                 }
+
+                /*
+                        Generic backend error
+                    */
 
                 setError('root', {
                     type: 'server',
-                    message,
+                    message: t(response?.error ?? 'errors.unknown'),
                 });
             },
         });
@@ -84,38 +98,38 @@ export default function RegisterForm() {
         <SecurityLayout>
             <form className="security-form" onSubmit={handleSubmit(submit)}>
                 <FormInput
-                    label={t('auth.username')}
-                    placeholder={t('auth.usernamePlaceholder')}
-                    error={errors.username?.message}
+                    label={t('common.username')}
+                    placeholder={t('common.usernamePlaceholder')}
+                    error={translateError(errors.username?.message)}
                     {...register('username')}
                 />
 
                 <FormInput
-                    label={t('auth.email')}
+                    label={t('common.email')}
                     type="email"
-                    placeholder={t('auth.emailPlaceholder')}
-                    error={errors.email?.message}
+                    placeholder={t('common.emailPlaceholder')}
+                    error={translateError(errors.email?.message)}
                     {...register('email')}
                 />
 
                 <FormInput
-                    label={t('auth.password')}
+                    label={t('common.password')}
                     type="password"
-                    error={errors.password?.message}
+                    error={translateError(errors.password?.message)}
                     {...register('password')}
                 />
 
                 <FormInput
-                    label={t('auth.passwordConfirm')}
+                    label={t('common.passwordConfirm')}
                     type="password"
-                    error={errors.passwordConfirm?.message}
+                    error={translateError(errors.passwordConfirm?.message)}
                     {...register('passwordConfirm')}
                 />
 
                 {errors.root && <p className="security-form__error">{errors.root.message}</p>}
 
                 <button type="submit" disabled={registerMutation.isPending}>
-                    {registerMutation.isPending ? t('common.loading') : t('auth.createAccount')}
+                    {registerMutation.isPending ? t('common.loading') : t('common.createAccount')}
                 </button>
             </form>
         </SecurityLayout>
