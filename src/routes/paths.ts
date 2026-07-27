@@ -13,9 +13,11 @@ export const ROUTES = {
     // User
     USER: '/user',
 
-    USER_PARTIES: 'user/parties',
+    USER_PARTIES: '/user/parties',
 
-    COMPLETE_PROFILE: 'user/complete-profile',
+    COMPLETE_PROFILE: '/user/complete-profile',
+
+    USER_DASHBOARD: '/user/dashboard',
 
     // Fe
     DASHBOARD: '/dashboard',

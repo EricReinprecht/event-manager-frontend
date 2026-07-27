@@ -10,6 +10,7 @@ import CompleteProfilePage from '@user/pages/CompleteProfilePage';
 
 import ProtectedRoute from './ProtectedRoutes';
 import RequireCompletedProfile from './RequireCompletedProfile';
+import UserDashboardPage from '@/user/pages/UserDashboardPage';
 
 export const router = createBrowserRouter([
     {
@@ -36,6 +37,11 @@ export const router = createBrowserRouter([
                     {
                         path: ROUTES.COMPLETE_PROFILE,
                         element: <CompleteProfilePage />,
+                    },
+
+                    {
+                        path: ROUTES.USER_DASHBOARD,
+                        element: <UserDashboardPage />,
                     },
 
                     // everything below requires completed profile
