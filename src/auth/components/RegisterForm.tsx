@@ -56,39 +56,57 @@ export default function RegisterForm() {
             onError(error: any) {
                 const response = error.response?.data;
 
-                /*
-                        Password validator
-                    */
+                if (!response) {
+                    setError('root', {
+                        type: 'server',
+                        message: t('errors.unknown'),
+                    });
 
-                if (Array.isArray(response?.errors)) {
+                    return;
+                }
+
+                // Password validator array
+                if (Array.isArray(response.errors)) {
                     setError('password', {
                         type: 'server',
-                        message: response.errors.map((e: string) => t(e)).join('\n'),
+                        message: response.errors.join('|'),
                     });
 
                     return;
                 }
 
-                /*
-                        Field errors
-                    */
+                const message = response.error;
 
-                if (response?.field && response?.error) {
-                    setError(response.field, {
+                if (!message) {
+                    setError('root', {
                         type: 'server',
-                        message: t(response.error),
+                        message: t('errors.unknown'),
                     });
 
                     return;
                 }
 
-                /*
-                        Generic backend error
-                    */
+                if (message.includes('email')) {
+                    setError('email', {
+                        type: 'server',
+                        message,
+                    });
+
+                    return;
+                }
+
+                if (message.includes('username')) {
+                    setError('username', {
+                        type: 'server',
+                        message,
+                    });
+
+                    return;
+                }
 
                 setError('root', {
                     type: 'server',
-                    message: t(response?.error ?? 'errors.unknown'),
+                    message,
                 });
             },
         });
