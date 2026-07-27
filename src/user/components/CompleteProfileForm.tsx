@@ -1,30 +1,60 @@
 import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { useNavigate } from 'react-router-dom';
 
-type FormData = {
-    firstName: string;
+import { useCompleteProfile } from '@user/hooks/useCompleteProfile';
+import type { CompleteProfileRequest } from '@user/types/user.types';
 
-    lastName: string;
-};
+import { ROUTES } from '@routes/paths';
 
 export default function CompleteProfileForm() {
+    const navigate = useNavigate();
+
+    const mutation = useCompleteProfile();
+
     const {
         register,
         handleSubmit,
         formState: { errors },
-    } = useForm<FormData>();
+    } = useForm<CompleteProfileRequest>({
+        defaultValues: {
+            firstName: '',
+            lastName: '',
+        },
+    });
 
-    function submit(data: FormData) {
-        console.log(data);
+    function submit(data: CompleteProfileRequest) {
+        mutation.mutate(data, {
+            onSuccess() {
+                navigate(ROUTES.HOME);
+            },
+        });
     }
 
     return (
         <form className="security-form" onSubmit={handleSubmit(submit)}>
-            <input placeholder="First name" {...register('firstName')} />
+            <input
+                placeholder="First name"
+                {...register('firstName', {
+                    required: true,
+                })}
+            />
 
-            <input placeholder="Last name" {...register('lastName')} />
+            {errors.firstName && <p>First name is required</p>}
 
-            <button>Save profile</button>
+            <input
+                placeholder="Last name"
+                {...register('lastName', {
+                    required: true,
+                })}
+            />
+
+            {errors.lastName && <p>Last name is required</p>}
+
+            {mutation.isError && <p>Could not save profile</p>}
+
+            <button type="submit" disabled={mutation.isPending}>
+                {mutation.isPending ? 'Saving...' : 'Save profile'}
+            </button>
         </form>
     );
 }
