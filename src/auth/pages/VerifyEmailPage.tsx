@@ -15,8 +15,6 @@ export default function VerifyEmailPage() {
 
     const mutation = useVerifyEmail(
         (data) => {
-            console.log('SUCCESS CALLBACK', data);
-
             setToken(data.token);
 
             navigate(ROUTES.COMPLETE_PROFILE);
@@ -40,20 +38,14 @@ export default function VerifyEmailPage() {
         executed.current = true;
 
         mutation.mutate(token, {
-            onSettled(data, error) {
-                console.log('SETTLED', data, error);
-            },
-
             onSuccess(data) {
-                console.log('SUCCESS CALLBACK', data);
-
                 setToken(data.token);
 
                 navigate(ROUTES.COMPLETE_PROFILE);
             },
 
             onError(error) {
-                console.error('ERROR CALLBACK', error);
+                console.error('Email verification failed', error);
             },
         });
     }, [token, navigate]);

@@ -8,15 +8,11 @@ export async function register(data: RegisterRequest) {
 }
 
 export async function verifyEmail(token: string) {
-    console.log('VERIFY API CALL');
-
     const response = await apiClient.get('/auth/verify-email', {
         params: {
             token,
         },
     });
-
-    console.log('VERIFY API RESPONSE JSON', JSON.stringify(response.data, null, 2));
 
     return response.data;
 }
