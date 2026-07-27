@@ -1,11 +1,11 @@
-import UserLayout from '@layouts/UserLayout';
+import CompleteProfileForm from '@user/components/CompleteProfileForm';
 
 export default function CompleteProfilePage() {
     return (
-        <UserLayout>
-            <h1>Complete Profile</h1>
+        <div>
+            <h1>Complete your profile</h1>
 
-            <p>Add your profile information.</p>
-        </UserLayout>
+            <CompleteProfileForm />
+        </div>
     );
 }

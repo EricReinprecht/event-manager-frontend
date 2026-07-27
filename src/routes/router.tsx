@@ -4,9 +4,12 @@ import { ROUTES } from './paths';
 
 import RegisterPage from '@auth/pages/RegisterPage';
 import VerifyEmailPage from '@auth/pages/VerifyEmailPage';
+import VerifyEmailPendingPage from '@auth/pages/VerifyEmailPendingPage';
+
 import CompleteProfilePage from '@user/pages/CompleteProfilePage';
-import VerifyEmailPendingPage from '@/auth/pages/VerifyEmailPendingPage';
+
 import ProtectedRoute from './ProtectedRoutes';
+import RequireCompletedProfile from './RequireCompletedProfile';
 
 export const router = createBrowserRouter([
     {
@@ -28,13 +31,24 @@ export const router = createBrowserRouter([
         element: <ProtectedRoute />,
         children: [
             {
-                path: ROUTES.COMPLETE_PROFILE,
-                element: <CompleteProfilePage />,
-            },
+                children: [
+                    // accessible after login, before profile completion
+                    {
+                        path: ROUTES.COMPLETE_PROFILE,
+                        element: <CompleteProfilePage />,
+                    },
 
-            {
-                path: 'user/parties',
-                element: <CompleteProfilePage />,
+                    // everything below requires completed profile
+                    {
+                        element: <RequireCompletedProfile />,
+                        children: [
+                            {
+                                path: ROUTES.USER_PARTIES,
+                                element: <div>Parties Page</div>,
+                            },
+                        ],
+                    },
+                ],
             },
         ],
     },
