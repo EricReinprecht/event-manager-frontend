@@ -31,6 +31,11 @@ export const router = createBrowserRouter([
                 path: ROUTES.COMPLETE_PROFILE,
                 element: <CompleteProfilePage />,
             },
+
+            {
+                path: 'user/parties',
+                element: <CompleteProfilePage />,
+            },
         ],
     },
 ]);

@@ -49,7 +49,7 @@ export default function VerifyEmailPage() {
 
                 setToken(data.token);
 
-                navigate('/complete-profile');
+                navigate(ROUTES.COMPLETE_PROFILE);
             },
 
             onError(error) {

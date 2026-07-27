@@ -1,11 +1,19 @@
 import axios from 'axios';
 
-const api = axios.create({
-    baseURL: import.meta.env.VITE_API_URL,
+import { getToken } from '@auth/storage/token.storage';
 
-    headers: {
-        'Content-Type': 'application/json',
-    },
+const apiClient = axios.create({
+    baseURL: 'http://localhost:8080/api',
 });
 
-export default api;
+apiClient.interceptors.request.use((config) => {
+    const token = getToken();
+
+    if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+    }
+
+    return config;
+});
+
+export default apiClient;
