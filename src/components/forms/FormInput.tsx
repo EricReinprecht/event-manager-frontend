@@ -1,21 +1,23 @@
-import type { InputHTMLAttributes } from 'react';
+import type { InputHTMLAttributes, ReactNode } from 'react';
 
-import '@styles/forms/input.scss';
-
-interface Props extends InputHTMLAttributes<HTMLInputElement> {
+type Props = InputHTMLAttributes<HTMLInputElement> & {
     label: string;
-
     error?: string;
-}
+    rightIcon?: ReactNode;
+};
 
-export default function FormInput({ label, error, ...props }: Props) {
+export default function FormInput({ label, error, rightIcon, ...props }: Props) {
     return (
         <div className="form-input">
             <label>{label}</label>
 
-            <input {...props} />
+            <div className="form-input__wrapper">
+                <input {...props} />
 
-            {error && <span className="form-input__error">{error}</span>}
+                {rightIcon && <div className="form-input__icon">{rightIcon}</div>}
+            </div>
+
+            {error && <p className="form-input__error">{error}</p>}
         </div>
     );
 }

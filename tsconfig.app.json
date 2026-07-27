@@ -16,7 +16,8 @@
             "@user/*": ["./src/user/*"],
             "@styles/*": ["./src/styles/*"],
             "@api/*": ["./src/api/*"],
-            "@routes/*": ["./src/routes/*"]
+            "@routes/*": ["./src/routes/*"],
+            "@assets/*": ["./src/assets/*"]
         },
 
         "allowArbitraryExtensions": true,

@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useNavigate } from 'react-router-dom';
@@ -13,6 +14,7 @@ import { useRegister } from '@auth/hooks/useRegister';
 import { ROUTES } from '@routes/paths';
 
 import '@styles/forms/security-form.scss';
+import EyeIcon from '@/components/icons/Eye';
 
 type RegisterFormData = RegisterRequest;
 
@@ -22,6 +24,9 @@ export default function RegisterForm() {
     const navigate = useNavigate();
 
     const registerMutation = useRegister();
+
+    const [showPassword, setShowPassword] = useState(false);
+    const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
 
     const {
         register,
@@ -65,11 +70,19 @@ export default function RegisterForm() {
                     return;
                 }
 
-                // Password validator array
+                /*
+                    Backend password validator returns:
+                    {
+                        errors: [
+                            "...",
+                            "..."
+                        ]
+                    }
+                */
                 if (Array.isArray(response.errors)) {
                     setError('password', {
                         type: 'server',
-                        message: response.errors.join('|'),
+                        message: response.errors.map((error: string) => t(error)).join('\n'),
                     });
 
                     return;
@@ -89,7 +102,7 @@ export default function RegisterForm() {
                 if (message.includes('email')) {
                     setError('email', {
                         type: 'server',
-                        message,
+                        message: t(message),
                     });
 
                     return;
@@ -98,7 +111,16 @@ export default function RegisterForm() {
                 if (message.includes('username')) {
                     setError('username', {
                         type: 'server',
-                        message,
+                        message: t(message),
+                    });
+
+                    return;
+                }
+
+                if (message.includes('password')) {
+                    setError('password', {
+                        type: 'server',
+                        message: t(message),
                     });
 
                     return;
@@ -106,7 +128,7 @@ export default function RegisterForm() {
 
                 setError('root', {
                     type: 'server',
-                    message,
+                    message: t(message),
                 });
             },
         });
@@ -132,15 +154,33 @@ export default function RegisterForm() {
 
                 <FormInput
                     label={t('common.password')}
-                    type="password"
+                    type={showPassword ? 'text' : 'password'}
                     error={translateError(errors.password?.message)}
+                    rightIcon={
+                        <button
+                            type="button"
+                            className="password-toggle"
+                            onClick={() => setShowPassword((value) => !value)}
+                        >
+                            <EyeIcon size={20} />
+                        </button>
+                    }
                     {...register('password')}
                 />
 
                 <FormInput
                     label={t('common.passwordConfirm')}
-                    type="password"
+                    type={showPasswordConfirm ? 'text' : 'password'}
                     error={translateError(errors.passwordConfirm?.message)}
+                    rightIcon={
+                        <button
+                            type="button"
+                            className="password-toggle"
+                            onClick={() => setShowPasswordConfirm((value) => !value)}
+                        >
+                            <EyeIcon size={20} />
+                        </button>
+                    }
                     {...register('passwordConfirm')}
                 />
 
