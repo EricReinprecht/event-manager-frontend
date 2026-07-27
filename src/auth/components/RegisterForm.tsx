@@ -23,14 +23,10 @@ export default function RegisterForm() {
 
     const navigate = useNavigate();
 
-    const registerMutation = useRegister({
-        onSuccess() {
-            navigate(ROUTES.VERIFY_EMAIL);
-        },
-    });
     const {
         register,
         handleSubmit,
+        setError,
         formState: { errors },
     } = useForm<RegisterFormData>({
         resolver: zodResolver(registerSchema),
@@ -43,17 +39,43 @@ export default function RegisterForm() {
         },
     });
 
+    const registerMutation = useRegister();
+
     function submit(data: RegisterFormData) {
         registerMutation.mutate(data, {
             onSuccess() {
-                console.log('registration successful');
-
-                // later:
-                // navigate("/verify-email")
+                navigate(ROUTES.VERIFY_EMAIL_SENT);
             },
 
-            onError(error) {
-                console.error(error);
+            onError(error: any) {
+                const message = error.response?.data?.error;
+
+                if (!message) {
+                    return;
+                }
+
+                if (message.includes('email')) {
+                    setError('email', {
+                        type: 'server',
+                        message,
+                    });
+
+                    return;
+                }
+
+                if (message.includes('username')) {
+                    setError('username', {
+                        type: 'server',
+                        message,
+                    });
+
+                    return;
+                }
+
+                setError('root', {
+                    type: 'server',
+                    message,
+                });
             },
         });
     }
@@ -64,7 +86,7 @@ export default function RegisterForm() {
                 <FormInput
                     label={t('auth.username')}
                     placeholder={t('auth.usernamePlaceholder')}
-                    error={errors.username?.message && t(errors.username.message)}
+                    error={errors.username?.message}
                     {...register('username')}
                 />
 
@@ -72,27 +94,25 @@ export default function RegisterForm() {
                     label={t('auth.email')}
                     type="email"
                     placeholder={t('auth.emailPlaceholder')}
-                    error={errors.email?.message && t(errors.email.message)}
+                    error={errors.email?.message}
                     {...register('email')}
                 />
 
                 <FormInput
                     label={t('auth.password')}
                     type="password"
-                    error={errors.password?.message && t(errors.password.message)}
+                    error={errors.password?.message}
                     {...register('password')}
                 />
 
                 <FormInput
                     label={t('auth.passwordConfirm')}
                     type="password"
-                    error={errors.passwordConfirm?.message && t(errors.passwordConfirm.message)}
+                    error={errors.passwordConfirm?.message}
                     {...register('passwordConfirm')}
                 />
 
-                {registerMutation.error && (
-                    <p className="security-form__error">{t('errors.registerFailed')}</p>
-                )}
+                {errors.root && <p className="security-form__error">{errors.root.message}</p>}
 
                 <button type="submit" disabled={registerMutation.isPending}>
                     {registerMutation.isPending ? t('common.loading') : t('auth.createAccount')}

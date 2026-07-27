@@ -6,3 +6,13 @@ export async function register(data: RegisterRequest) {
 
     return response.data;
 }
+
+export async function verifyEmail(token: string) {
+    const response = await apiClient.get('/auth/verify-email', {
+        params: {
+            token,
+        },
+    });
+
+    return response.data;
+}

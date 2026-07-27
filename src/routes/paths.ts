@@ -7,6 +7,8 @@ export const ROUTES = {
 
     VERIFY_EMAIL: '/verify-email',
 
+    VERIFY_EMAIL_SENT: '/verify-email-sent',
+
     COMPLETE_PROFILE: '/complete-profile',
 
     DASHBOARD: '/dashboard',
