@@ -155,6 +155,7 @@ export default function RegisterForm() {
                 <FormInput
                     label={t('common.password')}
                     type={showPassword ? 'text' : 'password'}
+                    placeholder={t('common.passwordPlaceholder')}
                     error={translateError(errors.password?.message)}
                     rightIcon={
                         <button
@@ -171,6 +172,7 @@ export default function RegisterForm() {
                 <FormInput
                     label={t('common.passwordConfirm')}
                     type={showPasswordConfirm ? 'text' : 'password'}
+                    placeholder={t('common.passwordConfirmPlaceholder')}
                     error={translateError(errors.passwordConfirm?.message)}
                     rightIcon={
                         <button
