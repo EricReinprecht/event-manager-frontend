@@ -7,11 +7,23 @@ import { useVerifyEmail } from '@auth/hooks/useVerifyEmail';
 import { setToken } from '@auth/storage/token.storage';
 
 export default function VerifyEmailPage() {
-    const [params] = useSearchParams();
+    const [searchParams] = useSearchParams();
 
+    const token = searchParams.get('token');
     const navigate = useNavigate();
 
-    const mutation = useVerifyEmail();
+    const mutation = useVerifyEmail(
+        (data) => {
+            console.log('SUCCESS CALLBACK', data);
+
+            setToken(data.token);
+
+            navigate('/complete-profile');
+        },
+        (error) => {
+            console.error('ERROR CALLBACK', error);
+        },
+    );
 
     const executed = useRef(false);
 
@@ -20,22 +32,33 @@ export default function VerifyEmailPage() {
             return;
         }
 
-        const token = params.get('token');
-
         if (!token) {
             return;
         }
 
         executed.current = true;
 
+        console.log('TOKEN:', token);
+        console.log('START VERIFY');
+
         mutation.mutate(token, {
+            onSettled(data, error) {
+                console.log('SETTLED', data, error);
+            },
+
             onSuccess(data) {
+                console.log('SUCCESS CALLBACK', data);
+
                 setToken(data.token);
 
                 navigate('/complete-profile');
             },
+
+            onError(error) {
+                console.error('ERROR CALLBACK', error);
+            },
         });
-    }, []);
+    }, [token, navigate]);
 
     return (
         <SecurityLayout>
