@@ -5,6 +5,7 @@ import SecurityLayout from '@layouts/SecurityLayout';
 
 import { useVerifyEmail } from '@auth/hooks/useVerifyEmail';
 import { setToken } from '@auth/storage/token.storage';
+import { ROUTES } from '@/routes/paths';
 
 export default function VerifyEmailPage() {
     const [searchParams] = useSearchParams();
@@ -18,7 +19,7 @@ export default function VerifyEmailPage() {
 
             setToken(data.token);
 
-            navigate('/complete-profile');
+            navigate(ROUTES.COMPLETE_PROFILE);
         },
         (error) => {
             console.error('ERROR CALLBACK', error);
@@ -37,9 +38,6 @@ export default function VerifyEmailPage() {
         }
 
         executed.current = true;
-
-        console.log('TOKEN:', token);
-        console.log('START VERIFY');
 
         mutation.mutate(token, {
             onSettled(data, error) {

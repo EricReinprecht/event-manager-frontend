@@ -9,7 +9,7 @@ export const ROUTES = {
 
     VERIFY_EMAIL_SENT: '/verify-email-sent',
 
-    COMPLETE_PROFILE: '/complete-profile',
+    COMPLETE_PROFILE: 'user/complete-profile',
 
     DASHBOARD: '/dashboard',
 

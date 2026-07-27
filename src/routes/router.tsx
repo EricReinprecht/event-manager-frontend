@@ -6,6 +6,7 @@ import RegisterPage from '@auth/pages/RegisterPage';
 import VerifyEmailPage from '@auth/pages/VerifyEmailPage';
 import CompleteProfilePage from '@user/pages/CompleteProfilePage';
 import VerifyEmailPendingPage from '@/auth/pages/VerifyEmailPendingPage';
+import ProtectedRoute from './ProtectedRoutes';
 
 export const router = createBrowserRouter([
     {
@@ -24,7 +25,12 @@ export const router = createBrowserRouter([
     },
 
     {
-        path: ROUTES.COMPLETE_PROFILE,
-        element: <CompleteProfilePage />,
+        element: <ProtectedRoute />,
+        children: [
+            {
+                path: ROUTES.COMPLETE_PROFILE,
+                element: <CompleteProfilePage />,
+            },
+        ],
     },
 ]);
