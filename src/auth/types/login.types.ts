@@ -3,6 +3,7 @@ export type LoginRequest = {
     password: string;
 };
 
-export type LoginResponse = {
-    token: string;
-};
+export interface LoginResponse {
+    accessToken: string;
+    refreshToken: string;
+}

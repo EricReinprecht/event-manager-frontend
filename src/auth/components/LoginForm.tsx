@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 
 import { useLogin } from '@auth/hooks/useLogin';
 import { setToken } from '@auth/storage/token.storage';
+import { setRefreshToken } from '@auth/storage/refresh-token.storage';
 import type { LoginRequest } from '@auth/types/login.types';
 
 import FormInput from '@components/forms/FormInput';
@@ -39,7 +40,8 @@ export default function LoginForm() {
 
         mutation.mutate(data, {
             onSuccess(response) {
-                setToken(response.token);
+                setToken(response.accessToken);
+                setRefreshToken(response.refreshToken);
 
                 navigate(ROUTES.USER_DASHBOARD);
             },
