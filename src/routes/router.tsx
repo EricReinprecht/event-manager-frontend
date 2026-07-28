@@ -10,8 +10,10 @@ import CompleteProfilePage from '@user/pages/CompleteProfilePage';
 
 import ProtectedRoute from './ProtectedRoutes';
 import RequireCompletedProfile from './RequireCompletedProfile';
-import UserDashboardPage from '@/user/pages/UserDashboardPage';
-import LoginPage from '@/auth/pages/LoginPage';
+import UserDashboardPage from '@user/pages/UserDashboardPage';
+import LoginPage from '@auth/pages/LoginPage';
+import ForgotPasswordPage from '@auth/pages/ForgotPasswordPage';
+import ResetPasswordPage from '@auth/pages/ResetPasswordPage';
 
 export const router = createBrowserRouter([
     {
@@ -22,6 +24,16 @@ export const router = createBrowserRouter([
     {
         path: ROUTES.LOGIN,
         element: <LoginPage />,
+    },
+
+    {
+        path: ROUTES.FORGOT_PASSWORD,
+        element: <ForgotPasswordPage />,
+    },
+
+    {
+        path: ROUTES.RESET_PASSWORD,
+        element: <ResetPasswordPage />,
     },
 
     {

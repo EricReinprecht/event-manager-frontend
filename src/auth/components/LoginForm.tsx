@@ -10,6 +10,7 @@ import type { LoginRequest } from '@auth/types/login.types';
 
 import FormInput from '@components/forms/FormInput';
 import FormButton from '@components/forms/FormButton';
+import { Link } from 'react-router-dom';
 
 import { ROUTES } from '@routes/paths';
 import EyeIcon from '@/components/icons/Eye';
@@ -91,11 +92,26 @@ export default function LoginForm() {
                 })}
             />
 
+            <div className="forgot-password">
+                <Link to={ROUTES.FORGOT_PASSWORD} className="auth-link">
+                    {t('login.forgotPassword')}
+                </Link>
+            </div>
+
             {loginError && <p className="form-error">{loginError}</p>}
 
             <FormButton type="submit" disabled={mutation.isPending}>
                 {mutation.isPending ? 'Signing in...' : 'Sign in'}
             </FormButton>
+
+            <div className="auth-links">
+                <p className="auth-register">
+                    {t('login.noAccount')}{' '}
+                    <Link to={ROUTES.REGISTER} className="auth-link">
+                        {t('login.register')}
+                    </Link>
+                </p>
+            </div>
         </form>
     );
 }

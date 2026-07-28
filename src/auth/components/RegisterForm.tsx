@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 
 import SecurityLayout from '@layouts/SecurityLayout';
 import FormInput from '@components/forms/FormInput';
@@ -183,6 +184,15 @@ export default function RegisterForm() {
                 <FormButton type="submit" disabled={mutation.isPending}>
                     {mutation.isPending ? t('common.loading') : t('common.createAccount')}
                 </FormButton>
+
+                <div className="auth-links">
+                    <p className="auth-register">
+                        {t('register.alreadyHaveAccount')}{' '}
+                        <Link to={ROUTES.LOGIN} className="auth-link">
+                            {t('register.login')}
+                        </Link>
+                    </p>
+                </div>
             </form>
         </SecurityLayout>
     );
