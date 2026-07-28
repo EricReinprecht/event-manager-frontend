@@ -14,6 +14,7 @@ import UserDashboardPage from '@user/pages/UserDashboardPage';
 import LoginPage from '@auth/pages/LoginPage';
 import ForgotPasswordPage from '@auth/pages/ForgotPasswordPage';
 import ResetPasswordPage from '@auth/pages/ResetPasswordPage';
+import ResendVerificationPage from '@auth/pages/ResendVerificationPage';
 
 export const router = createBrowserRouter([
     {
@@ -34,6 +35,11 @@ export const router = createBrowserRouter([
     {
         path: ROUTES.RESET_PASSWORD,
         element: <ResetPasswordPage />,
+    },
+
+    {
+        path: ROUTES.RESEND_VERIFICATION,
+        element: <ResendVerificationPage />,
     },
 
     {

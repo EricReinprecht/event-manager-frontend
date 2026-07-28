@@ -24,6 +24,8 @@ export default function LoginForm() {
 
     const [showPassword, setShowPassword] = useState(false);
     const [loginError, setLoginError] = useState('');
+    const [showForgotPassword, setShowForgotPassword] = useState(false);
+    const [showResendVerification, setShowResendVerification] = useState(false);
 
     const {
         register,
@@ -47,7 +49,18 @@ export default function LoginForm() {
                 navigate(ROUTES.USER_DASHBOARD);
             },
 
-            onError() {
+            onError(error: any) {
+                const message = error.response?.data?.error;
+
+                if (message === 'email not verified') {
+                    setShowResendVerification(true);
+                    setLoginError(t('login.emailNotVerified'));
+
+                    return;
+                }
+
+                setShowForgotPassword(true);
+
                 if (!data.identifier.includes('@')) {
                     setLoginError(t('login.usernameOrPasswordInvalid'));
 
@@ -92,11 +105,13 @@ export default function LoginForm() {
                 })}
             />
 
-            <div className="forgot-password">
-                <Link to={ROUTES.FORGOT_PASSWORD} className="auth-link">
-                    {t('login.forgotPassword')}
-                </Link>
-            </div>
+            {showForgotPassword && (
+                <div className="forgot-password">
+                    <Link to={ROUTES.FORGOT_PASSWORD} className="auth-link">
+                        {t('login.forgotPassword')}
+                    </Link>
+                </div>
+            )}
 
             {loginError && <p className="form-error">{loginError}</p>}
 
@@ -105,6 +120,13 @@ export default function LoginForm() {
             </FormButton>
 
             <div className="auth-links">
+                {showResendVerification && (
+                    <div className="forgot-password">
+                        <Link to={ROUTES.RESEND_VERIFICATION} className="auth-link">
+                            {t('login.resendVerification')}
+                        </Link>
+                    </div>
+                )}
                 <p className="auth-register">
                     {t('login.noAccount')}{' '}
                     <Link to={ROUTES.REGISTER} className="auth-link">

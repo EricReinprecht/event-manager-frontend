@@ -8,6 +8,8 @@ export const ROUTES = {
 
     RESET_PASSWORD: '/reset-password',
 
+    RESEND_VERIFICATION: '/resend-verification',
+
     REGISTER: '/register',
 
     VERIFY_EMAIL: '/verify-email',
