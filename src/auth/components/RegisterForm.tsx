@@ -6,9 +6,10 @@ import { useTranslation } from 'react-i18next';
 
 import SecurityLayout from '@layouts/SecurityLayout';
 import FormInput from '@components/forms/FormInput';
+import FormButton from '@components/forms/FormButton';
 
 import { registerSchema } from '@auth/schemas/register.schema';
-import type { RegisterRequest } from '@auth/types/auth.types';
+import type { RegisterRequest } from '@auth/types/register.types';
 import { useRegister } from '@auth/hooks/useRegister';
 
 import { ROUTES } from '@routes/paths';
@@ -23,7 +24,7 @@ export default function RegisterForm() {
 
     const navigate = useNavigate();
 
-    const registerMutation = useRegister();
+    const mutation = useRegister();
 
     const [showPassword, setShowPassword] = useState(false);
     const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
@@ -53,7 +54,7 @@ export default function RegisterForm() {
     }
 
     function submit(data: RegisterFormData) {
-        registerMutation.mutate(data, {
+        mutation.mutate(data, {
             onSuccess() {
                 navigate(ROUTES.VERIFY_EMAIL_SENT);
             },
@@ -70,15 +71,6 @@ export default function RegisterForm() {
                     return;
                 }
 
-                /*
-                    Backend password validator returns:
-                    {
-                        errors: [
-                            "...",
-                            "..."
-                        ]
-                    }
-                */
                 if (Array.isArray(response.errors)) {
                     setError('password', {
                         type: 'server',
@@ -188,9 +180,9 @@ export default function RegisterForm() {
 
                 {errors.root && <p className="security-form__error">{errors.root.message}</p>}
 
-                <button type="submit" disabled={registerMutation.isPending}>
-                    {registerMutation.isPending ? t('common.loading') : t('common.createAccount')}
-                </button>
+                <FormButton type="submit" disabled={mutation.isPending}>
+                    {mutation.isPending ? t('common.loading') : t('common.createAccount')}
+                </FormButton>
             </form>
         </SecurityLayout>
     );

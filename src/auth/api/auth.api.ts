@@ -1,5 +1,5 @@
 import apiClient from '@api/client';
-import type { RegisterRequest } from '@auth/types/auth.types';
+import type { RegisterRequest } from '@auth/types/register.types';
 
 export async function register(data: RegisterRequest) {
     const response = await apiClient.post('/auth/register', data);
@@ -13,6 +13,14 @@ export async function verifyEmail(token: string) {
             token,
         },
     });
+
+    return response.data;
+}
+
+import type { LoginRequest, LoginResponse } from '@auth/types/login.types';
+
+export async function login(data: LoginRequest): Promise<LoginResponse> {
+    const response = await apiClient.post('/auth/login', data);
 
     return response.data;
 }

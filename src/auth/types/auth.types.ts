@@ -9,10 +9,3 @@ export interface AuthResponse {
     refreshToken?: string;
     user: User;
 }
-
-export interface RegisterRequest {
-    username: string;
-    email: string;
-    password: string;
-    passwordConfirm: string;
-}

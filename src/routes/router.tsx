@@ -11,11 +11,17 @@ import CompleteProfilePage from '@user/pages/CompleteProfilePage';
 import ProtectedRoute from './ProtectedRoutes';
 import RequireCompletedProfile from './RequireCompletedProfile';
 import UserDashboardPage from '@/user/pages/UserDashboardPage';
+import LoginPage from '@/auth/pages/LoginPage';
 
 export const router = createBrowserRouter([
     {
         path: ROUTES.REGISTER,
         element: <RegisterPage />,
+    },
+
+    {
+        path: ROUTES.LOGIN,
+        element: <LoginPage />,
     },
 
     {
