@@ -1,15 +1,13 @@
 export interface UserParty {
-    id: string;
+    ID: string;
 
-    title: string;
+    Title: string;
 
-    startAt: string;
+    StartAt: string;
 
-    endAt: string;
+    EndAt: string;
 
-    location: string;
-
-    role: 'organizer' | 'member';
+    Location: string;
 }
 
 export interface UserPartiesFilter {
@@ -22,8 +20,6 @@ export interface UserPartiesFilter {
     startAt?: string;
 
     endAt?: string;
-
-    type?: 'organized' | 'member';
 }
 
 export interface PaginatedParties {

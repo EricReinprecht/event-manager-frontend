@@ -1,6 +1,9 @@
 export interface DataListColumn<T> {
     key: string;
+
     label: string;
+
+    sortable?: boolean;
 
     render?: (item: T) => React.ReactNode;
 }
@@ -26,4 +29,14 @@ export interface PaginatedResponse<T> {
     totalPages: number;
 
     total: number;
+}
+
+export type SortDirection = 'asc' | 'desc';
+
+export interface DataListSort {
+    key: string;
+
+    direction: SortDirection;
+
+    priority: number;
 }

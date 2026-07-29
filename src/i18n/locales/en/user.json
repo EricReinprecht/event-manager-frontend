@@ -5,5 +5,26 @@
         "tickets": "My Tickets",
         "purchases": "Purchases",
         "profile": "Profile"
+    },
+    "party": {
+        "create": {
+            "title": "Create Party",
+            "loadingCategories": "Loading categories...",
+            "creating": "Creating...",
+            "submit": "Create Party",
+            "error": "Failed to create party.",
+            "sections": {
+                "general": "General Information",
+                "schedule": "Schedule"
+            }
+        },
+        "fields": {
+            "title": "Title",
+            "description": "Description",
+            "location": "Location",
+            "categories": "Categories",
+            "start": "Start",
+            "end": "End"
+        }
     }
 }

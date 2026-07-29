@@ -5,55 +5,51 @@ export function createPartyForm(
         label: string;
         value: string;
     }[],
+    t: any,
 ): FormSectionConfig[] {
     return [
         {
-            title: 'General Information',
+            title: t('party.create.sections.general'),
 
             fields: [
                 {
                     name: 'title',
-                    label: 'Title',
+                    label: t('party.fields.title'),
                     type: 'text',
                     required: true,
                 },
-
                 {
                     name: 'description',
-                    label: 'Description',
+                    label: t('party.fields.description'),
                     type: 'textarea',
                 },
-
                 {
                     name: 'location',
-                    label: 'Location',
+                    label: t('party.fields.location'),
                     type: 'text',
                 },
-
                 {
                     name: 'categoryIds',
-                    label: 'Categories',
+                    label: t('party.fields.categories'),
                     type: 'multiselect',
                     required: true,
                     options: categories,
                 },
             ],
         },
-
         {
-            title: 'Schedule',
+            title: t('party.create.sections.schedule'),
 
             fields: [
                 {
                     name: 'startAt',
-                    label: 'Start',
+                    label: t('party.fields.start'),
                     type: 'datetime',
                     required: true,
                 },
-
                 {
                     name: 'endAt',
-                    label: 'End',
+                    label: t('party.fields.end'),
                     type: 'datetime',
                     required: true,
                 },

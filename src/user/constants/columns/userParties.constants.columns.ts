@@ -4,30 +4,28 @@ import type { UserParty } from '@user/types/parties.types';
 
 export const USER_PARTIES_COLUMNS: DataListColumn<UserParty>[] = [
     {
-        key: 'title',
+        key: 'Title',
         label: 'Name',
+        sortable: true,
     },
 
     {
         key: 'startAt',
         label: 'Start',
-        render: (party) => new Date(party.startAt).toLocaleString(),
+        sortable: true,
+        render: (party) => new Date(party.StartAt).toLocaleString(),
     },
 
     {
         key: 'endAt',
         label: 'End',
-        render: (party) => new Date(party.endAt).toLocaleString(),
+        sortable: true,
+        render: (party) => new Date(party.EndAt).toLocaleString(),
     },
 
     {
-        key: 'location',
+        key: 'Location',
         label: 'Location',
-    },
-
-    {
-        key: 'role',
-        label: 'Role',
-        render: (party) => (party.role === 'organizer' ? 'Organizer' : 'Member'),
+        sortable: true,
     },
 ];

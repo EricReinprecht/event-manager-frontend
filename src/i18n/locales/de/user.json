@@ -1,9 +1,30 @@
 {
     "navigation": {
         "dashboard": "Dashboard",
-        "parties": "Meine Events",
+        "parties": "Meine Partys",
         "tickets": "Meine Tickets",
         "purchases": "Käufe",
         "profile": "Profil"
+    },
+    "party": {
+        "create": {
+            "title": "Party erstellen",
+            "loadingCategories": "Kategorien werden geladen...",
+            "creating": "Wird erstellt...",
+            "submit": "Party erstellen",
+            "error": "Party konnte nicht erstellt werden.",
+            "sections": {
+                "general": "Allgemeine Informationen",
+                "schedule": "Zeitplan"
+            }
+        },
+        "fields": {
+            "title": "Titel",
+            "description": "Beschreibung",
+            "location": "Ort",
+            "categories": "Kategorien",
+            "start": "Start",
+            "end": "Ende"
+        }
     }
 }

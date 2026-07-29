@@ -10,14 +10,13 @@ interface Props {
 
 export default function DataListFilters({ filters, values, onChange }: Props) {
     return (
-        <div className="data-list__filters">
+        <div className="data-list__row data-list__row--filters">
             {filters.map((filter) => (
-                <div key={filter.key} className="data-list__filter">
-                    <label>{filter.label}</label>
-
+                <div key={filter.key} className="data-list__cell">
                     {filter.type === 'text' && (
                         <input
                             type="text"
+                            placeholder={filter.label}
                             value={values[filter.key] ?? ''}
                             onChange={(e) => onChange?.(filter.key, e.target.value)}
                         />

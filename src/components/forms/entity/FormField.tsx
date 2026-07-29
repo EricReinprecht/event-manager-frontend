@@ -50,16 +50,27 @@ export default function FormField({ field, value, onChange }: Props) {
             )}
 
             {field.type === 'datetime' && (
-                <DatePicker
-                    selected={value ? new Date(value) : null}
-                    onChange={(date: Date | null) =>
-                        onChange(field.name, date?.toISOString() ?? '')
-                    }
-                    showTimeSelect
-                    dateFormat="yyyy-MM-dd HH:mm"
-                    placeholderText={field.placeholder}
-                    className="form-datepicker"
-                />
+                <div className="form-datepicker-wrapper">
+                    <DatePicker
+                        selected={value ? new Date(value) : null}
+
+                        onChange={(date: Date | null) =>
+                            onChange(field.name, date?.toISOString() ?? '')
+                        }
+
+                        showTimeSelect
+
+                        timeIntervals={15}
+
+                        dateFormat="dd.MM.yyyy HH:mm"
+
+                        placeholderText="Select date and time"
+
+                        className="form-datepicker"
+
+                        popperPlacement="bottom-start"
+                    />
+                </div>
             )}
 
             {field.type === 'multiselect' && (

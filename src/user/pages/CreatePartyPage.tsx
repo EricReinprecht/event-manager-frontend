@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 import Form from '@components/forms/entity/Form';
 
@@ -14,6 +15,8 @@ import { useCategories } from '@/features/categories/hooks/useCategories';
 export default function UserCreatePartyPage() {
     const navigate = useNavigate();
 
+    const { t } = useTranslation('user');
+
     const createPartyMutation = useCreateParty();
 
     const { data: categories = [], isLoading: categoriesLoading } = useCategories();
@@ -23,7 +26,6 @@ export default function UserCreatePartyPage() {
     function update(name: string, value: any) {
         setValues({
             ...values,
-
             [name]: value,
         });
     }
@@ -39,7 +41,7 @@ export default function UserCreatePartyPage() {
     if (categoriesLoading) {
         return (
             <div className="base-form">
-                <div className="base-form__container">Loading categories...</div>
+                <div className="base-form__container">{t('party.create.loadingCategories')}</div>
             </div>
         );
     }
@@ -52,18 +54,22 @@ export default function UserCreatePartyPage() {
     return (
         <div className="base-form">
             <div className="base-form__container">
-                <h1>Create Party</h1>
+                <h1>{t('party.create.title')}</h1>
 
                 <Form
-                    sections={createPartyForm(categoryOptions)}
+                    sections={createPartyForm(categoryOptions, t)}
                     values={values}
                     onChange={update}
                     onSubmit={submit}
-                    submitLabel={createPartyMutation.isPending ? 'Creating...' : 'Create Party'}
+                    submitLabel={
+                        createPartyMutation.isPending
+                            ? t('party.create.creating')
+                            : t('party.create.submit')
+                    }
                 />
 
                 {createPartyMutation.isError && (
-                    <p className="form-error">Failed to create party.</p>
+                    <p className="form-error">{t('party.create.error')}</p>
                 )}
             </div>
         </div>

@@ -18,22 +18,4 @@ export const USER_PARTIES_FILTERS: DataListFilter[] = [
         label: 'End date',
         type: 'date',
     },
-
-    {
-        key: 'type',
-        label: 'Participation',
-        type: 'select',
-
-        options: [
-            {
-                label: 'Organized by me',
-                value: 'organized',
-            },
-
-            {
-                label: 'Participating',
-                value: 'member',
-            },
-        ],
-    },
 ];
