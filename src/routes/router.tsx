@@ -16,6 +16,7 @@ import ForgotPasswordPage from '@auth/pages/ForgotPasswordPage';
 import ResetPasswordPage from '@auth/pages/ResetPasswordPage';
 import ResendVerificationPage from '@auth/pages/ResendVerificationPage';
 import UserLayout from '@/user/layouts/UserLayout';
+import UserPartiesPage from '@/user/pages/PartiesPage';
 
 export const router = createBrowserRouter([
     {
@@ -77,7 +78,7 @@ export const router = createBrowserRouter([
 
                             {
                                 path: ROUTES.USER_PARTIES,
-                                element: <div>Parties Page</div>,
+                                element: <UserPartiesPage />,
                             },
 
                             {

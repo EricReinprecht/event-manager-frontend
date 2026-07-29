@@ -1,41 +1,79 @@
 .user-layout {
     display: flex;
     min-height: 100vh;
+    background: #f8f9fa;
 
     &__sidebar {
         width: 260px;
-        border-right: 1px solid var(--border-color);
-        padding: 2rem 1rem;
+        background: #ffffff;
+        border-right: 1px solid #e5e7eb;
+        display: flex;
+        flex-direction: column;
     }
 
     &__nav {
         display: flex;
         flex-direction: column;
-        gap: 0.5rem;
+        height: 100%;
+        padding: 1rem;
+    }
+
+    &__links {
+        display: flex;
+        flex-direction: column;
+        gap: 0.35rem;
+
+        overflow-y: auto;
+
+        flex: 1;
+
+        padding-right: 0.25rem;
     }
 
     &__link {
+        display: flex;
+        align-items: center;
+
         padding: 0.75rem 1rem;
-        border-radius: 10px;
+
+        border-radius: 0.5rem;
+
+        color: #4b5563;
         text-decoration: none;
-        color: var(--text-secondary);
+
+        font-size: 0.95rem;
         font-weight: 500;
-        transition: 0.2s;
+
+        transition:
+            background 0.2s ease,
+            color 0.2s ease;
 
         &:hover {
-            background: var(--surface-hover);
-            color: var(--text-primary);
+            background: #f3f4f6;
+            color: #111827;
         }
 
         &--active {
-            background: var(--primary);
+            background: #111827;
             color: white;
-            font-weight: 600;
+
+            &:hover {
+                background: #1f2937;
+                color: white;
+            }
         }
+    }
+
+    &__footer {
+        border-top: 1px solid #e5e7eb;
+
+        padding-top: 1rem;
+        margin-top: 1rem;
     }
 
     &__content {
         flex: 1;
         padding: 2rem;
+        overflow-y: auto;
     }
 }

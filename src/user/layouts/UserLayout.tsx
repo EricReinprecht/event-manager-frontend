@@ -3,59 +3,59 @@ import { useTranslation } from 'react-i18next';
 
 import { ROUTES } from '@routes/paths';
 
+import LogoutButton from '@auth/components/LogoutButton';
+
 import '@styles/layouts/user-layout.scss';
 
 export default function UserLayout() {
     const { t } = useTranslation('user');
 
+    const links = [
+        {
+            path: ROUTES.USER_DASHBOARD,
+            label: t('navigation.dashboard'),
+        },
+        {
+            path: ROUTES.USER_PARTIES,
+            label: t('navigation.parties'),
+        },
+        {
+            path: ROUTES.USER_TICKETS,
+            label: t('navigation.tickets'),
+        },
+        {
+            path: ROUTES.USER_PURCHASES,
+            label: t('navigation.purchases'),
+        },
+        {
+            path: ROUTES.USER_PROFILE,
+            label: t('navigation.profile'),
+        },
+    ];
+
     return (
         <div className="user-layout">
             <aside className="user-layout__sidebar">
                 <nav className="user-layout__nav">
-                    <NavLink
-                        to={ROUTES.USER_DASHBOARD}
-                        className={({ isActive }) =>
-                            `user-layout__link ${isActive ? 'user-layout__link--active' : ''}`
-                        }
-                    >
-                        {t('navigation.dashboard')}
-                    </NavLink>
+                    <div className="user-layout__links">
+                        {links.map((link) => (
+                            <NavLink
+                                key={link.path}
+                                to={link.path}
+                                className={({ isActive }) =>
+                                    `user-layout__link ${
+                                        isActive ? 'user-layout__link--active' : ''
+                                    }`
+                                }
+                            >
+                                {link.label}
+                            </NavLink>
+                        ))}
+                    </div>
 
-                    <NavLink
-                        to={ROUTES.USER_PARTIES}
-                        className={({ isActive }) =>
-                            `user-layout__link ${isActive ? 'user-layout__link--active' : ''}`
-                        }
-                    >
-                        {t('navigation.parties')}
-                    </NavLink>
-
-                    <NavLink
-                        to={ROUTES.USER_TICKETS}
-                        className={({ isActive }) =>
-                            `user-layout__link ${isActive ? 'user-layout__link--active' : ''}`
-                        }
-                    >
-                        {t('navigation.tickets')}
-                    </NavLink>
-
-                    <NavLink
-                        to={ROUTES.USER_PURCHASES}
-                        className={({ isActive }) =>
-                            `user-layout__link ${isActive ? 'user-layout__link--active' : ''}`
-                        }
-                    >
-                        {t('navigation.purchases')}
-                    </NavLink>
-
-                    <NavLink
-                        to={ROUTES.USER_PROFILE}
-                        className={({ isActive }) =>
-                            `user-layout__link ${isActive ? 'user-layout__link--active' : ''}`
-                        }
-                    >
-                        {t('navigation.profile')}
-                    </NavLink>
+                    <div className="user-layout__footer">
+                        <LogoutButton />
+                    </div>
                 </nav>
             </aside>
 
