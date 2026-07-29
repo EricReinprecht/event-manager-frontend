@@ -3,11 +3,11 @@ export interface UserParty {
 
     Title: string;
 
-    StartAt: string;
+    startAt: string;
 
-    EndAt: string;
+    endAt: string;
 
-    Location: string;
+    location: string;
 }
 
 export interface UserPartiesFilter {
@@ -20,6 +20,8 @@ export interface UserPartiesFilter {
     startAt?: string;
 
     endAt?: string;
+
+    sorts?: string;
 }
 
 export interface PaginatedParties {

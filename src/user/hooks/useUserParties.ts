@@ -9,5 +9,7 @@ export function useUserParties(filters: UserPartiesFilter) {
         queryKey: ['user-parties', filters],
 
         queryFn: () => getUserParties(filters),
+
+        staleTime: 30_000,
     });
 }
