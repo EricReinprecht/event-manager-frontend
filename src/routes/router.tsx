@@ -10,11 +10,12 @@ import CompleteProfilePage from '@user/pages/CompleteProfilePage';
 
 import ProtectedRoute from './ProtectedRoutes';
 import RequireCompletedProfile from './RequireCompletedProfile';
-import UserDashboardPage from '@user/pages/UserDashboardPage';
+import DashboardPage from '@user/pages/DashboardPage';
 import LoginPage from '@auth/pages/LoginPage';
 import ForgotPasswordPage from '@auth/pages/ForgotPasswordPage';
 import ResetPasswordPage from '@auth/pages/ResetPasswordPage';
 import ResendVerificationPage from '@auth/pages/ResendVerificationPage';
+import UserLayout from '@/user/layouts/UserLayout';
 
 export const router = createBrowserRouter([
     {
@@ -52,29 +53,46 @@ export const router = createBrowserRouter([
         element: <VerifyEmailPendingPage />,
     },
 
+    // Protected
     {
         element: <ProtectedRoute />,
         children: [
+            // Needs login only
             {
+                path: ROUTES.COMPLETE_PROFILE,
+                element: <CompleteProfilePage />,
+            },
+
+            // User Center
+            {
+                element: <RequireCompletedProfile />,
                 children: [
-                    // accessible after login, before profile completion
                     {
-                        path: ROUTES.COMPLETE_PROFILE,
-                        element: <CompleteProfilePage />,
-                    },
-
-                    {
-                        path: ROUTES.USER_DASHBOARD,
-                        element: <UserDashboardPage />,
-                    },
-
-                    // everything below requires completed profile
-                    {
-                        element: <RequireCompletedProfile />,
+                        element: <UserLayout />,
                         children: [
+                            {
+                                path: ROUTES.USER_DASHBOARD,
+                                element: <DashboardPage />,
+                            },
+
                             {
                                 path: ROUTES.USER_PARTIES,
                                 element: <div>Parties Page</div>,
+                            },
+
+                            {
+                                path: ROUTES.USER_TICKETS,
+                                element: <div>Tickets Page</div>,
+                            },
+
+                            {
+                                path: ROUTES.USER_PURCHASES,
+                                element: <div>Purchases Page</div>,
+                            },
+
+                            {
+                                path: ROUTES.USER_PROFILE,
+                                element: <div>Profile Page</div>,
                             },
                         ],
                     },

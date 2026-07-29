@@ -8,7 +8,7 @@ export async function getMe() {
 }
 
 export async function completeProfile(data: CompleteProfileRequest) {
-    const response = await apiClient.put('/users/me/profile', {
+    const response = await apiClient.put('/users/me/complete-profile', {
         firstName: data.firstName,
         lastName: data.lastName,
     });

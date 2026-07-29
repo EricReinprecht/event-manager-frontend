@@ -1,6 +1,6 @@
 import LogoutButton from '@auth/components/LogoutButton';
 
-export default function UserDashboardPage() {
+export default function DashboardPage() {
     return (
         <div>
             <h1>Dashboard</h1>

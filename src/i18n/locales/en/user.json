@@ -1,0 +1,9 @@
+{
+    "navigation": {
+        "dashboard": "Dashboard",
+        "parties": "My Parties",
+        "tickets": "My Tickets",
+        "purchases": "Purchases",
+        "profile": "Profile"
+    }
+}
