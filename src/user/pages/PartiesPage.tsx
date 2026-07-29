@@ -14,6 +14,22 @@ import { USER_PARTIES_COLUMNS } from '@user/constants/columns/userParties.consta
 import { ROUTES } from '@/routes/paths';
 import { useDebounce } from '@/hooks/useDebounce';
 
+function parseSorts(value: string): DataListSort[] {
+    if (!value) {
+        return [];
+    }
+
+    return value.split(',').map((sort, index) => {
+        const [key, direction] = sort.split(':');
+
+        return {
+            key,
+            direction: direction as DataListSort['direction'],
+            priority: index + 1,
+        };
+    });
+}
+
 export default function UserPartiesPage() {
     const { t } = useTranslation('user');
 
@@ -23,20 +39,12 @@ export default function UserPartiesPage() {
         name: '',
         startAt: '',
         endAt: '',
+        sorts: '',
     });
-
-    const [sorts, setSorts] = useState<DataListSort[]>([]);
 
     const debouncedFilters = useDebounce(filters, 500);
 
-    const debouncedSorts = useDebounce(sorts, 500);
-
-    const sortQuery = debouncedSorts.map((sort) => `${sort.key}:${sort.direction}`).join(',');
-
-    const { data, isLoading } = useUserParties({
-        ...debouncedFilters,
-        sorts: sortQuery,
-    });
+    const { data, isLoading } = useUserParties(debouncedFilters);
 
     function updateFilter(key: string, value: string) {
         setFilters((current) => ({
@@ -68,8 +76,14 @@ export default function UserPartiesPage() {
                 startAt: filters.startAt ?? '',
                 endAt: filters.endAt ?? '',
             }}
-            sorts={sorts}
-            onSort={setSorts}
+            sorts={parseSorts(filters.sorts ?? '')}
+            onSort={(sorts) => {
+                setFilters((current) => ({
+                    ...current,
+                    page: 1,
+                    sorts: sorts.map((sort) => `${sort.key}:${sort.direction}`).join(','),
+                }));
+            }}
             onFilterChange={updateFilter}
             onPageChange={changePage}
             action={
