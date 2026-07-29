@@ -18,16 +18,36 @@ export function createPartyForm(
                     type: 'text',
                     required: true,
                 },
+
                 {
                     name: 'description',
                     label: t('party.fields.description'),
                     type: 'textarea',
                 },
+
                 {
-                    name: 'location',
+                    name: 'locationName',
                     label: t('party.fields.location'),
-                    type: 'text',
+                    type: 'location',
+                    required: true,
                 },
+
+                {
+                    name: 'latitude',
+                    label: '',
+                    type: 'hidden',
+                },
+                {
+                    name: 'longitude',
+                    label: '',
+                    type: 'hidden',
+                },
+                {
+                    name: 'timezone',
+                    label: '',
+                    type: 'hidden',
+                },
+
                 {
                     name: 'categoryIds',
                     label: t('party.fields.categories'),
@@ -37,6 +57,7 @@ export function createPartyForm(
                 },
             ],
         },
+
         {
             title: t('party.create.sections.schedule'),
 
@@ -47,6 +68,7 @@ export function createPartyForm(
                     type: 'datetime',
                     required: true,
                 },
+
                 {
                     name: 'endAt',
                     label: t('party.fields.end'),

@@ -4,6 +4,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import CategoryMultiSelect from '@/features/categories/hooks/components/CategoryMultiSelect';
 
 import type { FormFieldConfig } from './types';
+import LocationPicker from '../fields/LocationPicker';
 
 interface Props {
     field: FormFieldConfig;
@@ -14,6 +15,16 @@ interface Props {
 }
 
 export default function FormField({ field, value, onChange }: Props) {
+    if (field.type === 'hidden') {
+        return (
+            <input
+                type="hidden"
+                value={value ?? ''}
+                onChange={(e) => onChange(field.name, e.target.value)}
+            />
+        );
+    }
+
     return (
         <div className="form-input">
             <label>{field.label}</label>
@@ -53,21 +64,14 @@ export default function FormField({ field, value, onChange }: Props) {
                 <div className="form-datepicker-wrapper">
                     <DatePicker
                         selected={value ? new Date(value) : null}
-
                         onChange={(date: Date | null) =>
                             onChange(field.name, date?.toISOString() ?? '')
                         }
-
                         showTimeSelect
-
                         timeIntervals={15}
-
                         dateFormat="dd.MM.yyyy HH:mm"
-
                         placeholderText="Select date and time"
-
                         className="form-datepicker"
-
                         popperPlacement="bottom-start"
                     />
                 </div>
@@ -78,6 +82,20 @@ export default function FormField({ field, value, onChange }: Props) {
                     value={value ?? []}
                     options={field.options ?? []}
                     onChange={(value) => onChange(field.name, value)}
+                />
+            )}
+
+            {field.type === 'location' && (
+                <LocationPicker
+                    value={value}
+                    onChange={(location) => {
+                        console.log('LOCATION PICKER OUTPUT:', location);
+
+                        onChange('locationName', location.locationName);
+                        onChange('latitude', location.latitude);
+                        onChange('longitude', location.longitude);
+                        onChange('timezone', location.timezone);
+                    }}
                 />
             )}
         </div>

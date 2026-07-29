@@ -21,8 +21,8 @@ export interface CreatePartyRequest {
     imageIDs?: string[];
 }
 
-export async function createParty(data: CreatePartyRequest): Promise<Party> {
-    const response = await api.post(routes.PartyCreate, data);
+export async function createParty(data: CreatePartyRequest) {
+    const response = await api.post('/parties', data);
 
-    return response.data.data;
+    return response.data;
 }

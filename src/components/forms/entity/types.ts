@@ -1,5 +1,13 @@
 export type FormFieldType =
-    'text' | 'textarea' | 'date' | 'datetime' | 'number' | 'select' | 'multiselect';
+    | 'text'
+    | 'textarea'
+    | 'date'
+    | 'datetime'
+    | 'number'
+    | 'select'
+    | 'multiselect'
+    | 'location'
+    | 'hidden';
 
 export interface FormFieldOption {
     label: string;

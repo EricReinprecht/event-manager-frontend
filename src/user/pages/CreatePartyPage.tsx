@@ -24,13 +24,15 @@ export default function UserCreatePartyPage() {
     const [values, setValues] = useState<Partial<CreatePartyRequest>>({});
 
     function update(name: string, value: any) {
-        setValues({
-            ...values,
+        setValues((current) => ({
+            ...current,
             [name]: value,
-        });
+        }));
     }
 
     function submit() {
+        console.log('SUBMIT VALUES:', values);
+
         createPartyMutation.mutate(values as CreatePartyRequest, {
             onSuccess(party) {
                 navigate(`/parties/${party.id}`);
