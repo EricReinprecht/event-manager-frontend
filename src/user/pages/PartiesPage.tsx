@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 import DataList from '@components/data-list/DataList';
 import type { DataListSort } from '@components/data-list/types';
@@ -14,6 +15,8 @@ import { ROUTES } from '@/routes/paths';
 import { useDebounce } from '@/hooks/useDebounce';
 
 export default function UserPartiesPage() {
+    const { t } = useTranslation('user');
+
     const [filters, setFilters] = useState<UserPartiesFilter>({
         page: 1,
         limit: 10,
@@ -30,35 +33,33 @@ export default function UserPartiesPage() {
 
     const sortQuery = debouncedSorts.map((sort) => `${sort.key}:${sort.direction}`).join(',');
 
-    console.log('SORT:', sortQuery);
-
     const { data, isLoading } = useUserParties({
         ...debouncedFilters,
         sorts: sortQuery,
     });
 
     function updateFilter(key: string, value: string) {
-        setFilters({
-            ...filters,
+        setFilters((current) => ({
+            ...current,
             [key]: value,
             page: 1,
-        });
+        }));
     }
 
     function changePage(page: number) {
-        setFilters({
-            ...filters,
+        setFilters((current) => ({
+            ...current,
             page,
-        });
+        }));
     }
 
     if (isLoading) {
-        return <p>Loading parties...</p>;
+        return <p>{t('party.list.loading')}</p>;
     }
 
     return (
         <DataList
-            title="My Parties"
+            title={t('party.list.title')}
             data={data}
             columns={USER_PARTIES_COLUMNS}
             filters={USER_PARTIES_FILTERS}
@@ -67,13 +68,13 @@ export default function UserPartiesPage() {
                 startAt: filters.startAt ?? '',
                 endAt: filters.endAt ?? '',
             }}
+            sorts={sorts}
+            onSort={setSorts}
             onFilterChange={updateFilter}
             onPageChange={changePage}
-            onSort={setSorts}
-            sorts={sorts}
             action={
                 <Link to={ROUTES.USER_PARTY_CREATE} className="btn btn-primary">
-                    Create Party
+                    {t('party.list.create')}
                 </Link>
             }
         />

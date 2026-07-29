@@ -18,6 +18,11 @@
                 "schedule": "Zeitplan"
             }
         },
+        "list": {
+            "title": "Meine Partys",
+            "loading": "Partys werden geladen...",
+            "create": "Party erstellen"
+        },
         "fields": {
             "title": "Titel",
             "description": "Beschreibung",

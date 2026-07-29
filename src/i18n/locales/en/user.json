@@ -18,6 +18,13 @@
                 "schedule": "Schedule"
             }
         },
+        "party": {
+            "list": {
+                "title": "My Parties",
+                "loading": "Loading parties...",
+                "create": "Create Party"
+            }
+        },
         "fields": {
             "title": "Title",
             "description": "Description",
