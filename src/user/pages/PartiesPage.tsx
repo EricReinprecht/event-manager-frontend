@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 import DataList from '@components/data-list/DataList';
-import type { DataListSort } from '@components/data-list/types';
 
 import { useUserParties } from '@user/hooks/useUserParties';
 import type { UserPartiesFilter } from '@user/types/parties.types';
@@ -11,24 +10,8 @@ import type { UserPartiesFilter } from '@user/types/parties.types';
 import { USER_PARTIES_FILTERS } from '@user/constants/filters/userParties.constants.filters';
 import { USER_PARTIES_COLUMNS } from '@user/constants/columns/userParties.constants.columns';
 
-import { ROUTES } from '@/routes/paths';
+import { ROUTES } from '@routes/paths';
 import { useDebounce } from '@/hooks/useDebounce';
-
-function parseSorts(value: string): DataListSort[] {
-    if (!value) {
-        return [];
-    }
-
-    return value.split(',').map((sort, index) => {
-        const [key, direction] = sort.split(':');
-
-        return {
-            key,
-            direction: direction as DataListSort['direction'],
-            priority: index + 1,
-        };
-    });
-}
 
 export default function UserPartiesPage() {
     const { t } = useTranslation('user');
@@ -76,14 +59,14 @@ export default function UserPartiesPage() {
                 startAt: filters.startAt ?? '',
                 endAt: filters.endAt ?? '',
             }}
-            sorts={parseSorts(filters.sorts ?? '')}
-            onSort={(sorts) => {
+            sorts={filters.sorts ?? ''}
+            onSort={(sorts) =>
                 setFilters((current) => ({
                     ...current,
                     page: 1,
-                    sorts: sorts.map((sort) => `${sort.key}:${sort.direction}`).join(','),
-                }));
-            }}
+                    sorts,
+                }))
+            }
             onFilterChange={updateFilter}
             onPageChange={changePage}
             action={

@@ -7,6 +7,7 @@ import DataListHeader from './DataListHeader';
 import DataListPagination from './DataListPagination';
 
 import './data-list.scss';
+import { parseSorts, stringifySorts } from './sorts';
 
 interface Props<T> {
     title: string;
@@ -19,9 +20,9 @@ interface Props<T> {
 
     values?: Record<string, string>;
 
-    sorts: DataListSort[];
+    sorts?: string;
 
-    onSort?(sorts: DataListSort[]): void;
+    onSort?(sorts: string): void;
 
     onFilterChange?(key: string, value: string): void;
 
@@ -36,32 +37,34 @@ export default function DataList<T>({
     columns,
     filters,
     values = {},
-    sorts,
+    sorts = '',
     onSort,
     onFilterChange,
     onPageChange,
     action,
 }: Props<T>) {
     function changeSort(key: string) {
+        const currentSorts = parseSorts(sorts);
+
         let newSorts: DataListSort[];
 
-        const existing = sorts.find((sort) => sort.key === key);
+        const existing = currentSorts.find((sort) => sort.key === key);
 
         // first click -> ASC
         if (!existing) {
             newSorts = [
-                ...sorts,
+                ...currentSorts,
                 {
                     key,
                     direction: 'asc',
-                    priority: sorts.length + 1,
+                    priority: currentSorts.length + 1,
                 },
             ];
         }
 
         // second click -> DESC
         else if (existing.direction === 'asc') {
-            newSorts = sorts.map((sort) =>
+            newSorts = currentSorts.map((sort) =>
                 sort.key === key
                     ? {
                           ...sort,
@@ -73,7 +76,7 @@ export default function DataList<T>({
 
         // third click -> remove
         else {
-            newSorts = sorts
+            newSorts = currentSorts
                 .filter((sort) => sort.key !== key)
                 .map((sort, index) => ({
                     ...sort,
@@ -81,7 +84,7 @@ export default function DataList<T>({
                 }));
         }
 
-        onSort?.(newSorts);
+        onSort?.(stringifySorts(newSorts));
     }
 
     return (
@@ -93,7 +96,7 @@ export default function DataList<T>({
             </div>
 
             <div className="data-list__table">
-                <DataListHeader columns={columns} sorts={sorts} onSort={changeSort} />
+                <DataListHeader columns={columns} sorts={parseSorts(sorts)} onSort={changeSort} />
 
                 {filters && (
                     <DataListFilters filters={filters} values={values} onChange={onFilterChange} />
