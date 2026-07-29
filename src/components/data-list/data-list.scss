@@ -162,13 +162,17 @@
     }
 
     /*
-        Filters
-    */
+    Filters
+*/
 
     &__filters {
         display: grid;
 
-        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        grid-template-columns:
+            2fr
+            1fr
+            1fr
+            1.5fr;
 
         gap: var(--space-md);
 
@@ -196,31 +200,104 @@
             text-transform: uppercase;
         }
 
-        input,
-        select {
-            height: 42px;
+        .data-list__input-wrapper {
+            position: relative;
 
-            padding: 0 12px;
+            width: 100%;
 
-            border-radius: var(--radius-md);
+            input,
+            select,
+            .data-list__datepicker {
+                width: 100%;
 
-            border: 1px solid var(--color-border);
+                height: 42px;
 
-            background: var(--color-background);
+                padding: 0 38px 0 12px;
 
-            color: var(--color-text);
+                border-radius: var(--radius-md);
 
-            transition:
-                border 0.2s ease,
-                box-shadow 0.2s ease;
+                border: 1px solid var(--color-border);
 
-            &:focus {
-                outline: none;
+                background: var(--color-background);
 
-                border-color: var(--color-primary);
+                color: var(--color-text);
 
-                box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary) 20%, transparent);
+                font-size: 0.95rem;
+
+                transition:
+                    border-color 0.2s ease,
+                    box-shadow 0.2s ease;
+
+                &:focus {
+                    outline: none;
+
+                    border-color: var(--color-primary);
+
+                    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary) 20%, transparent);
+                }
             }
+
+            select {
+                cursor: pointer;
+            }
+
+            .data-list__clear {
+                position: absolute;
+
+                right: 10px;
+
+                top: 50%;
+
+                transform: translateY(-50%);
+
+                width: 22px;
+
+                height: 22px;
+
+                display: flex;
+
+                align-items: center;
+
+                justify-content: center;
+
+                border: none;
+
+                border-radius: 50%;
+
+                background: transparent;
+
+                color: var(--color-text-muted);
+
+                font-size: 1.1rem;
+
+                line-height: 1;
+
+                cursor: pointer;
+
+                transition:
+                    background 0.15s ease,
+                    color 0.15s ease;
+
+                &:hover {
+                    background: var(--color-border);
+
+                    color: var(--color-text);
+                }
+            }
+        }
+    }
+
+    &__input-wrapper {
+        position: relative;
+
+        display: flex;
+
+        align-items: center;
+
+        input {
+            width: 100%;
+
+            padding-right: 36px;
         }
     }
 
@@ -236,5 +313,67 @@
         gap: var(--space-sm);
 
         margin-top: var(--space-md);
+    }
+
+    &__clear {
+        position: absolute;
+
+        right: 10px;
+
+        top: 50%;
+
+        transform: translateY(-50%);
+
+        width: 22px;
+
+        height: 22px;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        border: none;
+
+        background: transparent;
+
+        color: var(--color-text-muted);
+
+        font-size: 1.2rem;
+
+        cursor: pointer;
+
+        z-index: 2;
+
+        &:hover {
+            color: var(--color-text);
+        }
+    }
+
+    &__datepicker {
+        height: 42px;
+
+        padding: 0 var(--space-md);
+
+        border-radius: var(--radius-md);
+
+        border: 1px solid var(--color-border);
+
+        background: var(--color-surface);
+
+        color: var(--color-text);
+
+        font-size: 1rem;
+
+        cursor: pointer;
+
+        &:focus {
+            outline: none;
+
+            border-color: var(--color-primary);
+
+            box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary) 20%, transparent);
+        }
     }
 }
