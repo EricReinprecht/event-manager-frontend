@@ -19,7 +19,7 @@ export default function FormSection({ section, values, onChange }: Props) {
                 <FormField
                     key={field.name}
                     field={field}
-                    value={values[field.name] ?? ''}
+                    value={values[field.name]}
                     onChange={onChange}
                 />
             ))}

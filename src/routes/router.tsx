@@ -83,7 +83,7 @@ export const router = createBrowserRouter([
                             },
 
                             {
-                                path: ROUTES.CREATE_PARTY,
+                                path: ROUTES.USER_PARTY_CREATE,
                                 element: <UserCreatePartyPage />,
                             },
 

@@ -62,7 +62,7 @@ export default function UserPartiesPage() {
 
             onPageChange={changePage}
             action={
-                <Link to={ROUTES.CREATE_PARTY} className="btn btn-primary">
+                <Link to={ROUTES.USER_PARTY_CREATE} className="btn btn-primary">
                     Create Party
                 </Link>
             }

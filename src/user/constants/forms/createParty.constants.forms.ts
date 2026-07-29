@@ -1,48 +1,63 @@
 import type { FormSectionConfig } from '@components/forms/entity/types';
 
-export const CREATE_PARTY_FORM: FormSectionConfig[] = [
-    {
-        title: 'General Information',
+export function createPartyForm(
+    categories: {
+        label: string;
+        value: string;
+    }[],
+): FormSectionConfig[] {
+    return [
+        {
+            title: 'General Information',
 
-        fields: [
-            {
-                name: 'title',
-                label: 'Title',
-                type: 'text',
-                required: true,
-            },
+            fields: [
+                {
+                    name: 'title',
+                    label: 'Title',
+                    type: 'text',
+                    required: true,
+                },
 
-            {
-                name: 'description',
-                label: 'Description',
-                type: 'textarea',
-            },
+                {
+                    name: 'description',
+                    label: 'Description',
+                    type: 'textarea',
+                },
 
-            {
-                name: 'location',
-                label: 'Location',
-                type: 'text',
-            },
-        ],
-    },
+                {
+                    name: 'location',
+                    label: 'Location',
+                    type: 'text',
+                },
 
-    {
-        title: 'Schedule',
+                {
+                    name: 'categoryIds',
+                    label: 'Categories',
+                    type: 'multiselect',
+                    required: true,
+                    options: categories,
+                },
+            ],
+        },
 
-        fields: [
-            {
-                name: 'startAt',
-                label: 'Start',
-                type: 'datetime',
-                required: true,
-            },
+        {
+            title: 'Schedule',
 
-            {
-                name: 'endAt',
-                label: 'End',
-                type: 'datetime',
-                required: true,
-            },
-        ],
-    },
-];
+            fields: [
+                {
+                    name: 'startAt',
+                    label: 'Start',
+                    type: 'datetime',
+                    required: true,
+                },
+
+                {
+                    name: 'endAt',
+                    label: 'End',
+                    type: 'datetime',
+                    required: true,
+                },
+            ],
+        },
+    ];
+}
