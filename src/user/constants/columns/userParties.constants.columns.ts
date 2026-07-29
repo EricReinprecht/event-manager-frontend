@@ -13,14 +13,14 @@ export const USER_PARTIES_COLUMNS: DataListColumn<UserParty>[] = [
         key: 'startAt',
         label: 'Start',
         sortable: true,
-        render: (party) => new Date(party.startAt).toLocaleString(),
+        render: (party) => new Date(party.startAt).toLocaleDateString(),
     },
 
     {
         key: 'endAt',
         label: 'End',
         sortable: true,
-        render: (party) => new Date(party.endAt).toLocaleString(),
+        render: (party) => new Date(party.endAt).toLocaleDateString(),
     },
 
     {
