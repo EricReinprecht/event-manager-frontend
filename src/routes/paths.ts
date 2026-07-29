@@ -25,6 +25,8 @@ export const ROUTES = {
 
     USER_PARTIES: '/user/parties',
 
+    CREATE_PARTY: '/user/create-party',
+
     USER_TICKETS: '/user/tickets',
 
     USER_PURCHASES: '/user/purchases',

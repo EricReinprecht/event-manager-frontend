@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 
 import { USER_PARTIES_FILTERS } from '@user/constants/filters/userParties.constants.filters';
 import { USER_PARTIES_COLUMNS } from '@user/constants/columns/userParties.constants.columns';
+import { ROUTES } from '@/routes/paths';
 
 export default function UserPartiesPage() {
     const [filters, setFilters] = useState<UserPartiesFilter>({
@@ -61,7 +62,7 @@ export default function UserPartiesPage() {
 
             onPageChange={changePage}
             action={
-                <Link to="/parties/create" className="btn btn-primary">
+                <Link to={ROUTES.CREATE_PARTY} className="btn btn-primary">
                     Create Party
                 </Link>
             }
