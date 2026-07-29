@@ -1,16 +1,10 @@
-@use "./variables";
-@use "./mixins";
-
+@use './variables/base.variables.scss';
+@use './mixins';
 
 .container {
-
     @include mixins.container;
-
 }
 
-
 .text-muted {
-
-    color:var(--color-text-muted);
-
+    color: var(--color-text-muted);
 }

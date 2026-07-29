@@ -3,6 +3,10 @@ import { useState } from 'react';
 import DataList from '@components/data-list/DataList';
 import { useUserParties } from '@user/hooks/useUserParties';
 import type { UserPartiesFilter } from '@user/types/parties.types';
+import { Link } from 'react-router-dom';
+
+import { USER_PARTIES_FILTERS } from '@user/constants/filters/userParties.constants.filters';
+import { USER_PARTIES_COLUMNS } from '@user/constants/columns/userParties.constants.columns';
 
 export default function UserPartiesPage() {
     const [filters, setFilters] = useState<UserPartiesFilter>({
@@ -43,43 +47,8 @@ export default function UserPartiesPage() {
 
             data={data}
 
-            filters={[
-                {
-                    key: 'name',
-                    label: 'Name',
-                    type: 'text',
-                },
-
-                {
-                    key: 'startAt',
-                    label: 'Start date',
-                    type: 'date',
-                },
-
-                {
-                    key: 'endAt',
-                    label: 'End date',
-                    type: 'date',
-                },
-
-                {
-                    key: 'type',
-                    label: 'Participation',
-                    type: 'select',
-
-                    options: [
-                        {
-                            label: 'Organized by me',
-                            value: 'organized',
-                        },
-
-                        {
-                            label: 'Participating',
-                            value: 'member',
-                        },
-                    ],
-                },
-            ]}
+            columns={USER_PARTIES_COLUMNS}
+            filters={USER_PARTIES_FILTERS}
 
             values={{
                 name: filters.name ?? '',
@@ -91,36 +60,11 @@ export default function UserPartiesPage() {
             onFilterChange={updateFilter}
 
             onPageChange={changePage}
-
-            columns={[
-                {
-                    key: 'title',
-                    label: 'Name',
-                },
-
-                {
-                    key: 'startAt',
-                    label: 'Start',
-                    render: (party) => new Date(party.startAt).toLocaleString(),
-                },
-
-                {
-                    key: 'endAt',
-                    label: 'End',
-                    render: (party) => new Date(party.endAt).toLocaleString(),
-                },
-
-                {
-                    key: 'location',
-                    label: 'Location',
-                },
-
-                {
-                    key: 'role',
-                    label: 'Role',
-                    render: (party) => (party.role === 'organizer' ? 'Organizer' : 'Member'),
-                },
-            ]}
+            action={
+                <Link to="/parties/create" className="btn btn-primary">
+                    Create Party
+                </Link>
+            }
         />
     );
 }

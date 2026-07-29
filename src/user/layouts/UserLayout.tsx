@@ -5,6 +5,7 @@ import { ROUTES } from '@routes/paths';
 
 import LogoutButton from '@auth/components/LogoutButton';
 
+import '@styles/variables/user.variables.scss';
 import '@styles/layouts/user-layout.scss';
 
 export default function UserLayout() {

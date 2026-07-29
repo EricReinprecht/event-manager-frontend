@@ -1,3 +1,5 @@
+import type { ReactNode } from 'react';
+
 import type { DataListColumn, DataListFilter, PaginatedResponse } from './types';
 
 import DataListFilters from './DataListFilters';
@@ -19,6 +21,8 @@ interface Props<T> {
     onFilterChange?(key: string, value: string): void;
 
     onPageChange?(page: number): void;
+
+    action?: ReactNode;
 }
 
 export default function DataList<T>({
@@ -29,10 +33,15 @@ export default function DataList<T>({
     values = {},
     onFilterChange,
     onPageChange,
+    action,
 }: Props<T>) {
     return (
         <div className="data-list">
-            <h1>{title}</h1>
+            <div className="data-list__header">
+                <h1>{title}</h1>
+
+                {action && <div className="data-list__action">{action}</div>}
+            </div>
 
             {filters && (
                 <DataListFilters filters={filters} values={values} onChange={onFilterChange} />

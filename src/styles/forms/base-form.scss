@@ -1,5 +1,4 @@
 .base-form {
-
     min-height: 100vh;
 
     display: flex;
@@ -8,36 +7,31 @@
 
     align-items: center;
 
+    background: var(--color-background);
 
     &__container {
-
         width: 100%;
+
         max-width: 420px;
 
-        padding: 40px;
+        padding: var(--space-xl);
 
-        border-radius: 12px;
+        border-radius: var(--radius-lg);
 
-        background: white;
+        background: var(--color-surface);
 
-        box-shadow: 0 10px 30px rgba(0,0,0,.08);
-
+        box-shadow: var(--shadow-md);
     }
 
-
     h1 {
-
-        margin-bottom: 30px;
+        margin-bottom: var(--space-lg);
 
         font-size: 28px;
 
+        color: var(--color-text);
     }
-
 
     &__content {
-
-        width:100%;
-
+        width: 100%;
     }
-
 }
