@@ -4,7 +4,7 @@ import type { UserParty } from '@user/types/parties.types';
 
 export const USER_PARTIES_COLUMNS: DataListColumn<UserParty>[] = [
     {
-        key: 'Title',
+        key: 'title',
         label: 'Name',
         sortable: true,
     },
@@ -24,7 +24,7 @@ export const USER_PARTIES_COLUMNS: DataListColumn<UserParty>[] = [
     },
 
     {
-        key: 'Location',
+        key: 'location',
         label: 'Location',
         sortable: true,
     },
