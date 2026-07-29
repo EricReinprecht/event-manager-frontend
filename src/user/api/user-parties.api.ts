@@ -1,9 +1,11 @@
 import api from '@/api/client';
 
+import routes from '@/constants/routes';
+
 import type { UserPartiesFilter, PaginatedParties } from '@user/types/parties.types';
 
 export async function getUserParties(filters: UserPartiesFilter): Promise<PaginatedParties> {
-    const response = await api.get('/api/users/me/parties', {
+    const response = await api.get(`${routes.API}${routes.UserParties}`, {
         params: filters,
     });
 
