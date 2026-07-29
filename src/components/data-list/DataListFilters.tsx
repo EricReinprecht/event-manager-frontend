@@ -37,11 +37,20 @@ export default function DataListFilters({ filters, values, onChange }: Props) {
 
                             {filter.type === 'date' && (
                                 <div className="data-list__input-wrapper">
-                                    <input
+                                    <DatePicker
                                         className="data-list__datepicker"
-                                        type="date"
-                                        value={values[filter.key] ?? ''}
-                                        onChange={(e) => onChange?.(filter.key, e.target.value)}
+                                        selected={
+                                            values[filter.key] ? new Date(values[filter.key]) : null
+                                        }
+                                        onChange={(date: Date | null) =>
+                                            onChange?.(
+                                                filter.key,
+                                                date ? date.toISOString().split('T')[0] : '',
+                                            )
+                                        }
+                                        dateFormat="yyyy-MM-dd"
+                                        placeholderText="Select date"
+                                        isClearable={false}
                                     />
 
                                     {values[filter.key] && (
