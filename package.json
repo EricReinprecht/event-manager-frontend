@@ -4,7 +4,7 @@
     "version": "0.0.0",
     "type": "module",
     "scripts": {
-        "generate-routes": "cd ../event-api && go run ./cmd/generate-routes",
+        "generate-routes": "tsx --tsconfig tsconfig.scripts.json scripts/generate-routes.ts",
         "predev": "npm run generate-routes",
         "dev": "vite",
         "prebuild": "npm run generate-routes",
@@ -40,6 +40,7 @@
         "prettier": "^3.9.6",
         "sass": "^1.102.0",
         "sass-embedded": "^1.100.0",
+        "tsx": "^4.23.1",
         "typescript": "~6.0.2",
         "typescript-eslint": "^8.62.0",
         "vite": "^8.1.1",
