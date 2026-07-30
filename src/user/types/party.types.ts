@@ -23,6 +23,19 @@ export interface PartyFilter {
     endAt?: string;
     sorts?: string;
 }
+export interface PartyFormValues {
+    title: string;
+    description?: string;
+    locationName?: string;
+    latitude?: number;
+    longitude?: number;
+    timezone?: string;
+    startAt: string;
+    endAt: string;
+    categoryIds: string[];
+    thumbnailID?: string;
+    imageIDs?: string[];
+}
 export interface PartyDetailed {
     id: string;
     title: string;
@@ -34,7 +47,6 @@ export interface PartyDetailed {
     startAt: string;
     endAt: string;
     thumbnailID?: string;
-    organizerID: string;
     categories: Category[];
 }
 

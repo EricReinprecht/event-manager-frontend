@@ -7,14 +7,19 @@ import { createPartyForm } from '@user/constants/forms/createParty.constants.for
 
 import { useCategories } from '@/features/categories/hooks/useCategories';
 
-import type { PartyDetailed } from '@user/types/party.types';
+import type {
+    CreatePartyRequest,
+    PartyDetailed,
+    PartyFormValues,
+    UpdatePartyRequest,
+} from '@user/types/party.types';
 
 interface Props {
     mode: 'create' | 'edit' | 'view';
 
-    initialValues?: Partial<PartyDetailed>;
+    initialValues?: Partial<PartyFormValues>;
 
-    onSubmit?(values: PartyDetailed): void;
+    onSubmit?(values: CreatePartyRequest | UpdatePartyRequest): void;
 
     loading?: boolean;
 
@@ -35,21 +40,26 @@ export default function PartyFormLayout({
 
     const { data: categories = [], isLoading: categoriesLoading } = useCategories();
 
-    const [values, setValues] = useState<Partial<PartyDetailed>>(initialValues);
+    const [values, setValues] = useState<Partial<PartyFormValues>>(initialValues);
 
     function update(name: string, value: unknown) {
-        setValues((current: Partial<PartyDetailed>) => ({
+        setValues((current: Partial<PartyFormValues>) => ({
             ...current,
             [name]: value,
         }));
     }
 
     function submit() {
-        if (!onSubmit) {
+        if (!onSubmit || mode === 'view') {
             return;
         }
 
-        onSubmit(values as PartyDetailed);
+        const { categoryIds, ...rest } = values;
+
+        onSubmit({
+            ...rest,
+            categories: categoryIds ?? [],
+        } as CreatePartyRequest | UpdatePartyRequest);
     }
 
     if (categoriesLoading) {

@@ -34,7 +34,6 @@ export default function UserEditPartyPage() {
         );
     }
 
-    // console.log(party.categories);
     return (
         <PartyFormLayout
             mode="edit"
@@ -48,7 +47,7 @@ export default function UserEditPartyPage() {
                 startAt: party.startAt,
                 endAt: party.endAt,
                 thumbnailID: party.thumbnailID,
-                categories: party.categories ?? [],
+                categoryIds: party.categories?.map((category) => category.id) ?? [],
             }}
             onSubmit={(values) => {
                 if (!id) {
