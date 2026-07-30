@@ -44,11 +44,7 @@
     &__row {
         display: grid;
 
-        grid-template-columns:
-            2fr
-            1fr
-            1fr
-            1.5fr;
+        grid-template-columns: repeat(var(--data-columns), minmax(0, 1fr));
 
         align-items: center;
 
@@ -164,17 +160,13 @@
     }
 
     /*
-    Filters
-*/
+        Filters
+    */
 
     &__filters {
         display: grid;
 
-        grid-template-columns:
-            2fr
-            1fr
-            1fr
-            1.5fr;
+        grid-template-columns: repeat(var(--data-columns), minmax(0, 1fr));
 
         gap: var(--space-md);
 
@@ -289,6 +281,18 @@
         }
     }
 
+    /*
+        Actions
+    */
+
+    &__cell--actions {
+        display: flex;
+
+        justify-content: flex-end;
+
+        gap: var(--space-sm);
+    }
+
     &__input-wrapper {
         position: relative;
 
@@ -300,6 +304,50 @@
 
         .react-datepicker__input-container {
             width: 100%;
+        }
+    }
+
+    .action {
+        border: none;
+
+        background: transparent;
+
+        padding: 6px;
+
+        margin: 0;
+
+        display: inline-flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        cursor: pointer;
+
+        color: var(--color-text-muted);
+
+        border-radius: var(--radius-sm);
+
+        line-height: 0;
+
+        appearance: none;
+
+        transition:
+            color 0.15s ease,
+            background 0.15s ease;
+
+        &:hover {
+            color: var(--color-primary);
+
+            background: color-mix(in srgb, var(--color-primary) 10%, transparent);
+        }
+
+        &--danger {
+            color: var(--color-danger);
+
+            &:hover {
+                background: color-mix(in srgb, var(--color-danger) 10%, transparent);
+            }
         }
     }
 

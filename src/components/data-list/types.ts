@@ -1,3 +1,5 @@
+import type { ReactNode } from 'react';
+
 export interface DataListColumn<T> {
     key: string;
 
@@ -39,4 +41,11 @@ export interface DataListSort {
     direction: SortDirection;
 
     priority: number;
+}
+
+export interface DataAction<T> {
+    label: string;
+    render?: (item: T) => ReactNode;
+    onClick?: (item: T) => void;
+    danger?: boolean;
 }

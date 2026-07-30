@@ -14,7 +14,7 @@ export default function DataListHeader<T>({ columns, sorts, onSort }: Props<T>) 
     }
 
     return (
-        <div className="data-list__row data-list__row--header">
+        <>
             {columns.map((column) => {
                 const sort = getSort(column.key);
 
@@ -40,6 +40,6 @@ export default function DataListHeader<T>({ columns, sorts, onSort }: Props<T>) 
                     </div>
                 );
             })}
-        </div>
+        </>
     );
 }

@@ -16,7 +16,7 @@ import ForgotPasswordPage from '@auth/pages/ForgotPasswordPage';
 import ResetPasswordPage from '@auth/pages/ResetPasswordPage';
 import ResendVerificationPage from '@auth/pages/ResendVerificationPage';
 import UserLayout from '@user/layouts/UserLayout';
-import UserPartiesPage from '@user/pages/PartiesPage';
+import UserPartiesPage from '@user/pages/UserPartiesPage';
 import UserCreatePartyPage from '@user/pages/CreatePartyPage';
 
 export const router = createBrowserRouter([

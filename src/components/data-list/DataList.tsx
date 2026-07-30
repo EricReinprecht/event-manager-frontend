@@ -1,6 +1,12 @@
 import type { ReactNode } from 'react';
 
-import type { DataListColumn, DataListFilter, DataListSort, PaginatedResponse } from './types';
+import type {
+    DataListColumn,
+    DataListFilter,
+    DataListSort,
+    PaginatedResponse,
+    DataAction,
+} from './types';
 
 import DataListFilters from './DataListFilters';
 import DataListHeader from './DataListHeader';
@@ -29,6 +35,8 @@ interface Props<T> {
     onPageChange?(page: number): void;
 
     action?: ReactNode;
+
+    actions?: DataAction<T>[];
 }
 
 export default function DataList<T>({
@@ -42,6 +50,7 @@ export default function DataList<T>({
     onFilterChange,
     onPageChange,
     action,
+    actions = [],
 }: Props<T>) {
     function changeSort(key: string) {
         const currentSorts = parseSorts(sorts);
@@ -50,7 +59,6 @@ export default function DataList<T>({
 
         const existing = currentSorts.find((sort) => sort.key === key);
 
-        // first click -> ASC
         if (!existing) {
             newSorts = [
                 ...currentSorts,
@@ -60,10 +68,7 @@ export default function DataList<T>({
                     priority: currentSorts.length + 1,
                 },
             ];
-        }
-
-        // second click -> DESC
-        else if (existing.direction === 'asc') {
+        } else if (existing.direction === 'asc') {
             newSorts = currentSorts.map((sort) =>
                 sort.key === key
                     ? {
@@ -72,10 +77,7 @@ export default function DataList<T>({
                       }
                     : sort,
             );
-        }
-
-        // third click -> remove
-        else {
+        } else {
             newSorts = currentSorts
                 .filter((sort) => sort.key !== key)
                 .map((sort, index) => ({
@@ -95,8 +97,25 @@ export default function DataList<T>({
                 {action && <div className="data-list__action">{action}</div>}
             </div>
 
-            <div className="data-list__table">
-                <DataListHeader columns={columns} sorts={parseSorts(sorts)} onSort={changeSort} />
+            <div
+                className="data-list__table"
+                style={
+                    {
+                        '--data-columns': actions.length ? columns.length + 1 : columns.length,
+                    } as React.CSSProperties
+                }
+            >
+                <div className="data-list__row data-list__row--header">
+                    <DataListHeader
+                        columns={columns}
+                        sorts={parseSorts(sorts)}
+                        onSort={changeSort}
+                    />
+
+                    {actions.length > 0 && (
+                        <div className="data-list__cell data-list__cell--actions">Actions</div>
+                    )}
+                </div>
 
                 {filters && (
                     <DataListFilters filters={filters} values={values} onChange={onFilterChange} />
@@ -109,6 +128,15 @@ export default function DataList<T>({
                                 {column.render ? column.render(item) : (item as any)[column.key]}
                             </div>
                         ))}
+                        {actions.length > 0 && (
+                            <div className="data-list__cell data-list__cell--actions">
+                                {actions.map((action, actionIndex) => (
+                                    <div key={actionIndex}>
+                                        {action.render ? action.render(item) : null}
+                                    </div>
+                                ))}
+                            </div>
+                        )}
                     </div>
                 ))}
             </div>
