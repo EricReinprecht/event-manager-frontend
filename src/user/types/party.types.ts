@@ -47,7 +47,7 @@ export interface CreatePartyRequest {
     timezone?: string;
     startAt: string;
     endAt: string;
-    categoryIDs: string[];
+    categories: string[];
     thumbnailID?: string;
     imageIDs?: string[];
 }
@@ -61,7 +61,7 @@ export interface UpdatePartyRequest {
     timezone?: string;
     startAt: string;
     endAt: string;
-    categoryIDs: string[];
-    thumbnailID?: string;
-    imageIDs?: string[];
+    categories: string[];
+    thumbnailId?: string;
+    imageIds?: string[];
 }

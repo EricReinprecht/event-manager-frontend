@@ -19,6 +19,7 @@ export default function CategoryMultiSelect({
     onChange,
     disabled = false,
 }: Props) {
+    console.log(options);
     const selected = options.filter((option) => value.includes(option.value));
 
     return (

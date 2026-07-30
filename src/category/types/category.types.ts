@@ -1,7 +1,5 @@
 export interface Category {
-    ID: string;
-
-    Name: string;
-
-    Parties?: unknown;
+    id: string;
+    name: string;
+    parties?: unknown;
 }

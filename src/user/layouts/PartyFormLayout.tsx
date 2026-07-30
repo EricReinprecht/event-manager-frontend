@@ -61,8 +61,8 @@ export default function PartyFormLayout({
     }
 
     const categoryOptions = categories.map((category) => ({
-        label: category.Name,
-        value: category.ID,
+        label: category.name,
+        value: category.id,
     }));
 
     return (
