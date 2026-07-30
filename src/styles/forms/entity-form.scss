@@ -344,6 +344,54 @@
         }
     }
 
+    /* Disabled React Select */
+
+    .select__control--is-disabled {
+        min-height: 48px !important;
+
+        background: var(--color-surface) !important;
+
+        opacity: 1 !important;
+
+        cursor: not-allowed;
+    }
+
+    .select__control--is-disabled .select__value-container {
+        padding-top: 0 !important;
+
+        padding-bottom: 0 !important;
+
+        align-items: center;
+
+        input {
+            display: none;
+        }
+
+        .select__multi-value__label {
+            padding-right: 6px;
+        }
+
+        .select__multi-value__remove {
+            display: none;
+        }
+    }
+
+    .select__control--is-disabled .select__multi-value {
+        margin-top: 0 !important;
+
+        margin-bottom: 0 !important;
+    }
+
+    .select__control--is-disabled .select__multi-value__label {
+        padding-top: 4px;
+
+        padding-bottom: 4px;
+    }
+
+    .select__control--is-disabled .select__indicators {
+        height: 48px;
+    }
+
     /* Validation */
 
     .form-error {
