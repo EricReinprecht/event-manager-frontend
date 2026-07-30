@@ -1,5 +1,9 @@
 import type { PartyLocation } from '@user/types/party.types';
-import { useRef, useEffect, useState } from 'react';
+
+import { Map, Marker, useMap } from '@vis.gl/react-google-maps';
+
+import { useEffect, useRef, useState } from 'react';
+
 interface Props {
     value?: PartyLocation;
 
@@ -17,7 +21,23 @@ export default function LocationPicker({ value, onChange, disabled = false }: Pr
 
     const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
 
+    const [warning, setWarning] = useState('');
+
     const [error, setError] = useState('');
+
+    const [position, setPosition] = useState<{
+        lat: number;
+        lng: number;
+    } | null>(
+        value?.latitude && value.longitude
+            ? {
+                  lat: value.latitude,
+                  lng: value.longitude,
+              }
+            : null,
+    );
+
+    const selectingRef = useRef(false);
 
     const inputRef = useRef<HTMLInputElement>(null);
 
@@ -32,7 +52,7 @@ export default function LocationPicker({ value, onChange, disabled = false }: Pr
     }
 
     useEffect(() => {
-        if (!search || disabled) {
+        if (!search || disabled || selectingRef.current) {
             setSuggestions([]);
             return;
         }
@@ -40,22 +60,16 @@ export default function LocationPicker({ value, onChange, disabled = false }: Pr
         let cancelled = false;
 
         async function loadSuggestions() {
-            try {
-                const response =
-                    await google.maps.places.AutocompleteSuggestion.fetchAutocompleteSuggestions({
-                        input: search,
+            const response =
+                await google.maps.places.AutocompleteSuggestion.fetchAutocompleteSuggestions({
+                    input: search,
+                });
 
-                        includedPrimaryTypes: ['street_address', 'premise'],
-                    });
-
-                if (cancelled) {
-                    return;
-                }
-
-                setSuggestions(response.suggestions as Suggestion[]);
-            } catch {
-                setSuggestions([]);
+            if (cancelled || selectingRef.current) {
+                return;
             }
+
+            setSuggestions(response.suggestions as Suggestion[]);
         }
 
         loadSuggestions();
@@ -66,7 +80,9 @@ export default function LocationPicker({ value, onChange, disabled = false }: Pr
     }, [search, disabled]);
 
     async function selectSuggestion(suggestion: Suggestion) {
-        setError('');
+        selectingRef.current = true;
+
+        setSuggestions([]);
 
         const place = suggestion.placePrediction.toPlace();
 
@@ -77,36 +93,39 @@ export default function LocationPicker({ value, onChange, disabled = false }: Pr
         const location = place.location;
 
         if (!location) {
-            setError('Could not determine location.');
-
+            selectingRef.current = false;
             return;
         }
 
         const components = place.addressComponents ?? [];
 
-        function getComponent(type: string) {
-            return components.find((component) => component.types.includes(type));
+        function getPlaceComponent(...types: string[]) {
+            return components.find((component) =>
+                types.some((type) => component.types.includes(type)),
+            );
         }
 
         const metadata: PartyLocation = {
-            street: getComponent('route')?.longText ?? '',
+            street: getPlaceComponent('route')?.longText ?? '',
 
-            houseNumber: getComponent('street_number')?.longText ?? '',
+            houseNumber:
+                getPlaceComponent('street_number', 'premise', 'subpremise')?.longText ?? '',
 
             city:
-                getComponent('locality')?.longText ??
-                getComponent('administrative_area_level_2')?.longText ??
-                '',
+                getPlaceComponent('locality', 'postal_town', 'administrative_area_level_2')
+                    ?.longText ?? '',
 
-            country: getComponent('country')?.longText ?? '',
+            country: getPlaceComponent('country')?.longText ?? '',
 
-            postalCode: getComponent('postal_code')?.longText ?? '',
+            postalCode: getPlaceComponent('postal_code')?.longText ?? '',
 
             latitude: location.lat(),
 
             longitude: location.lng(),
 
             timezone: 'Europe/Vienna',
+
+            source: 'autocomplete',
         };
 
         if (!isCompleteAddress(metadata)) {
@@ -114,16 +133,128 @@ export default function LocationPicker({ value, onChange, disabled = false }: Pr
                 'Please select a complete address including street, house number, city and postal code.',
             );
 
-            setSuggestions([]);
+            selectingRef.current = false;
 
             return;
         }
 
+        const newPosition = {
+            lat: location.lat(),
+            lng: location.lng(),
+        };
+
+        setError('');
+
+        setWarning('');
+
+        setPosition(newPosition);
+
+        setSearch(place.formattedAddress ?? '');
+
         onChange(metadata);
 
-        setSearch('');
+        inputRef.current?.blur();
 
-        setSuggestions([]);
+        setTimeout(() => {
+            selectingRef.current = false;
+        }, 300);
+    }
+
+    async function reverseGeocode(lat: number, lng: number) {
+        const geocoder = new google.maps.Geocoder();
+
+        const response = await geocoder.geocode({
+            location: {
+                lat,
+                lng,
+            },
+        });
+
+        const result = response.results[0];
+
+        if (!result) {
+            setError('Could not find address.');
+
+            return;
+        }
+
+        const components = result.address_components;
+
+        function getGeocoderComponent(...types: string[]) {
+            return components.find((component) =>
+                types.some((type) => component.types.includes(type)),
+            );
+        }
+
+        const metadata: PartyLocation = {
+            street: getGeocoderComponent('route')?.long_name ?? '',
+
+            houseNumber:
+                getGeocoderComponent('street_number', 'premise', 'subpremise')?.long_name ?? '',
+
+            city:
+                getGeocoderComponent('locality', 'postal_town', 'administrative_area_level_2')
+                    ?.long_name ?? '',
+
+            country: getGeocoderComponent('country')?.long_name ?? '',
+
+            postalCode: getGeocoderComponent('postal_code')?.long_name ?? '',
+
+            latitude: lat,
+
+            longitude: lng,
+
+            timezone: 'Europe/Vienna',
+
+            source: 'map',
+        };
+
+        if (!metadata.country || !metadata.city) {
+            setError('Please select a location closer to an address.');
+
+            setWarning('');
+
+            return;
+        }
+
+        if (!isCompleteAddress(metadata)) {
+            setWarning(
+                'No street address found. This location will be saved using coordinates only.',
+            );
+        } else {
+            setWarning('');
+        }
+
+        setError('');
+
+        setPosition({
+            lat,
+            lng,
+        });
+
+        onChange(metadata);
+    }
+
+    function MapClickHandler() {
+        const map = useMap();
+
+        useEffect(() => {
+            if (!map || disabled) {
+                return;
+            }
+
+            const listener = map.addListener('click', (event: google.maps.MapMouseEvent) => {
+                if (!event.latLng) {
+                    return;
+                }
+
+                reverseGeocode(event.latLng.lat(), event.latLng.lng());
+            });
+
+            return () => listener.remove();
+        }, [map, disabled]);
+
+        return null;
     }
 
     return (
@@ -134,7 +265,11 @@ export default function LocationPicker({ value, onChange, disabled = false }: Pr
                     value={search}
                     placeholder="Search full address"
                     disabled={disabled}
-                    onChange={(e) => setSearch(e.target.value)}
+                    onChange={(e) => {
+                        setSearch(e.target.value);
+                        setError('');
+                        setWarning('');
+                    }}
                 />
 
                 {suggestions.length > 0 && (
@@ -144,7 +279,6 @@ export default function LocationPicker({ value, onChange, disabled = false }: Pr
                                 key={index}
                                 type="button"
                                 disabled={disabled}
-                                onMouseDown={(e) => e.preventDefault()}
                                 onClick={() => selectSuggestion(item)}
                             >
                                 {item.placePrediction.text.toString()}
@@ -156,27 +290,64 @@ export default function LocationPicker({ value, onChange, disabled = false }: Pr
 
             {error && <p className="form-error">{error}</p>}
 
-            {value && (
-                <div className="location-picker__metadata">
-                    <input value={value.street ?? ''} placeholder="Street" disabled />
+            {warning && <p className="location-picker__warning">⚠ {warning}</p>}
 
-                    <input value={value.houseNumber ?? ''} placeholder="House number" disabled />
+            <div className="location-picker__metadata">
+                <input value={value?.street ?? ''} placeholder="Street" disabled />
 
-                    <input value={value.city ?? ''} placeholder="City" disabled />
+                <input value={value?.houseNumber ?? ''} placeholder="House number" disabled />
 
-                    <input value={value.country ?? ''} placeholder="Country" disabled />
+                <input value={value?.city ?? ''} placeholder="City" disabled />
 
-                    <input value={value.postalCode ?? ''} placeholder="Postal code" disabled />
+                <input value={value?.country ?? ''} placeholder="Country" disabled />
 
-                    <input value={value.latitude ?? ''} placeholder="Latitude" disabled />
+                <input value={value?.postalCode ?? ''} placeholder="Postal code" disabled />
 
-                    <input value={value.longitude ?? ''} placeholder="Longitude" disabled />
+                <input value={value?.latitude ?? ''} placeholder="Latitude" disabled />
 
-                    <input value={value.timezone ?? ''} placeholder="Timezone" disabled />
-                </div>
-            )}
+                <input value={value?.longitude ?? ''} placeholder="Longitude" disabled />
 
-            <div className="location-picker__map">{/* Google map later */}</div>
+                <input value={value?.timezone ?? ''} placeholder="Timezone" disabled />
+            </div>
+
+            <div className="location-picker__map">
+                <Map
+                    defaultZoom={16}
+                    defaultCenter={{
+                        lat: 47.414,
+                        lng: 9.741,
+                    }}
+                    gestureHandling="greedy"
+                    disableDefaultUI
+                >
+                    <MapController position={position} />
+
+                    <MapClickHandler />
+
+                    {position && <Marker position={position} />}
+                </Map>
+            </div>
         </div>
     );
+}
+
+function MapController({
+    position,
+}: {
+    position: {
+        lat: number;
+        lng: number;
+    } | null;
+}) {
+    const map = useMap();
+
+    useEffect(() => {
+        if (!map || !position) {
+            return;
+        }
+
+        map.panTo(position);
+    }, [map, position]);
+
+    return null;
 }

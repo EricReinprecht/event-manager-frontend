@@ -1,16 +1,18 @@
 import type { Category } from '@/features/categories/types';
 
 export interface PartyLocation {
-    street: string;
-    houseNumber: string;
-    city: string;
-    country: string;
-    postalCode: string;
+    street?: string;
+    houseNumber?: string;
+    city?: string;
+    country?: string;
+    postalCode?: string;
 
     latitude: number;
     longitude: number;
 
     timezone: string;
+
+    source?: 'autocomplete' | 'map';
 }
 export interface Party {
     id: string;
