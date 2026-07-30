@@ -47,7 +47,7 @@ export default function UserEditPartyPage() {
                 startAt: party.startAt,
                 endAt: party.endAt,
                 thumbnailID: party.thumbnailID,
-                categoryIDs: (party.categories ?? []).map((category) => category.id),
+                categories: party.categories,
             }}
             onSubmit={(values) => {
                 if (!id) {

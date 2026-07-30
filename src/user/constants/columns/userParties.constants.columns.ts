@@ -1,10 +1,10 @@
 import type { DataListColumn } from '@components/data-list/types';
 
-import type { UserParty } from '@user/types/parties.types';
+import type { Party } from '@user/types/party.types';
 
 import type { TFunction } from 'i18next';
 
-export function USER_PARTIES_COLUMNS(t: TFunction<'user'>): DataListColumn<UserParty>[] {
+export function USER_PARTIES_COLUMNS(t: TFunction<'user'>): DataListColumn<Party>[] {
     return [
         {
             key: 'title',

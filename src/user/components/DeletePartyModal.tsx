@@ -2,10 +2,10 @@ import { useTranslation } from 'react-i18next';
 
 import Modal from '@components/modal/Modal';
 
-import type { UserParty } from '@user/types/parties.types';
+import type { Party } from '@user/types/party.types';
 
 interface Props {
-    party: UserParty;
+    party: Party;
 
     onClose(): void;
 

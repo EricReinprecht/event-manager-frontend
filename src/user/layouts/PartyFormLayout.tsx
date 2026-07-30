@@ -7,14 +7,14 @@ import { createPartyForm } from '@user/constants/forms/createParty.constants.for
 
 import { useCategories } from '@/features/categories/hooks/useCategories';
 
-import type { CreatePartyRequest } from '@user/types/party.types';
+import type { PartyDetailed } from '@user/types/party.types';
 
 interface Props {
     mode: 'create' | 'edit' | 'view';
 
-    initialValues?: Partial<CreatePartyRequest>;
+    initialValues?: Partial<PartyDetailed>;
 
-    onSubmit?(values: CreatePartyRequest): void;
+    onSubmit?(values: PartyDetailed): void;
 
     loading?: boolean;
 
@@ -35,10 +35,10 @@ export default function PartyFormLayout({
 
     const { data: categories = [], isLoading: categoriesLoading } = useCategories();
 
-    const [values, setValues] = useState<Partial<CreatePartyRequest>>(initialValues);
+    const [values, setValues] = useState<Partial<PartyDetailed>>(initialValues);
 
     function update(name: string, value: unknown) {
-        setValues((current: Partial<CreatePartyRequest>) => ({
+        setValues((current: Partial<PartyDetailed>) => ({
             ...current,
             [name]: value,
         }));
@@ -49,7 +49,7 @@ export default function PartyFormLayout({
             return;
         }
 
-        onSubmit(values as CreatePartyRequest);
+        onSubmit(values as PartyDetailed);
     }
 
     if (categoriesLoading) {

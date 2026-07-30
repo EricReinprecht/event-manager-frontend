@@ -42,7 +42,7 @@ export default function UserPartyViewPage() {
                 startAt: party.startAt,
                 endAt: party.endAt,
                 thumbnailID: party.thumbnailID,
-                categoryIDs: (party.categories ?? []).map((category) => category.id),
+                categories: party.categories,
             }}
         />
     );

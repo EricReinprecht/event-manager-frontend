@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import DataList from '@components/data-list/DataList';
 
 import { useUserParties } from '@user/hooks/useUserParties';
-import type { UserParty, UserPartiesFilter } from '@user/types/parties.types';
+import type { Party, PartyFilter } from '@user/types/party.types';
 
 import { USER_PARTIES_FILTERS } from '@user/constants/filters/userParties.constants.filters';
 
@@ -21,9 +21,9 @@ import { USER_PARTIES_COLUMNS } from '@user/constants/columns/userParties.consta
 export default function UserPartiesPage() {
     const { t } = useTranslation('user');
 
-    const [partyToDelete, setPartyToDelete] = useState<UserParty | null>(null);
+    const [partyToDelete, setPartyToDelete] = useState<Party | null>(null);
 
-    const [filters, setFilters] = useState<UserPartiesFilter>({
+    const [filters, setFilters] = useState<PartyFilter>({
         page: 1,
         limit: 10,
         name: '',
@@ -56,7 +56,7 @@ export default function UserPartiesPage() {
         }));
     }
 
-    function openDeleteModal(party: UserParty) {
+    function openDeleteModal(party: Party) {
         setPartyToDelete(party);
     }
 
