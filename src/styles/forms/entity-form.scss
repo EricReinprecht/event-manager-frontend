@@ -1,15 +1,11 @@
 .entity-form {
     display: flex;
-
     flex-direction: column;
-
     gap: var(--space-lg);
 
     &-section {
         display: flex;
-
         flex-direction: column;
-
         gap: var(--space-md);
 
         padding-bottom: var(--space-lg);
@@ -74,6 +70,14 @@
 
                 box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary) 20%, transparent);
             }
+
+            &:disabled {
+                cursor: not-allowed;
+
+                opacity: 0.7;
+
+                background: var(--color-background);
+            }
         }
 
         textarea {
@@ -87,16 +91,21 @@
         }
     }
 
+    /* Datepicker */
+
     .form-datepicker {
         width: 100%;
+
         height: 48px;
 
         padding: 0 var(--space-sm);
 
-        border: 1px solid var(--color-border);
         border-radius: var(--radius-md);
 
+        border: 1px solid var(--color-border);
+
         background: var(--color-surface);
+
         color: var(--color-text);
 
         font-size: 1rem;
@@ -119,12 +128,20 @@
             box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary) 20%, transparent);
         }
 
+        &:disabled {
+            cursor: not-allowed;
+
+            opacity: 0.7;
+
+            background: var(--color-background);
+        }
+
         &::placeholder {
             color: var(--color-text-muted);
         }
     }
 
-    /* Calendar */
+    /* React Datepicker */
 
     .react-datepicker {
         background: var(--color-surface);
@@ -201,7 +218,7 @@
         color: var(--color-text-muted);
     }
 
-    /* Time */
+    /* Time picker */
 
     .react-datepicker__time-container {
         border-left: 1px solid var(--color-border);
@@ -235,17 +252,170 @@
         font-weight: 600;
     }
 
-    /* Navigation */
+    /* Select / Multiselect */
 
-    .react-datepicker__navigation-icon::before {
-        border-color: var(--color-text-muted);
+    .form-multiselect {
+        width: 100%;
     }
 
-    .react-datepicker__navigation:hover .react-datepicker__navigation-icon::before {
-        border-color: var(--color-text);
+    .select__control {
+        min-height: 48px;
+
+        border-radius: var(--radius-md) !important;
+
+        border: 1px solid var(--color-border) !important;
+
+        background: var(--color-surface) !important;
+
+        box-shadow: none !important;
+
+        cursor: pointer;
+
+        &:hover {
+            border-color: var(--color-primary) !important;
+        }
     }
+
+    .select__value-container {
+        padding: 0 var(--space-sm);
+    }
+
+    .select__single-value {
+        color: var(--color-text);
+    }
+
+    .select__input-container {
+        color: var(--color-text);
+    }
+
+    .select__menu {
+        background: var(--color-surface);
+
+        border: 1px solid var(--color-border);
+
+        border-radius: var(--radius-md);
+
+        overflow: hidden;
+
+        box-shadow: var(--shadow-lg);
+    }
+
+    .select__option {
+        background: transparent;
+
+        color: var(--color-text);
+
+        cursor: pointer;
+
+        &:hover {
+            background: var(--color-background);
+        }
+
+        &--is-selected {
+            background: var(--color-primary);
+
+            color: var(--color-text-inverse, white);
+        }
+
+        &--is-focused {
+            background: var(--color-background);
+        }
+    }
+
+    .select__multi-value {
+        background: var(--color-primary);
+
+        border-radius: var(--radius-sm);
+    }
+
+    .select__multi-value__label {
+        color: var(--color-text-inverse, white);
+    }
+
+    .select__multi-value__remove {
+        color: var(--color-text-inverse, white);
+
+        cursor: pointer;
+
+        &:hover {
+            background: rgba(0, 0, 0, 0.15);
+
+            color: white;
+        }
+    }
+
+    /* Validation */
+
+    .form-error {
+        margin-top: var(--space-xs);
+
+        color: var(--color-danger);
+
+        font-size: 0.85rem;
+    }
+
+    .has-error {
+        input,
+        textarea,
+        select {
+            border-color: var(--color-danger);
+        }
+    }
+
+    /* Buttons */
 
     .form-button {
         margin-top: var(--space-md);
+
+        width: 100%;
+
+        height: 48px;
+
+        padding: 0 var(--space-lg);
+
+        border: none;
+
+        border-radius: var(--radius-md);
+
+        background: var(--color-primary);
+
+        color: var(--color-text-inverse, white);
+
+        font-size: 1rem;
+
+        font-weight: 600;
+
+        cursor: pointer;
+
+        transition:
+            background 0.2s ease,
+            transform 0.15s ease,
+            box-shadow 0.2s ease;
+
+        &:hover {
+            background: color-mix(in srgb, var(--color-primary) 85%, black);
+
+            box-shadow: var(--shadow-md);
+        }
+
+        &:active {
+            transform: translateY(1px);
+        }
+
+        &:focus {
+            outline: none;
+
+            box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary) 25%, transparent);
+        }
+
+        &:disabled {
+            cursor: not-allowed;
+
+            opacity: 0.6;
+
+            transform: none;
+
+            box-shadow: none;
+        }
     }
 }

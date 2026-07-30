@@ -19,12 +19,14 @@ export default function CategoryMultiSelect({
     onChange,
     disabled = false,
 }: Props) {
-    console.log(options);
     const selected = options.filter((option) => value.includes(option.value));
 
     return (
         <Select
+            classNamePrefix="select"
+
             isMulti
+
             isSearchable={!disabled}
 
             isDisabled={disabled}
@@ -34,7 +36,9 @@ export default function CategoryMultiSelect({
             value={selected}
 
             onChange={(items) => {
-                if (disabled) return;
+                if (disabled) {
+                    return;
+                }
 
                 onChange(items.map((item) => item.value));
             }}
