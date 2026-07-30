@@ -17,8 +17,8 @@ export default function UserCreatePartyPage() {
 
             onSubmit={(values) => {
                 mutation.mutate(values, {
-                    onSuccess(party) {
-                        navigate(ROUTES.USER_PARTY_VIEW(party.ID));
+                    onSuccess(data) {
+                        navigate(ROUTES.USER_PARTY_VIEW(data.id));
                     },
                 });
             }}

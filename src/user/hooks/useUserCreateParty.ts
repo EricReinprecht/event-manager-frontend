@@ -1,6 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 
-import { createParty, type CreatePartyRequest } from '@user/api/user-create-party.api';
+import { createParty } from '@user/api/user-create-party.api';
+import type { CreatePartyRequest } from '@user/types/party.types';
 
 export function useCreateParty() {
     return useMutation({
