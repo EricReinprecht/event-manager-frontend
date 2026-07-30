@@ -7,6 +7,10 @@
         "profile": "Profil"
     },
     "party": {
+        "common": {
+            "loading": "Veranstaltung wird geladen...",
+            "notFound": "Veranstaltung nicht gefunden"
+        },
         "create": {
             "title": "Party erstellen",
             "loadingCategories": "Kategorien werden geladen...",
@@ -18,10 +22,34 @@
                 "schedule": "Zeitplan"
             }
         },
+        "edit": {
+            "title": "Party bearbeiten"
+        },
+        "view": {
+            "title": "Party"
+        },
         "list": {
             "title": "Meine Partys",
             "loading": "Partys werden geladen...",
             "create": "Party erstellen"
+        },
+        "table": {
+            "name": "Name",
+            "start": "Start",
+            "end": "Ende",
+            "location": "Ort"
+        },
+        "filters": {
+            "name": "Name",
+            "startDate": "Startdatum",
+            "endDate": "Enddatum",
+            "actions": "Aktionen"
+        },
+        "columns": {
+            "name": "Name",
+            "start": "Beginn",
+            "end": "Ende",
+            "location": "Ort"
         },
         "fields": {
             "title": "Titel",
@@ -30,6 +58,10 @@
             "categories": "Kategorien",
             "start": "Start",
             "end": "Ende"
+        },
+        "delete": {
+            "title": "Party löschen",
+            "confirm": "Bist su sicher das du diese Party löschen willst:"
         }
     }
 }

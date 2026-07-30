@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next';
+
 import Modal from '@components/modal/Modal';
 
 import type { UserParty } from '@user/types/parties.types';
@@ -11,25 +13,26 @@ interface Props {
 }
 
 export default function DeletePartyModal({ party, onClose, onConfirm }: Props) {
+    const { t } = useTranslation('user');
+    const { t: tc } = useTranslation('common');
+
     return (
         <Modal
-            title="Delete party"
-
+            title={t('party.delete.title')}
             onClose={onClose}
-
             footer={
                 <>
                     <button className="btn" onClick={onClose}>
-                        Cancel
+                        {tc('common.cancel')}
                     </button>
 
                     <button className="btn btn-danger" onClick={onConfirm}>
-                        Delete
+                        {tc('common.delete')}
                     </button>
                 </>
             }
         >
-            <p>Are you sure you want to delete:</p>
+            <p>{t('party.delete.confirm')}</p>
 
             <strong>{party.Title}</strong>
         </Modal>

@@ -1,13 +1,15 @@
-import { useParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import PartyFormLayout from '@user/layouts/PartyFormLayout';
 import { useParty } from '@user/hooks/useParty';
-
 import { useUpdateParty } from '@user/hooks/useUpdateParty';
-import { useNavigate } from 'react-router-dom';
+
 import { ROUTES } from '@routes/paths';
 
 export default function UserEditPartyPage() {
+    const { t } = useTranslation('user');
+
     const { id } = useParams();
 
     const navigate = useNavigate();
@@ -19,7 +21,7 @@ export default function UserEditPartyPage() {
     if (isLoading) {
         return (
             <div className="base-form">
-                <div className="base-form__container">Loading party...</div>
+                <div className="base-form__container">{t('party.common.loading')}</div>
             </div>
         );
     }
@@ -27,7 +29,7 @@ export default function UserEditPartyPage() {
     if (isError || !party) {
         return (
             <div className="base-form">
-                <div className="base-form__container">Party not found</div>
+                <div className="base-form__container">{t('party.common.notFound')}</div>
             </div>
         );
     }
@@ -35,7 +37,6 @@ export default function UserEditPartyPage() {
     return (
         <PartyFormLayout
             mode="edit"
-
             initialValues={{
                 title: party.title,
                 description: party.description,
@@ -46,9 +47,8 @@ export default function UserEditPartyPage() {
                 startAt: party.startAt,
                 endAt: party.endAt,
                 thumbnailID: party.thumbnailID,
-                categoryIDs: party.categories.map((category) => category.id),
+                categoryIDs: (party.categories ?? []).map((category) => category.id),
             }}
-
             onSubmit={(values) => {
                 if (!id) {
                     return;
@@ -66,9 +66,7 @@ export default function UserEditPartyPage() {
                     },
                 );
             }}
-
             loading={updatePartyMutation.isPending}
-
             error={updatePartyMutation.isError}
         />
     );

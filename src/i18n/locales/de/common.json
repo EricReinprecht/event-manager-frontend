@@ -1,4 +1,6 @@
 {
     "loading": "Lädt...",
-    "error": "Etwas ist schiefgelaufen"
+    "error": "Etwas ist schiefgelaufen",
+    "cancel": "Abbrechen",
+    "delete": "Löschen"
 }

@@ -1,4 +1,6 @@
 {
     "loading": "Loading...",
-    "error": "Something went wrong"
+    "error": "Something went wrong",
+    "cancel": "Cancel",
+    "delete": "Delete"
 }

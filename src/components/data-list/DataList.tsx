@@ -37,6 +37,8 @@ interface Props<T> {
     action?: ReactNode;
 
     actions?: DataAction<T>[];
+
+    actionsLabel?: string;
 }
 
 export default function DataList<T>({
@@ -51,6 +53,7 @@ export default function DataList<T>({
     onPageChange,
     action,
     actions = [],
+    actionsLabel = '',
 }: Props<T>) {
     function changeSort(key: string) {
         const currentSorts = parseSorts(sorts);
@@ -113,7 +116,9 @@ export default function DataList<T>({
                     />
 
                     {actions.length > 0 && (
-                        <div className="data-list__cell data-list__cell--actions">Actions</div>
+                        <div className="data-list__cell data-list__cell--actions">
+                            {actionsLabel}
+                        </div>
                     )}
                 </div>
 

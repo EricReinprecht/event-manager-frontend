@@ -2,30 +2,34 @@ import type { DataListColumn } from '@components/data-list/types';
 
 import type { UserParty } from '@user/types/parties.types';
 
-export const USER_PARTIES_COLUMNS: DataListColumn<UserParty>[] = [
-    {
-        key: 'title',
-        label: 'Name',
-        sortable: true,
-    },
+import type { TFunction } from 'i18next';
 
-    {
-        key: 'startAt',
-        label: 'Start',
-        sortable: true,
-        render: (party) => new Date(party.startAt).toLocaleDateString(),
-    },
+export function USER_PARTIES_COLUMNS(t: TFunction<'user'>): DataListColumn<UserParty>[] {
+    return [
+        {
+            key: 'title',
+            label: t('party.table.name'),
+            sortable: true,
+        },
 
-    {
-        key: 'endAt',
-        label: 'End',
-        sortable: true,
-        render: (party) => new Date(party.endAt).toLocaleDateString(),
-    },
+        {
+            key: 'startAt',
+            label: t('party.table.start'),
+            sortable: true,
+            render: (party) => new Date(party.startAt).toLocaleDateString('de-DE'),
+        },
 
-    {
-        key: 'location',
-        label: 'Location',
-        sortable: true,
-    },
-];
+        {
+            key: 'endAt',
+            label: t('party.table.end'),
+            sortable: true,
+            render: (party) => new Date(party.endAt).toLocaleDateString('de-DE'),
+        },
+
+        {
+            key: 'location',
+            label: t('party.table.location'),
+            sortable: true,
+        },
+    ];
+}

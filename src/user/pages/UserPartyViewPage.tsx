@@ -3,8 +3,11 @@ import { useParams } from 'react-router-dom';
 import PartyFormLayout from '@user/layouts/PartyFormLayout';
 
 import { useParty } from '@user/hooks/useParty';
+import { useTranslation } from 'react-i18next';
 
 export default function UserPartyViewPage() {
+    const { t } = useTranslation('user');
+
     const { id } = useParams();
 
     const { data: party, isLoading, isError } = useParty(id);
@@ -12,7 +15,7 @@ export default function UserPartyViewPage() {
     if (isLoading) {
         return (
             <div className="base-form">
-                <div className="base-form__container">Loading party...</div>
+                <div className="base-form__container">{t('party.common.loading')}</div>
             </div>
         );
     }
@@ -20,7 +23,7 @@ export default function UserPartyViewPage() {
     if (isError || !party) {
         return (
             <div className="base-form">
-                <div className="base-form__container">Party not found</div>
+                <div className="base-form__container">{t('party.common.notFound')}</div>
             </div>
         );
     }
@@ -28,29 +31,18 @@ export default function UserPartyViewPage() {
     return (
         <PartyFormLayout
             mode="view"
-
             disabled
-
             initialValues={{
                 title: party.title,
-
                 description: party.description,
-
-                location: party.locationName,
-
+                locationName: party.locationName,
                 latitude: party.latitude,
-
                 longitude: party.longitude,
-
                 timezone: party.timezone,
-
                 startAt: party.startAt,
-
                 endAt: party.endAt,
-
-                categoryID: party.categoryID,
-
                 thumbnailID: party.thumbnailID,
+                categoryIDs: (party.categories ?? []).map((category) => category.id),
             }}
         />
     );

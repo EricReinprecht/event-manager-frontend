@@ -7,6 +7,10 @@
         "profile": "Profile"
     },
     "party": {
+        "common": {
+            "loading": "Loading party...",
+            "notFound": "Party not found"
+        },
         "create": {
             "title": "Create Party",
             "loadingCategories": "Loading categories...",
@@ -18,12 +22,38 @@
                 "schedule": "Schedule"
             }
         },
-        "party": {
-            "list": {
-                "title": "My Parties",
-                "loading": "Loading parties...",
-                "create": "Create Party"
-            }
+        "edit": {
+            "title": "Edit Party"
+        },
+        "view": {
+            "title": "Party"
+        },
+        "list": {
+            "title": "My Parties",
+            "loading": "Loading parties...",
+            "create": "Create Party"
+        },
+        "table": {
+            "name": "Name",
+            "start": "Start",
+            "end": "Ende",
+            "location": "Ort"
+        },
+        "filters": {
+            "name": "Name",
+            "startDate": "Start date",
+            "endDate": "End date",
+            "actions": "Actions"
+        },
+        "columns": {
+            "name": "Name",
+            "start": "Start",
+            "end": "End",
+            "location": "Location"
+        },
+        "delete": {
+            "title": "Delete party",
+            "confirm": "Are you sure you want to delete:"
         },
         "fields": {
             "title": "Title",

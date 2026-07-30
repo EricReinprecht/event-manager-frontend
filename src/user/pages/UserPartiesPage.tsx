@@ -8,7 +8,6 @@ import { useUserParties } from '@user/hooks/useUserParties';
 import type { UserParty, UserPartiesFilter } from '@user/types/parties.types';
 
 import { USER_PARTIES_FILTERS } from '@user/constants/filters/userParties.constants.filters';
-import { USER_PARTIES_COLUMNS } from '@user/constants/columns/userParties.constants.columns';
 
 import { ROUTES } from '@routes/paths';
 import { useDebounce } from '@/hooks/useDebounce';
@@ -17,6 +16,7 @@ import DeletePartyModal from '@user/components/DeletePartyModal';
 import EditPen from '@/components/icons/EditPen';
 import Trash from '@/components/icons/Trash';
 import EyeIcon from '@/components/icons/Eye';
+import { USER_PARTIES_COLUMNS } from '@user/constants/columns/userParties.constants.columns';
 
 export default function UserPartiesPage() {
     const { t } = useTranslation('user');
@@ -71,9 +71,9 @@ export default function UserPartiesPage() {
 
                 data={data}
 
-                columns={USER_PARTIES_COLUMNS}
+                columns={USER_PARTIES_COLUMNS(t)}
 
-                filters={USER_PARTIES_FILTERS}
+                filters={USER_PARTIES_FILTERS(t)}
 
                 values={{
                     name: filters.name ?? '',
@@ -100,6 +100,8 @@ export default function UserPartiesPage() {
                         {t('party.list.create')}
                     </Link>
                 }
+
+                actionsLabel={t('party.filters.actions')}
 
                 actions={[
                     {
