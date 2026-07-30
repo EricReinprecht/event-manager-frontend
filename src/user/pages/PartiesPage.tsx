@@ -25,9 +25,14 @@ export default function UserPartiesPage() {
         sorts: '',
     });
 
-    const debouncedFilters = useDebounce(filters, 500);
+    const debouncedName = useDebounce(filters.name, 500);
 
-    const { data, isLoading } = useUserParties(debouncedFilters);
+    const queryFilters = {
+        ...filters,
+        name: debouncedName,
+    };
+
+    const { data, isLoading } = useUserParties(queryFilters);
 
     function updateFilter(key: string, value: string) {
         setFilters((current) => ({
@@ -45,7 +50,6 @@ export default function UserPartiesPage() {
     }
 
     if (isLoading) {
-        return <p>{t('party.list.loading')}</p>;
     }
 
     return (
