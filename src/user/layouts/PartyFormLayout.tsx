@@ -26,6 +26,8 @@ interface Props {
     error?: boolean;
 
     disabled?: boolean;
+
+    actionButton?: React.ReactNode;
 }
 
 export default function PartyFormLayout({
@@ -35,6 +37,7 @@ export default function PartyFormLayout({
     loading = false,
     error = false,
     disabled = false,
+    actionButton,
 }: Props) {
     const { t } = useTranslation('user');
 
@@ -93,6 +96,7 @@ export default function PartyFormLayout({
                     onSubmit={disabled ? undefined : submit}
                     disabled={disabled}
                     submitLabel={loading ? t(`party.${mode}.saving`) : t(`party.${mode}.submit`)}
+                    actionButton={actionButton}
                 />
 
                 {error && !disabled && <p className="form-error">{t(`party.${mode}.error`)}</p>}

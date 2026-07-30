@@ -27,7 +27,8 @@
             "submit": "Party aktualisieren"
         },
         "view": {
-            "title": "Party"
+            "title": "Party",
+            "edit": "Party bearbeiten"
         },
         "list": {
             "title": "Meine Partys",

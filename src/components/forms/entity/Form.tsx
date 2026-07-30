@@ -14,6 +14,8 @@ interface Props {
     submitLabel?: string;
 
     disabled?: boolean;
+
+    actionButton?: React.ReactNode;
 }
 
 export default function Form({
@@ -23,6 +25,7 @@ export default function Form({
     onSubmit,
     submitLabel = 'Save',
     disabled = false,
+    actionButton,
 }: Props) {
     return (
         <form
@@ -45,11 +48,15 @@ export default function Form({
                 />
             ))}
 
-            {!disabled && (
-                <button type="submit" className="form-button">
-                    {submitLabel}
-                </button>
-            )}
+            <div className="form-actions">
+                {onSubmit && (
+                    <button type="submit" className="form-button" disabled={disabled}>
+                        {submitLabel}
+                    </button>
+                )}
+
+                {actionButton}
+            </div>
         </form>
     );
 }
