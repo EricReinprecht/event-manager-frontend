@@ -7,7 +7,7 @@ import { createPartyForm } from '@user/constants/forms/createParty.constants.for
 
 import { useCategories } from '@/features/categories/hooks/useCategories';
 
-import type { CreatePartyRequest } from '@user/api/user-create-party.api';
+import type { CreatePartyRequest } from '@user/types/party.types';
 
 interface Props {
     mode: 'create' | 'edit' | 'view';
@@ -37,8 +37,8 @@ export default function PartyFormLayout({
 
     const [values, setValues] = useState<Partial<CreatePartyRequest>>(initialValues);
 
-    function update(name: string, value: any) {
-        setValues((current) => ({
+    function update(name: string, value: unknown) {
+        setValues((current: Partial<CreatePartyRequest>) => ({
             ...current,
             [name]: value,
         }));

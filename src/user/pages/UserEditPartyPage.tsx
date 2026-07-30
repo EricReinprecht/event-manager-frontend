@@ -38,24 +38,15 @@ export default function UserEditPartyPage() {
 
             initialValues={{
                 title: party.title,
-
                 description: party.description,
-
-                location: party.locationName,
-
-                longitude: party.longitude,
-
+                locationName: party.locationName,
                 latitude: party.latitude,
-
+                longitude: party.longitude,
                 timezone: party.timezone,
-
                 startAt: party.startAt,
-
                 endAt: party.endAt,
-
-                categoryID: party.categoryID,
-
                 thumbnailID: party.thumbnailID,
+                categoryIDs: party.categories.map((category) => category.id),
             }}
 
             onSubmit={(values) => {

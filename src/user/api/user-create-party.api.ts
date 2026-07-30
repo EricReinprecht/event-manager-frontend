@@ -1,32 +1,8 @@
-import api from '@/api/client';
-export interface CreatePartyRequest {
-    title: string;
-
-    description?: string;
-
-    location?: string;
-
-    latitude?: number;
-
-    longitude?: number;
-
-    timezone?: string;
-
-    startAt: string;
-
-    endAt: string;
-
-    categoryID?: string;
-
-    categories?: string[];
-
-    thumbnailID?: string;
-
-    imageIDs?: string[];
-}
+import type { CreatePartyRequest } from '@user/types/party.types';
+import apiClient from '@/api/client';
+import routes from '@/constants/routes';
 
 export async function createParty(data: CreatePartyRequest) {
-    const response = await api.post('/parties', data);
-
+    const response = await apiClient.put(routes.PartyCreate, data);
     return response.data;
 }
