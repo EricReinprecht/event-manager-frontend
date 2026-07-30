@@ -35,7 +35,13 @@ export default function UserEditPartyPage() {
 
                 description: party.description,
 
-                location: party.location,
+                location: party.locationName,
+
+                longitude: party.longitude,
+
+                latitude: party.latitude,
+
+                timezone: party.timezone,
 
                 startAt: party.startAt,
 

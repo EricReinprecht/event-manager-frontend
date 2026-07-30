@@ -5,7 +5,13 @@ export interface Party {
 
     description?: string;
 
-    location?: string;
+    locationName: string;
+
+    latitude: number;
+
+    longitude: number;
+
+    timezone: string;
 
     startAt: string;
 
