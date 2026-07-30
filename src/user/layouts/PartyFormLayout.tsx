@@ -1,43 +1,47 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 import Form from '@components/forms/entity/Form';
 
 import { createPartyForm } from '@user/constants/forms/createParty.constants.forms';
 
-import { useCreateParty } from '@user/hooks/useUserCreateParty';
+import { useCategories } from '@/features/categories/hooks/useCategories';
 
 import type { CreatePartyRequest } from '@user/api/user-create-party.api';
 
-import { useCategories } from '@/features/categories/hooks/useCategories';
+interface Props {
+    title: string;
 
-export default function UserCreatePartyPage() {
-    const navigate = useNavigate();
+    submitLabel: string;
 
+    initialValues?: Partial<CreatePartyRequest>;
+
+    onSubmit(values: CreatePartyRequest): void;
+
+    loading?: boolean;
+
+    error?: boolean;
+}
+
+export default function PartyFormLayout({
+    title,
+    submitLabel,
+    initialValues = {},
+    onSubmit,
+    loading = false,
+    error = false,
+}: Props) {
     const { t } = useTranslation('user');
-
-    const createPartyMutation = useCreateParty();
 
     const { data: categories = [], isLoading: categoriesLoading } = useCategories();
 
-    const [values, setValues] = useState<Partial<CreatePartyRequest>>({});
+    const [values, setValues] = useState<Partial<CreatePartyRequest>>(initialValues);
 
     function update(name: string, value: any) {
         setValues((current) => ({
             ...current,
             [name]: value,
         }));
-    }
-
-    function submit() {
-        console.log('SUBMIT VALUES:', values);
-
-        createPartyMutation.mutate(values as CreatePartyRequest, {
-            onSuccess(party) {
-                navigate(`/parties/${party.id}`);
-            },
-        });
     }
 
     if (categoriesLoading) {
@@ -56,23 +60,17 @@ export default function UserCreatePartyPage() {
     return (
         <div className="base-form">
             <div className="base-form__container">
-                <h1>{t('party.create.title')}</h1>
+                <h1>{title}</h1>
 
                 <Form
                     sections={createPartyForm(categoryOptions, t)}
                     values={values}
                     onChange={update}
-                    onSubmit={submit}
-                    submitLabel={
-                        createPartyMutation.isPending
-                            ? t('party.create.creating')
-                            : t('party.create.submit')
-                    }
+                    onSubmit={() => onSubmit(values as CreatePartyRequest)}
+                    submitLabel={loading ? submitLabel : submitLabel}
                 />
 
-                {createPartyMutation.isError && (
-                    <p className="form-error">{t('party.create.error')}</p>
-                )}
+                {error && <p className="form-error">{t('party.error')}</p>}
             </div>
         </div>
     );

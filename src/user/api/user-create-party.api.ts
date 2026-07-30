@@ -1,8 +1,4 @@
 import api from '@/api/client';
-import routes from '@/constants/routes';
-
-import type { Party } from '@user/types/party.types';
-
 export interface CreatePartyRequest {
     title: string;
 
@@ -10,11 +6,19 @@ export interface CreatePartyRequest {
 
     location?: string;
 
+    latitude?: number;
+
+    longitude?: number;
+
+    timezone?: string;
+
     startAt: string;
 
     endAt: string;
 
-    categoryID: string;
+    categoryID?: string;
+
+    categories?: string[];
 
     thumbnailID?: string;
 

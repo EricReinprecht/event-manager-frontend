@@ -1,5 +1,5 @@
 export interface UserParty {
-    ID: string;
+    id: string;
 
     Title: string;
 

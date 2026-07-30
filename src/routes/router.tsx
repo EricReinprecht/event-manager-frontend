@@ -17,7 +17,8 @@ import ResetPasswordPage from '@auth/pages/ResetPasswordPage';
 import ResendVerificationPage from '@auth/pages/ResendVerificationPage';
 import UserLayout from '@user/layouts/UserLayout';
 import UserPartiesPage from '@user/pages/UserPartiesPage';
-import UserCreatePartyPage from '@user/pages/CreatePartyPage';
+import UserCreatePartyPage from '@user/pages/UserCreatePartyPage';
+import UserEditPartyPage from '@user/pages/UserEditPartyPage';
 
 export const router = createBrowserRouter([
     {
@@ -85,6 +86,11 @@ export const router = createBrowserRouter([
                             {
                                 path: ROUTES.USER_PARTY_CREATE,
                                 element: <UserCreatePartyPage />,
+                            },
+
+                            {
+                                path: ROUTES.USER_PARTY_EDIT(':id'),
+                                element: <UserEditPartyPage />,
                             },
 
                             {

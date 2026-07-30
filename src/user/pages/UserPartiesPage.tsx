@@ -107,7 +107,7 @@ export default function UserPartiesPage() {
 
                         render: (party) => (
                             <Link
-                                to={`/parties/${party.ID}`}
+                                to={ROUTES.PARTY_VIEW(party.id)}
                                 className="action"
                                 title={t('actions.view')}
                             >
@@ -121,7 +121,7 @@ export default function UserPartiesPage() {
 
                         render: (party) => (
                             <Link
-                                to={`/user/parties/${party.ID}/edit`}
+                                to={ROUTES.USER_PARTY_EDIT(party.id)}
                                 className="action"
                                 title={t('actions.edit')}
                             >
@@ -155,7 +155,7 @@ export default function UserPartiesPage() {
                     onClose={() => setPartyToDelete(null)}
 
                     onConfirm={() => {
-                        console.log('delete', partyToDelete.ID);
+                        console.log('delete', partyToDelete.id);
 
                         setPartyToDelete(null);
                     }}

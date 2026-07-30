@@ -27,6 +27,10 @@ export const ROUTES = {
 
     USER_PARTY_CREATE: '/user/create-party',
 
+    USER_PARTY_EDIT: (id: string | number) => `/user/parties/${id}/edit`,
+
+    PARTY_VIEW: (id: string | number) => `/parties/${id}`,
+
     USER_TICKETS: '/user/tickets',
 
     USER_PURCHASES: '/user/purchases',
