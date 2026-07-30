@@ -13,14 +13,12 @@ export default function UserCreatePartyPage() {
 
     return (
         <PartyFormLayout
-            title="Create Party"
-
-            submitLabel="Creating..."
+            mode="create"
 
             onSubmit={(values) => {
                 mutation.mutate(values, {
                     onSuccess(party) {
-                        navigate(ROUTES.PARTY_VIEW(party.ID));
+                        navigate(ROUTES.USER_PARTY_VIEW(party.ID));
                     },
                 });
             }}

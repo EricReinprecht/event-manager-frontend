@@ -10,26 +10,26 @@ import { useCategories } from '@/features/categories/hooks/useCategories';
 import type { CreatePartyRequest } from '@user/api/user-create-party.api';
 
 interface Props {
-    title: string;
-
-    submitLabel: string;
+    mode: 'create' | 'edit' | 'view';
 
     initialValues?: Partial<CreatePartyRequest>;
 
-    onSubmit(values: CreatePartyRequest): void;
+    onSubmit?(values: CreatePartyRequest): void;
 
     loading?: boolean;
 
     error?: boolean;
+
+    disabled?: boolean;
 }
 
 export default function PartyFormLayout({
-    title,
-    submitLabel,
+    mode,
     initialValues = {},
     onSubmit,
     loading = false,
     error = false,
+    disabled = false,
 }: Props) {
     const { t } = useTranslation('user');
 
@@ -42,6 +42,14 @@ export default function PartyFormLayout({
             ...current,
             [name]: value,
         }));
+    }
+
+    function submit() {
+        if (!onSubmit) {
+            return;
+        }
+
+        onSubmit(values as CreatePartyRequest);
     }
 
     if (categoriesLoading) {
@@ -60,17 +68,24 @@ export default function PartyFormLayout({
     return (
         <div className="base-form">
             <div className="base-form__container">
-                <h1>{title}</h1>
+                <h1>
+                    {mode === 'create'
+                        ? t('party.create.title')
+                        : mode === 'edit'
+                          ? t('party.edit.title')
+                          : t('party.view.title')}
+                </h1>
 
                 <Form
                     sections={createPartyForm(categoryOptions, t)}
                     values={values}
                     onChange={update}
-                    onSubmit={() => onSubmit(values as CreatePartyRequest)}
-                    submitLabel={loading ? submitLabel : submitLabel}
+                    onSubmit={disabled ? undefined : submit}
+                    disabled={disabled}
+                    submitLabel={loading ? t(`party.${mode}.saving`) : t(`party.${mode}.submit`)}
                 />
 
-                {error && <p className="form-error">{t('party.error')}</p>}
+                {error && !disabled && <p className="form-error">{t(`party.${mode}.error`)}</p>}
             </div>
         </div>
     );

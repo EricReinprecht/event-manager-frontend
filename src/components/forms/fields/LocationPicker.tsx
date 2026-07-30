@@ -9,12 +9,16 @@ interface Props {
     };
 
     onChange(value: any): void;
+
+    disabled?: boolean;
 }
 
-export default function LocationPicker({ value, onChange }: Props) {
+export default function LocationPicker({ value, onChange, disabled = false }: Props) {
     const [search, setSearch] = useState(value?.locationName ?? '');
 
     function selectLocation() {
+        if (disabled) return;
+
         // temporary example
         // later replaced with Google Places result
 
@@ -31,14 +35,17 @@ export default function LocationPicker({ value, onChange }: Props) {
             <input
                 value={search}
                 placeholder="Search location"
+                disabled={disabled}
                 onChange={(e) => setSearch(e.target.value)}
             />
 
-            <button type="button" onClick={selectLocation}>
-                Select
-            </button>
+            {!disabled && (
+                <button type="button" onClick={selectLocation}>
+                    Select
+                </button>
+            )}
 
-            {value?.latitude && (
+            {value?.latitude !== null && value?.latitude !== undefined && (
                 <small>
                     {value.latitude}, {value.longitude}
                     <br />

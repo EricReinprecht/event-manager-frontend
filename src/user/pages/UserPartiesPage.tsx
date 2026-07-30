@@ -107,7 +107,7 @@ export default function UserPartiesPage() {
 
                         render: (party) => (
                             <Link
-                                to={ROUTES.PARTY_VIEW(party.id)}
+                                to={ROUTES.USER_PARTY_VIEW(party.id)}
                                 className="action"
                                 title={t('actions.view')}
                             >

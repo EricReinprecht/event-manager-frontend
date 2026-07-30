@@ -4,6 +4,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import CategoryMultiSelect from '@/features/categories/hooks/components/CategoryMultiSelect';
 
 import type { FormFieldConfig } from './types';
+
 import LocationPicker from '../fields/LocationPicker';
 
 interface Props {
@@ -12,9 +13,11 @@ interface Props {
     value: any;
 
     onChange(name: string, value: any): void;
+
+    disabled?: boolean;
 }
 
-export default function FormField({ field, value, onChange }: Props) {
+export default function FormField({ field, value, onChange, disabled = false }: Props) {
     if (field.type === 'hidden') {
         return (
             <input
@@ -35,6 +38,7 @@ export default function FormField({ field, value, onChange }: Props) {
                     value={value ?? ''}
                     placeholder={field.placeholder}
                     required={field.required}
+                    disabled={disabled}
                     onChange={(e) => onChange(field.name, e.target.value)}
                 />
             )}
@@ -44,12 +48,17 @@ export default function FormField({ field, value, onChange }: Props) {
                     value={value ?? ''}
                     placeholder={field.placeholder}
                     required={field.required}
+                    disabled={disabled}
                     onChange={(e) => onChange(field.name, e.target.value)}
                 />
             )}
 
             {field.type === 'select' && (
-                <select value={value ?? ''} onChange={(e) => onChange(field.name, e.target.value)}>
+                <select
+                    value={value ?? ''}
+                    disabled={disabled}
+                    onChange={(e) => onChange(field.name, e.target.value)}
+                >
                     <option value="">Select...</option>
 
                     {field.options?.map((option) => (
@@ -73,6 +82,7 @@ export default function FormField({ field, value, onChange }: Props) {
                         placeholderText="Select date and time"
                         className="form-datepicker"
                         popperPlacement="bottom-start"
+                        disabled={disabled}
                     />
                 </div>
             )}
@@ -81,6 +91,7 @@ export default function FormField({ field, value, onChange }: Props) {
                 <CategoryMultiSelect
                     value={value ?? []}
                     options={field.options ?? []}
+                    disabled={disabled}
                     onChange={(value) => onChange(field.name, value)}
                 />
             )}
@@ -88,8 +99,9 @@ export default function FormField({ field, value, onChange }: Props) {
             {field.type === 'location' && (
                 <LocationPicker
                     value={value}
+                    disabled={disabled}
                     onChange={(location) => {
-                        console.log('LOCATION PICKER OUTPUT:', location);
+                        if (disabled) return;
 
                         onChange('locationName', location.locationName);
                         onChange('latitude', location.latitude);

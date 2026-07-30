@@ -9,9 +9,11 @@ interface Props {
 
     onChange(name: string, value: any): void;
 
-    onSubmit(): void;
+    onSubmit?(): void;
 
     submitLabel?: string;
+
+    disabled?: boolean;
 }
 
 export default function Form({
@@ -20,6 +22,7 @@ export default function Form({
     onChange,
     onSubmit,
     submitLabel = 'Save',
+    disabled = false,
 }: Props) {
     return (
         <form
@@ -27,7 +30,9 @@ export default function Form({
             onSubmit={(e) => {
                 e.preventDefault();
 
-                onSubmit();
+                if (!disabled) {
+                    onSubmit?.();
+                }
             }}
         >
             {sections.map((section) => (
@@ -36,12 +41,15 @@ export default function Form({
                     section={section}
                     values={values}
                     onChange={onChange}
+                    disabled={disabled}
                 />
             ))}
 
-            <button type="submit" className="form-button">
-                {submitLabel}
-            </button>
+            {!disabled && (
+                <button type="submit" className="form-button">
+                    {submitLabel}
+                </button>
+            )}
         </form>
     );
 }

@@ -29,7 +29,7 @@ export const ROUTES = {
 
     USER_PARTY_EDIT: (id: string | number) => `/user/parties/${id}/edit`,
 
-    PARTY_VIEW: (id: string | number) => `/parties/${id}`,
+    USER_PARTY_VIEW: (id: string | number) => `/parties/${id}`,
 
     USER_TICKETS: '/user/tickets',
 

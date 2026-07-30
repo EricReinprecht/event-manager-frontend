@@ -8,9 +8,11 @@ interface Props {
     values: Record<string, any>;
 
     onChange(name: string, value: any): void;
+
+    disabled?: boolean;
 }
 
-export default function FormSection({ section, values, onChange }: Props) {
+export default function FormSection({ section, values, onChange, disabled = false }: Props) {
     return (
         <section className="form-section">
             <h2>{section.title}</h2>
@@ -21,6 +23,7 @@ export default function FormSection({ section, values, onChange }: Props) {
                     field={field}
                     value={values[field.name]}
                     onChange={onChange}
+                    disabled={disabled}
                 />
             ))}
         </section>

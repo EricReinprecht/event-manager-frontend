@@ -19,6 +19,7 @@ import UserLayout from '@user/layouts/UserLayout';
 import UserPartiesPage from '@user/pages/UserPartiesPage';
 import UserCreatePartyPage from '@user/pages/UserCreatePartyPage';
 import UserEditPartyPage from '@user/pages/UserEditPartyPage';
+import UserPartyViewPage from '@user/pages/UserPartyViewPage';
 
 export const router = createBrowserRouter([
     {
@@ -91,6 +92,11 @@ export const router = createBrowserRouter([
                             {
                                 path: ROUTES.USER_PARTY_EDIT(':id'),
                                 element: <UserEditPartyPage />,
+                            },
+
+                            {
+                                path: ROUTES.USER_PARTY_VIEW(':id'),
+                                element: <UserPartyViewPage />,
                             },
 
                             {
