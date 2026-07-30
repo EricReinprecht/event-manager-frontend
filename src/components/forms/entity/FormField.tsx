@@ -34,11 +34,8 @@ export default function FormField({ field, value, onChange, disabled = false }: 
 
             {field.type === 'text' && (
                 <input
-                    type="text"
                     value={value ?? ''}
-                    placeholder={field.placeholder}
-                    required={field.required}
-                    disabled={disabled}
+                    disabled={disabled || field.disabled}
                     onChange={(e) => onChange(field.name, e.target.value)}
                 />
             )}
@@ -48,7 +45,7 @@ export default function FormField({ field, value, onChange, disabled = false }: 
                     value={value ?? ''}
                     placeholder={field.placeholder}
                     required={field.required}
-                    disabled={disabled}
+                    disabled={disabled || field.disabled}
                     onChange={(e) => onChange(field.name, e.target.value)}
                 />
             )}
@@ -56,7 +53,7 @@ export default function FormField({ field, value, onChange, disabled = false }: 
             {field.type === 'select' && (
                 <select
                     value={value ?? ''}
-                    disabled={disabled}
+                    disabled={disabled || field.disabled}
                     onChange={(e) => onChange(field.name, e.target.value)}
                 >
                     <option value="">Select...</option>
@@ -82,7 +79,7 @@ export default function FormField({ field, value, onChange, disabled = false }: 
                         placeholderText="Select date and time"
                         className="form-datepicker"
                         popperPlacement="bottom-start"
-                        disabled={disabled}
+                        disabled={disabled || field.disabled}
                     />
                 </div>
             )}
@@ -91,7 +88,7 @@ export default function FormField({ field, value, onChange, disabled = false }: 
                 <CategoryMultiSelect
                     value={value ?? []}
                     options={field.options ?? []}
-                    disabled={disabled}
+                    disabled={disabled || field.disabled}
                     onChange={(value) => onChange(field.name, value)}
                 />
             )}
@@ -103,10 +100,7 @@ export default function FormField({ field, value, onChange, disabled = false }: 
                     onChange={(location) => {
                         if (disabled) return;
 
-                        onChange('locationName', location.locationName);
-                        onChange('latitude', location.latitude);
-                        onChange('longitude', location.longitude);
-                        onChange('timezone', location.timezone);
+                        onChange('location', location);
                     }}
                 />
             )}

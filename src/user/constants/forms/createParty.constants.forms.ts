@@ -28,24 +28,14 @@ export function createPartyForm(
                 {
                     name: 'locationName',
                     label: t('party.fields.location'),
-                    type: 'location',
+                    type: 'text',
                     required: true,
                 },
 
                 {
-                    name: 'latitude',
-                    label: '',
-                    type: 'hidden',
-                },
-                {
-                    name: 'longitude',
-                    label: '',
-                    type: 'hidden',
-                },
-                {
-                    name: 'timezone',
-                    label: '',
-                    type: 'hidden',
+                    name: 'location',
+                    label: 'Search location',
+                    type: 'location',
                 },
 
                 {

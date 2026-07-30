@@ -26,6 +26,8 @@ export interface FormFieldConfig {
     options?: FormFieldOption[];
 
     required?: boolean;
+
+    disabled?: boolean;
 }
 
 export interface FormSectionConfig {

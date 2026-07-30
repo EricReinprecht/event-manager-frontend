@@ -1,5 +1,17 @@
 import type { Category } from '@/features/categories/types';
 
+export interface PartyLocation {
+    street: string;
+    houseNumber: string;
+    city: string;
+    country: string;
+    postalCode: string;
+
+    latitude: number;
+    longitude: number;
+
+    timezone: string;
+}
 export interface Party {
     id: string;
     Title: string;
@@ -26,13 +38,16 @@ export interface PartyFilter {
 export interface PartyFormValues {
     title: string;
     description?: string;
+
     locationName?: string;
-    latitude?: number;
-    longitude?: number;
-    timezone?: string;
+
+    location?: PartyLocation;
+
     startAt: string;
     endAt: string;
+
     categoryIds: string[];
+
     thumbnailID?: string;
     imageIDs?: string[];
 }
