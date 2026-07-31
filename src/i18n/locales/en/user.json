@@ -87,7 +87,9 @@
             "requiresVerification": "Requires Verification",
             "refundRequiresApproval": "Refund Requires Approval",
 
-            "accessWindows": {
+            "accessWindows": "Access Windows",
+
+            "accessWindow": {
                 "add": "Add Access Window",
                 "remove": "Remove Access Window",
                 "item": "Access Window",

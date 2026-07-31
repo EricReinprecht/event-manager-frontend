@@ -7,6 +7,7 @@ import type { FormFieldConfig } from './types';
 
 import LocationPicker from '../fields/LocationPicker';
 import Repeater from '../fields/Repeater';
+import Checkbox from '../fields/Checkbox';
 
 interface Props {
     field: FormFieldConfig;
@@ -147,11 +148,10 @@ export default function FormField({ field, value, onChange, disabled = false }: 
             )}
 
             {field.type === 'checkbox' && (
-                <input
-                    type="checkbox"
+                <Checkbox
                     checked={value ?? false}
                     disabled={disabled || field.disabled}
-                    onChange={(e) => onChange(field.name, e.target.checked)}
+                    onChange={(checked) => onChange(field.name, checked)}
                 />
             )}
 

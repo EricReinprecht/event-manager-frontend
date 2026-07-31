@@ -154,14 +154,14 @@ export function createPartyForm(
                                 [
                                     {
                                         name: 'startDate',
-                                        label: t('party.ticketCategory.accessWindows.startDate'),
+                                        label: t('party.ticketCategory.accessWindow.startDate'),
                                         type: 'date',
                                         required: true,
                                     },
 
                                     {
                                         name: 'startTime',
-                                        label: t('party.ticketCategory.accessWindows.startTime'),
+                                        label: t('party.ticketCategory.accessWindow.startTime'),
                                         type: 'time',
                                         required: true,
                                     },
@@ -170,14 +170,14 @@ export function createPartyForm(
                                 [
                                     {
                                         name: 'endDate',
-                                        label: t('party.ticketCategory.accessWindows.endDate'),
+                                        label: t('party.ticketCategory.accessWindow.endDate'),
                                         type: 'date',
                                         required: true,
                                     },
 
                                     {
                                         name: 'endTime',
-                                        label: t('party.ticketCategory.accessWindows.endTime'),
+                                        label: t('party.ticketCategory.accessWindow.endTime'),
                                         type: 'time',
                                         required: true,
                                     },

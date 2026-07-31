@@ -88,7 +88,9 @@
             "requiresVerification": "Verifizierung erforderlich",
             "refundRequiresApproval": "Rückerstattung benötigt Genehmigung",
 
-            "accessWindows": {
+            "accessWindows": "Zutrittsfenster",
+
+            "accessWindow": {
                 "add": "Zugangsfenster hinzufügen",
                 "remove": "Zugangsfenster entfernen",
                 "item": "Zugangsfenster",
