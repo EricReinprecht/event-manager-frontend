@@ -25,6 +25,7 @@ export default function FormSection({ section, values, onChange, disabled = fals
                             field={field}
                             value={values[field.name]}
                             onChange={onChange}
+                            disabled={disabled}
                         />
                     ))}
                 </div>
@@ -36,6 +37,7 @@ export default function FormSection({ section, values, onChange, disabled = fals
                     field={field}
                     value={values[field.name]}
                     onChange={onChange}
+                    disabled={disabled}
                 />
             ))}
         </section>

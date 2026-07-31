@@ -259,34 +259,35 @@ export default function LocationPicker({ value, onChange, disabled = false }: Pr
 
     return (
         <div className="location-picker">
-            <div className="location-picker__search">
-                <input
-                    ref={inputRef}
-                    value={search}
-                    placeholder="Search full address"
-                    disabled={disabled}
-                    onChange={(e) => {
-                        setSearch(e.target.value);
-                        setError('');
-                        setWarning('');
-                    }}
-                />
+            {!disabled && (
+                <div className="location-picker__search">
+                    <label>Search Address</label>
+                    <input
+                        ref={inputRef}
+                        value={search}
+                        placeholder="Search full address"
+                        onChange={(e) => {
+                            setSearch(e.target.value);
+                            setError('');
+                            setWarning('');
+                        }}
+                    />
 
-                {suggestions.length > 0 && (
-                    <div className="location-picker__dropdown">
-                        {suggestions.map((item, index) => (
-                            <button
-                                key={index}
-                                type="button"
-                                disabled={disabled}
-                                onClick={() => selectSuggestion(item)}
-                            >
-                                {item.placePrediction.text.toString()}
-                            </button>
-                        ))}
-                    </div>
-                )}
-            </div>
+                    {suggestions.length > 0 && (
+                        <div className="location-picker__dropdown">
+                            {suggestions.map((item, index) => (
+                                <button
+                                    key={index}
+                                    type="button"
+                                    onClick={() => selectSuggestion(item)}
+                                >
+                                    {item.placePrediction.text.toString()}
+                                </button>
+                            ))}
+                        </div>
+                    )}
+                </div>
+            )}
 
             {error && <p className="form-error">{error}</p>}
 
@@ -354,7 +355,7 @@ export default function LocationPicker({ value, onChange, disabled = false }: Pr
                     gestureHandling="greedy"
                     disableDefaultUI
                 >
-                    <MapController position={position} />
+                    <MapController position={position} disabled={disabled} />
 
                     <MapClickHandler />
 
@@ -367,16 +368,18 @@ export default function LocationPicker({ value, onChange, disabled = false }: Pr
 
 function MapController({
     position,
+    disabled,
 }: {
     position: {
         lat: number;
         lng: number;
     } | null;
+    disabled: boolean;
 }) {
     const map = useMap();
 
     useEffect(() => {
-        if (!map || !position) {
+        if (!map || !position || disabled) {
             return;
         }
 

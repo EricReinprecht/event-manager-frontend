@@ -48,7 +48,7 @@ export function createPartyForm(
 
                 {
                     name: 'location',
-                    label: 'Search location',
+                    label: '',
                     type: 'location',
                 },
             ],
