@@ -610,4 +610,92 @@
             flex: 0 0 120px;
         }
     }
+
+    /* Repeater */
+
+    .form-repeater {
+        display: flex;
+
+        flex-direction: column;
+
+        gap: var(--space-md);
+
+        width: 100%;
+
+        &__item {
+            padding: var(--space-md);
+
+            border: 1px solid var(--color-border);
+
+            border-radius: var(--radius-lg);
+
+            background: var(--color-background);
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: var(--space-md);
+        }
+
+        &__header {
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            h3 {
+                margin: 0;
+
+                font-size: 1rem;
+
+                font-weight: 600;
+
+                color: var(--color-text);
+            }
+        }
+
+        &__fields {
+            display: flex;
+
+            flex-direction: column;
+
+            gap: var(--space-md);
+        }
+
+        .form-row {
+            display: flex;
+
+            gap: var(--space-md);
+
+            width: 100%;
+
+            .form-input {
+                flex: 1;
+            }
+        }
+
+        .form-button {
+            width: auto;
+
+            margin-top: 0;
+        }
+
+        .form-button--success {
+            background: var(--color-success);
+
+            &:hover {
+                background: var(--color-success-hover);
+            }
+        }
+
+        .form-button--danger {
+            background: var(--color-danger);
+
+            &:hover {
+                background: var(--color-danger-hover);
+            }
+        }
+    }
 }
