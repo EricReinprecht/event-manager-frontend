@@ -1,5 +1,61 @@
 import type { Category } from '@/features/categories/types';
 
+export interface TicketAccessWindow {
+    id: string;
+
+    startsAt: string;
+
+    endsAt: string;
+}
+
+export interface TicketCategory {
+    id: string;
+
+    name: string;
+
+    price: number;
+
+    capacity: number;
+
+    requiresVerification: boolean;
+
+    refundRequiresApproval: boolean;
+
+    refundPolicyId?: string | null;
+
+    accessWindows: TicketAccessWindow[];
+}
+
+export interface TicketAccessWindowForm {
+    id?: string;
+
+    startDate: string;
+
+    startTime: string;
+
+    endDate: string;
+
+    endTime: string;
+}
+
+export interface TicketCategoryForm {
+    id?: string;
+
+    name: string;
+
+    price: number;
+
+    capacity: number;
+
+    requiresVerification: boolean;
+
+    refundRequiresApproval: boolean;
+
+    refundPolicyId?: string | null;
+
+    accessWindows: TicketAccessWindowForm[];
+}
+
 export interface PartyLocation {
     street?: string;
     houseNumber?: string;
@@ -63,6 +119,8 @@ export interface PartyFormValues {
     thumbnailID?: string;
 
     imageIDs?: string[];
+
+    ticketCategories: TicketCategoryForm[];
 }
 
 export interface PartyDetailed {
@@ -83,6 +141,8 @@ export interface PartyDetailed {
     thumbnailID?: string;
 
     categories: Category[];
+
+    ticketCategories: TicketCategory[];
 }
 
 export interface CreatePartyRequest {

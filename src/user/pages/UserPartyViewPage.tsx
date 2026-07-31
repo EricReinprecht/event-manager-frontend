@@ -31,9 +31,35 @@ export default function UserPartyViewPage() {
         );
     }
 
-    const start = splitDateTime(party.startAt, party.location.timezone);
+    const timezone = party.location.timezone;
 
-    const end = splitDateTime(party.endAt, party.location.timezone);
+    const start = splitDateTime(party.startAt, timezone);
+
+    const end = splitDateTime(party.endAt, timezone);
+
+    const ticketCategories = party.ticketCategories?.map((category) => ({
+        id: category.id,
+        name: category.name,
+        price: category.price,
+        capacity: category.capacity,
+        requiresVerification: category.requiresVerification,
+        refundRequiresApproval: category.refundRequiresApproval,
+        refundPolicyId: category.refundPolicyId,
+
+        accessWindows:
+            category.accessWindows?.map((window) => {
+                const start = splitDateTime(window.startsAt, timezone);
+                const end = splitDateTime(window.endsAt, timezone);
+
+                return {
+                    id: window.id,
+                    startDate: start.date,
+                    startTime: start.time,
+                    endDate: end.date,
+                    endTime: end.time,
+                };
+            }) ?? [],
+    }));
 
     return (
         <PartyFormLayout
@@ -50,6 +76,7 @@ export default function UserPartyViewPage() {
                 endTime: end.time,
                 thumbnailID: party.thumbnailID,
                 categoryIds: party.categories?.map((category) => category.id) ?? [],
+                ticketCategories,
             }}
             actionButton={
                 <button
