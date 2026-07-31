@@ -89,5 +89,104 @@ export function createPartyForm(
                 ],
             ],
         },
+
+        {
+            title: t('party.sections.ticketCategories'),
+
+            fields: [
+                {
+                    name: 'ticketCategories',
+                    label: t('party.fields.ticketCategories'),
+                    type: 'repeater',
+
+                    addLabel: t('party.ticketCategory.add'),
+
+                    removeLabel: t('party.ticketCategory.remove'),
+
+                    itemLabel: t('party.ticketCategory.item'),
+
+                    fields: [
+                        {
+                            name: 'name',
+                            label: t('party.ticketCategory.name'),
+                            type: 'text',
+                            required: true,
+                        },
+
+                        {
+                            name: 'price',
+                            label: t('party.ticketCategory.price'),
+                            type: 'number',
+                            required: true,
+                        },
+
+                        {
+                            name: 'capacity',
+                            label: t('party.ticketCategory.capacity'),
+                            type: 'number',
+                            required: true,
+                        },
+
+                        {
+                            name: 'requiresVerification',
+                            label: t('party.ticketCategory.requiresVerification'),
+                            type: 'checkbox',
+                        },
+
+                        {
+                            name: 'refundRequiresApproval',
+                            label: t('party.ticketCategory.refundRequiresApproval'),
+                            type: 'checkbox',
+                        },
+
+                        {
+                            name: 'accessWindows',
+                            label: t('party.ticketCategory.accessWindows'),
+                            type: 'repeater',
+
+                            addLabel: t('party.ticketCategory.accessWindows.add'),
+
+                            removeLabel: t('party.ticketCategory.accessWindows.remove'),
+
+                            itemLabel: t('party.ticketCategory.accessWindows.item'),
+
+                            rows: [
+                                [
+                                    {
+                                        name: 'startDate',
+                                        label: t('party.ticketCategory.accessWindows.startDate'),
+                                        type: 'date',
+                                        required: true,
+                                    },
+
+                                    {
+                                        name: 'startTime',
+                                        label: t('party.ticketCategory.accessWindows.startTime'),
+                                        type: 'time',
+                                        required: true,
+                                    },
+                                ],
+
+                                [
+                                    {
+                                        name: 'endDate',
+                                        label: t('party.ticketCategory.accessWindows.endDate'),
+                                        type: 'date',
+                                        required: true,
+                                    },
+
+                                    {
+                                        name: 'endTime',
+                                        label: t('party.ticketCategory.accessWindows.endTime'),
+                                        type: 'time',
+                                        required: true,
+                                    },
+                                ],
+                            ],
+                        },
+                    ],
+                },
+            ],
+        },
     ];
 }

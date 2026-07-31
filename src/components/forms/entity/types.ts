@@ -6,10 +6,12 @@ export type FormFieldType =
     | 'time'
     | 'datetime'
     | 'number'
+    | 'checkbox'
     | 'select'
     | 'multiselect'
     | 'location'
-    | 'hidden';
+    | 'hidden'
+    | 'repeater';
 
 export interface FormFieldOption {
     label: string;
@@ -30,6 +32,16 @@ export interface FormFieldConfig {
     required?: boolean;
 
     disabled?: boolean;
+
+    fields?: FormFieldConfig[];
+
+    rows?: FormFieldConfig[][];
+
+    addLabel?: string;
+
+    removeLabel?: string;
+
+    itemLabel?: string;
 }
 
 export interface FormSectionConfig {

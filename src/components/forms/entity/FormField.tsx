@@ -6,6 +6,7 @@ import CategoryMultiSelect from '@/features/categories/hooks/components/Category
 import type { FormFieldConfig } from './types';
 
 import LocationPicker from '../fields/LocationPicker';
+import Repeater from '../fields/Repeater';
 
 interface Props {
     field: FormFieldConfig;
@@ -47,6 +48,16 @@ export default function FormField({ field, value, onChange, disabled = false }: 
                     required={field.required}
                     disabled={disabled || field.disabled}
                     onChange={(e) => onChange(field.name, e.target.value)}
+                />
+            )}
+
+            {field.type === 'number' && (
+                <input
+                    type="number"
+                    value={value ?? ''}
+                    required={field.required}
+                    disabled={disabled || field.disabled}
+                    onChange={(e) => onChange(field.name, Number(e.target.value))}
                 />
             )}
 
@@ -132,6 +143,27 @@ export default function FormField({ field, value, onChange, disabled = false }: 
 
                         onChange('location', location);
                     }}
+                />
+            )}
+
+            {field.type === 'checkbox' && (
+                <input
+                    type="checkbox"
+                    checked={value ?? false}
+                    disabled={disabled || field.disabled}
+                    onChange={(e) => onChange(field.name, e.target.checked)}
+                />
+            )}
+
+            {field.type === 'repeater' && (
+                <Repeater
+                    value={value ?? []}
+                    fields={field.fields ?? []}
+                    addLabel={field.addLabel ?? 'Add'}
+                    removeLabel={field.removeLabel ?? 'Remove'}
+                    itemLabel={field.itemLabel ?? 'Item'}
+                    disabled={disabled || field.disabled}
+                    onChange={(items) => onChange(field.name, items)}
                 />
             )}
         </div>

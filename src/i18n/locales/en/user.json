@@ -20,8 +20,15 @@
             "sections": {
                 "general": "General Information",
                 "location": "Location Data",
-                "schedule": "Schedule"
+                "schedule": "Schedule",
+                "ticketCategories": "Tickets"
             }
+        },
+        "sections": {
+            "general": "General Information",
+            "location": "Location Data",
+            "schedule": "Schedule",
+            "ticketCategories": "Tickets"
         },
         "edit": {
             "title": "Edit Party",
@@ -66,7 +73,30 @@
             "startDate": "Startdate",
             "endDate": "Enddate",
             "startTime": "Starttime",
-            "endTime": "Endtime"
+            "endTime": "Endtime",
+            "ticketCategories": "Ticket Categories"
+        },
+        "ticketCategory": {
+            "add": "Add Ticket Category",
+            "remove": "Remove Ticket Category",
+            "item": "Ticket Category",
+
+            "name": "Name",
+            "price": "Price",
+            "capacity": "Capacity",
+            "requiresVerification": "Requires Verification",
+            "refundRequiresApproval": "Refund Requires Approval",
+
+            "accessWindows": {
+                "add": "Add Access Window",
+                "remove": "Remove Access Window",
+                "item": "Access Window",
+
+                "startDate": "Start Date",
+                "startTime": "Start Time",
+                "endDate": "End Date",
+                "endTime": "End Time"
+            }
         }
     }
 }

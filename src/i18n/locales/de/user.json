@@ -20,8 +20,15 @@
             "sections": {
                 "general": "Allgemeine Informationen",
                 "location": "Geografische Angaben",
-                "schedule": "Zeitplan"
+                "schedule": "Zeitplan",
+                "ticketCategories": "Tickets"
             }
+        },
+        "sections": {
+            "general": "Allgemeine Informationen",
+            "location": "Geografische Angaben",
+            "schedule": "Zeitplan",
+            "ticketCategories": "Tickets"
         },
         "edit": {
             "title": "Party bearbeiten",
@@ -63,11 +70,34 @@
             "startDate": "Startdatum",
             "endDate": "Enddatum",
             "startTime": "Starturzeit",
-            "endTime": "Endurzeit"
+            "endTime": "Endurzeit",
+            "ticketCategories": "Ticketkategorien"
         },
         "delete": {
             "title": "Party löschen",
             "confirm": "Bist su sicher das du diese Party löschen willst:"
+        },
+        "ticketCategory": {
+            "add": "Ticketkategorie hinzufügen",
+            "remove": "Ticketkategorie entfernen",
+            "item": "Ticketkategorie",
+
+            "name": "Name",
+            "price": "Preis",
+            "capacity": "Kapazität",
+            "requiresVerification": "Verifizierung erforderlich",
+            "refundRequiresApproval": "Rückerstattung benötigt Genehmigung",
+
+            "accessWindows": {
+                "add": "Zugangsfenster hinzufügen",
+                "remove": "Zugangsfenster entfernen",
+                "item": "Zugangsfenster",
+
+                "startDate": "Startdatum",
+                "startTime": "Startzeit",
+                "endDate": "Enddatum",
+                "endTime": "Endzeit"
+            }
         }
     }
 }
