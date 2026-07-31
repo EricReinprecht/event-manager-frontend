@@ -27,6 +27,16 @@
         }
     }
 
+    .form-row {
+        display: flex;
+        gap: 1rem;
+        width: 100%;
+
+        .form-input {
+            flex: 1;
+        }
+    }
+
     .form-input {
         display: flex;
 

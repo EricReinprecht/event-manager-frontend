@@ -66,6 +66,36 @@ export default function FormField({ field, value, onChange, disabled = false }: 
                 </select>
             )}
 
+            {field.type === 'date' && (
+                <DatePicker
+                    selected={value ? new Date(value) : null}
+                    onChange={(date: Date | null) =>
+                        onChange(field.name, date ? date.toISOString().split('T')[0] : '')
+                    }
+                    dateFormat="dd.MM.yyyy"
+                    placeholderText="Select date"
+                    className="form-datepicker"
+                    disabled={disabled || field.disabled}
+                />
+            )}
+
+            {field.type === 'time' && (
+                <DatePicker
+                    selected={value ? new Date(`1970-01-01T${value}`) : null}
+                    onChange={(date: Date | null) =>
+                        onChange(field.name, date ? date.toTimeString().slice(0, 5) : '')
+                    }
+                    showTimeSelect
+                    showTimeSelectOnly
+                    timeIntervals={15}
+                    timeFormat="HH:mm"
+                    dateFormat="HH:mm"
+                    placeholderText="Select time"
+                    className="form-datepicker"
+                    disabled={disabled || field.disabled}
+                />
+            )}
+
             {field.type === 'datetime' && (
                 <div className="form-datepicker-wrapper">
                     <DatePicker

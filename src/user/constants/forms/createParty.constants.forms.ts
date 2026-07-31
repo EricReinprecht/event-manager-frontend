@@ -57,20 +57,36 @@ export function createPartyForm(
         {
             title: t('party.create.sections.schedule'),
 
-            fields: [
-                {
-                    name: 'startAt',
-                    label: t('party.fields.start'),
-                    type: 'datetime',
-                    required: true,
-                },
+            rows: [
+                [
+                    {
+                        name: 'startDate',
+                        label: t('party.fields.startDate'),
+                        type: 'date',
+                        required: true,
+                    },
+                    {
+                        name: 'startTime',
+                        label: t('party.fields.startTime'),
+                        type: 'time',
+                        required: true,
+                    },
+                ],
 
-                {
-                    name: 'endAt',
-                    label: t('party.fields.end'),
-                    type: 'datetime',
-                    required: true,
-                },
+                [
+                    {
+                        name: 'endDate',
+                        label: t('party.fields.endDate'),
+                        type: 'date',
+                        required: true,
+                    },
+                    {
+                        name: 'endTime',
+                        label: t('party.fields.endTime'),
+                        type: 'time',
+                        required: true,
+                    },
+                ],
             ],
         },
     ];

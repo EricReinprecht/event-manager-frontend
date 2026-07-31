@@ -63,8 +63,10 @@
             "description": "Description",
             "location": "Location",
             "categories": "Categories",
-            "start": "Start",
-            "end": "End"
+            "startDate": "Startdate",
+            "endDate": "Enddate",
+            "startTime": "Starttime",
+            "endTime": "Endtime"
         }
     }
 }

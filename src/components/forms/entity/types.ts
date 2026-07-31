@@ -2,6 +2,8 @@ export type FormFieldType =
     | 'text'
     | 'textarea'
     | 'date'
+    | 'time'
+    | 'time'
     | 'datetime'
     | 'number'
     | 'select'
@@ -33,5 +35,7 @@ export interface FormFieldConfig {
 export interface FormSectionConfig {
     title: string;
 
-    fields: FormFieldConfig[];
+    fields?: FormFieldConfig[];
+
+    rows?: FormFieldConfig[][];
 }

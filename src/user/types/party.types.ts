@@ -46,6 +46,9 @@ export interface PartyFormValues {
 
     location?: PartyLocation;
 
+    endDate: string;
+    endTime: string;
+
     startAt: string;
     endAt: string;
 

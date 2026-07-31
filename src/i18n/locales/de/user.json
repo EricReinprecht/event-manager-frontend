@@ -60,8 +60,10 @@
             "description": "Beschreibung",
             "locationName": "Ort",
             "categories": "Kategorien",
-            "start": "Start",
-            "end": "Ende"
+            "startDate": "Startdatum",
+            "endDate": "Enddatum",
+            "startTime": "Starturzeit",
+            "endTime": "Endurzeit"
         },
         "delete": {
             "title": "Party löschen",

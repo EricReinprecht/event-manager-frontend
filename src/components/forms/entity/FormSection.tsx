@@ -17,13 +17,25 @@ export default function FormSection({ section, values, onChange, disabled = fals
         <section className="form-section">
             <h2>{section.title}</h2>
 
-            {section.fields.map((field) => (
+            {section.rows?.map((row, index) => (
+                <div className="form-row" key={index}>
+                    {row.map((field) => (
+                        <FormField
+                            key={field.name}
+                            field={field}
+                            value={values[field.name]}
+                            onChange={onChange}
+                        />
+                    ))}
+                </div>
+            ))}
+
+            {section.fields?.map((field) => (
                 <FormField
                     key={field.name}
                     field={field}
                     value={values[field.name]}
                     onChange={onChange}
-                    disabled={disabled}
                 />
             ))}
         </section>
