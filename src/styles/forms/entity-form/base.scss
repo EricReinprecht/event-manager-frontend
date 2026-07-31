@@ -1,11 +1,10 @@
 .entity-form {
     display: flex;
     flex-direction: column;
-
-    gap: var(--space-lg);
+    padding: var(--space-xl);
+    padding-bottom: 0;
 
     .form-content {
-        padding: var(--space-xl);
     }
 
     @keyframes form-section-open {
