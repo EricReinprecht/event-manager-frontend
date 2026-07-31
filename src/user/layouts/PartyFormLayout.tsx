@@ -62,17 +62,12 @@ export default function PartyFormLayout({
 
         const timezone = values.location?.timezone;
 
-        if (!timezone) {
-            console.error('Missing location timezone');
-            return;
-        }
-
         onSubmit({
             ...rest,
 
-            startAt: buildDateTime(startDate!, startTime!, timezone),
+            startAt: buildDateTime(startDate!, startTime!, timezone!),
 
-            endAt: buildDateTime(endDate!, endTime!, timezone),
+            endAt: buildDateTime(endDate!, endTime!, timezone!),
 
             categories: categoryIds ?? [],
         } as CreatePartyRequest | UpdatePartyRequest);
