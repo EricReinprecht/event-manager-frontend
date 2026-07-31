@@ -42,6 +42,10 @@ export interface FormFieldConfig {
     removeLabel?: string;
 
     itemLabel?: string;
+
+    collapsible?: boolean;
+
+    defaultOpen?: boolean;
 }
 
 export interface FormSectionConfig {
@@ -50,4 +54,8 @@ export interface FormSectionConfig {
     fields?: FormFieldConfig[];
 
     rows?: FormFieldConfig[][];
+
+    collapsible?: boolean;
+
+    defaultOpen?: boolean;
 }

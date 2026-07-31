@@ -2,6 +2,8 @@ import type { FormSectionConfig } from './types';
 
 import FormField from './FormField';
 
+import CollapsibleSection from './CollapsibleSection';
+
 interface Props {
     section: FormSectionConfig;
 
@@ -13,10 +15,8 @@ interface Props {
 }
 
 export default function FormSection({ section, values, onChange, disabled = false }: Props) {
-    return (
-        <section className="form-section">
-            <h2>{section.title}</h2>
-
+    const content = (
+        <>
             {section.rows?.map((row, index) => (
                 <div className="form-row" key={index}>
                     {row.map((field) => (
@@ -40,6 +40,22 @@ export default function FormSection({ section, values, onChange, disabled = fals
                     disabled={disabled}
                 />
             ))}
+        </>
+    );
+
+    if (section.collapsible) {
+        return (
+            <CollapsibleSection title={section.title} defaultOpen={section.defaultOpen}>
+                {content}
+            </CollapsibleSection>
+        );
+    }
+
+    return (
+        <section className="form-section">
+            <h2>{section.title}</h2>
+
+            {content}
         </section>
     );
 }

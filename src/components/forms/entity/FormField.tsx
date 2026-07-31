@@ -232,6 +232,8 @@ export default function FormField({ field, value, onChange, disabled = false }: 
                     itemLabel={field.itemLabel ?? 'Item'}
                     disabled={disabled || field.disabled}
                     onChange={(items) => onChange(field.name, items)}
+                    collapsible={field.collapsible}
+                    defaultOpen={field.defaultOpen}
                 />
             )}
         </div>

@@ -10,6 +10,8 @@ export function createPartyForm(
     return [
         {
             title: t('party.create.sections.general'),
+            collapsible: true,
+            defaultOpen: true,
 
             fields: [
                 {
@@ -37,6 +39,8 @@ export function createPartyForm(
 
         {
             title: t('party.create.sections.location'),
+            collapsible: true,
+            defaultOpen: true,
 
             fields: [
                 {
@@ -56,6 +60,8 @@ export function createPartyForm(
 
         {
             title: t('party.create.sections.schedule'),
+            collapsible: true,
+            defaultOpen: true,
 
             rows: [
                 [
@@ -92,6 +98,8 @@ export function createPartyForm(
 
         {
             title: t('party.sections.ticketCategories'),
+            collapsible: true,
+            defaultOpen: true,
 
             fields: [
                 {

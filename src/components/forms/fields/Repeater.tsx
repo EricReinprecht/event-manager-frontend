@@ -1,6 +1,6 @@
 import FormField from '../entity/FormField';
-
 import type { FormFieldConfig } from '../entity/types';
+import CollapsibleSection from '../entity/CollapsibleSection';
 
 interface Props {
     value?: any[];
@@ -18,6 +18,10 @@ interface Props {
     removeLabel: string;
 
     itemLabel: string;
+
+    collapsible?: boolean;
+
+    defaultOpen?: boolean;
 }
 
 export default function Repeater({
@@ -29,6 +33,8 @@ export default function Repeater({
     addLabel = 'Add',
     removeLabel = 'Remove',
     itemLabel = 'Item',
+    collapsible = true,
+    defaultOpen = false,
 }: Props) {
     function addItem() {
         onChange([...value, {}]);
@@ -49,19 +55,24 @@ export default function Repeater({
         onChange(items);
     }
 
-    return (
-        <div className="form-repeater">
-            {value.map((item, index) => (
-                <div className="form-repeater__item" key={index}>
-                    <div className="form-repeater__header">
-                        <h3>
-                            {itemLabel} {index + 1}
-                        </h3>
-                    </div>
+    function renderItem(item: any, index: number) {
+        return (
+            <div className="form-repeater__item">
+                <div className="form-repeater__fields">
+                    {fields.length > 0 &&
+                        fields.map((field) => (
+                            <FormField
+                                key={field.name}
+                                field={field}
+                                value={item[field.name]}
+                                disabled={disabled}
+                                onChange={(name, value) => updateItem(index, name, value)}
+                            />
+                        ))}
 
-                    <div className="form-repeater__fields">
-                        {fields.length > 0 &&
-                            fields.map((field) => (
+                    {rows.map((row, rowIndex) => (
+                        <div className="form-row" key={rowIndex}>
+                            {row.map((field) => (
                                 <FormField
                                     key={field.name}
                                     field={field}
@@ -70,33 +81,38 @@ export default function Repeater({
                                     onChange={(name, value) => updateItem(index, name, value)}
                                 />
                             ))}
-
-                        {rows?.map((row, rowIndex) => (
-                            <div className="form-row" key={rowIndex}>
-                                {row.map((field) => (
-                                    <FormField
-                                        key={field.name}
-                                        field={field}
-                                        value={item[field.name]}
-                                        disabled={disabled}
-                                        onChange={(name, value) => updateItem(index, name, value)}
-                                    />
-                                ))}
-                            </div>
-                        ))}
-                    </div>
-
-                    {!disabled && (
-                        <button
-                            type="button"
-                            className="form-button form-button--danger"
-                            onClick={() => removeItem(index)}
-                        >
-                            {removeLabel}
-                        </button>
-                    )}
+                        </div>
+                    ))}
                 </div>
-            ))}
+
+                {!disabled && (
+                    <button
+                        type="button"
+                        className="form-button form-button--danger"
+                        onClick={() => removeItem(index)}
+                    >
+                        {removeLabel}
+                    </button>
+                )}
+            </div>
+        );
+    }
+
+    return (
+        <div className="form-repeater">
+            {value.map((item, index) =>
+                collapsible ? (
+                    <CollapsibleSection
+                        key={index}
+                        title={`${itemLabel} ${index + 1}`}
+                        defaultOpen={defaultOpen}
+                    >
+                        {renderItem(item, index)}
+                    </CollapsibleSection>
+                ) : (
+                    <div key={index}>{renderItem(item, index)}</div>
+                ),
+            )}
 
             {!disabled && (
                 <button
