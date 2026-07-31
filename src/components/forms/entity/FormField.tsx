@@ -1,3 +1,4 @@
+import { X } from 'lucide-react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
@@ -11,11 +12,8 @@ import Checkbox from '../fields/Checkbox';
 
 interface Props {
     field: FormFieldConfig;
-
     value: any;
-
     onChange(name: string, value: any): void;
-
     disabled?: boolean;
 }
 
@@ -30,36 +28,84 @@ export default function FormField({ field, value, onChange, disabled = false }: 
         );
     }
 
+    const showClear =
+        !disabled && !field.disabled && value !== undefined && value !== null && value !== '';
+
+    const clearValue = () => {
+        switch (field.type) {
+            case 'number':
+                onChange(field.name, undefined);
+                break;
+
+            default:
+                onChange(field.name, '');
+                break;
+        }
+    };
+
     return (
         <div className="form-input">
             <label>{field.label}</label>
 
             {field.type === 'text' && (
-                <input
-                    value={value ?? ''}
-                    disabled={disabled || field.disabled}
-                    onChange={(e) => onChange(field.name, e.target.value)}
-                />
+                <div className="form-input__wrapper">
+                    <input
+                        value={value ?? ''}
+                        disabled={disabled || field.disabled}
+                        onChange={(e) => onChange(field.name, e.target.value)}
+                    />
+
+                    {showClear && (
+                        <button type="button" className="form-input__clear" onClick={clearValue}>
+                            <X size={16} />
+                        </button>
+                    )}
+                </div>
             )}
 
             {field.type === 'textarea' && (
-                <textarea
-                    value={value ?? ''}
-                    placeholder={field.placeholder}
-                    required={field.required}
-                    disabled={disabled || field.disabled}
-                    onChange={(e) => onChange(field.name, e.target.value)}
-                />
+                <div className="form-input__wrapper">
+                    <textarea
+                        value={value ?? ''}
+                        placeholder={field.placeholder}
+                        required={field.required}
+                        disabled={disabled || field.disabled}
+                        onChange={(e) => onChange(field.name, e.target.value)}
+                    />
+
+                    {showClear && (
+                        <button
+                            type="button"
+                            className="form-input__clear form-input__clear--textarea"
+                            onClick={clearValue}
+                        >
+                            <X size={16} />
+                        </button>
+                    )}
+                </div>
             )}
 
             {field.type === 'number' && (
-                <input
-                    type="number"
-                    value={value ?? ''}
-                    required={field.required}
-                    disabled={disabled || field.disabled}
-                    onChange={(e) => onChange(field.name, Number(e.target.value))}
-                />
+                <div className="form-input__wrapper">
+                    <input
+                        type="number"
+                        value={value ?? ''}
+                        required={field.required}
+                        disabled={disabled || field.disabled}
+                        onChange={(e) =>
+                            onChange(
+                                field.name,
+                                e.target.value === '' ? undefined : Number(e.target.value),
+                            )
+                        }
+                    />
+
+                    {showClear && (
+                        <button type="button" className="form-input__clear" onClick={clearValue}>
+                            <X size={16} />
+                        </button>
+                    )}
+                </div>
             )}
 
             {field.type === 'select' && (
@@ -79,37 +125,52 @@ export default function FormField({ field, value, onChange, disabled = false }: 
             )}
 
             {field.type === 'date' && (
-                <DatePicker
-                    selected={value ? new Date(value) : null}
-                    onChange={(date: Date | null) =>
-                        onChange(field.name, date ? date.toISOString().split('T')[0] : '')
-                    }
-                    dateFormat="dd.MM.yyyy"
-                    placeholderText="Select date"
-                    className="form-datepicker"
-                    disabled={disabled || field.disabled}
-                />
+                <div className="form-input__wrapper">
+                    <DatePicker
+                        selected={value ? new Date(value) : null}
+                        onChange={(date: Date | null) =>
+                            onChange(field.name, date?.toISOString() ?? '')
+                        }
+                        dateFormat="dd.MM.yyyy"
+                        placeholderText="Select date"
+                        className="form-datepicker"
+                        disabled={disabled || field.disabled}
+                    />
+
+                    {showClear && (
+                        <button type="button" className="form-input__clear" onClick={clearValue}>
+                            <X size={16} />
+                        </button>
+                    )}
+                </div>
             )}
 
             {field.type === 'time' && (
-                <DatePicker
-                    selected={value ? new Date(`1970-01-01T${value}`) : null}
-                    onChange={(date: Date | null) =>
-                        onChange(field.name, date ? date.toTimeString().slice(0, 5) : '')
-                    }
-                    showTimeSelect
-                    showTimeSelectOnly
-                    timeIntervals={15}
-                    timeFormat="HH:mm"
-                    dateFormat="HH:mm"
-                    placeholderText="Select time"
-                    className="form-datepicker"
-                    disabled={disabled || field.disabled}
-                />
-            )}
+                <div className="form-input__wrapper">
+                    <DatePicker
+                        selected={value ? new Date(`1970-01-01T${value}`) : null}
+                        onChange={(date: Date | null) =>
+                            onChange(field.name, date ? date.toTimeString().slice(0, 5) : '')
+                        }
+                        showTimeSelect
+                        showTimeSelectOnly
+                        timeIntervals={15}
+                        timeFormat="HH:mm"
+                        dateFormat="HH:mm"
+                        placeholderText="Select time"
+                        className="form-datepicker"
+                        disabled={disabled || field.disabled}
+                    />
 
+                    {showClear && (
+                        <button type="button" className="form-input__clear" onClick={clearValue}>
+                            <X size={16} />
+                        </button>
+                    )}
+                </div>
+            )}
             {field.type === 'datetime' && (
-                <div className="form-datepicker-wrapper">
+                <div className="form-input__wrapper">
                     <DatePicker
                         selected={value ? new Date(value) : null}
                         onChange={(date: Date | null) =>
@@ -123,6 +184,12 @@ export default function FormField({ field, value, onChange, disabled = false }: 
                         popperPlacement="bottom-start"
                         disabled={disabled || field.disabled}
                     />
+
+                    {showClear && (
+                        <button type="button" className="form-input__clear" onClick={clearValue}>
+                            <X size={16} />
+                        </button>
+                    )}
                 </div>
             )}
 
@@ -159,6 +226,7 @@ export default function FormField({ field, value, onChange, disabled = false }: 
                 <Repeater
                     value={value ?? []}
                     fields={field.fields ?? []}
+                    rows={field.rows ?? []}
                     addLabel={field.addLabel ?? 'Add'}
                     removeLabel={field.removeLabel ?? 'Remove'}
                     itemLabel={field.itemLabel ?? 'Item'}

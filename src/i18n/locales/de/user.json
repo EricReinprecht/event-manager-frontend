@@ -91,9 +91,9 @@
             "accessWindows": "Zutrittsfenster",
 
             "accessWindow": {
-                "add": "Zugangsfenster hinzufügen",
-                "remove": "Zugangsfenster entfernen",
-                "item": "Zugangsfenster",
+                "add": "Zutrittsfenster hinzufügen",
+                "remove": "Zutrittsfenster entfernen",
+                "item": "Zutrittsfenster",
 
                 "startDate": "Startdatum",
                 "startTime": "Startzeit",

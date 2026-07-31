@@ -144,11 +144,11 @@ export function createPartyForm(
                             label: t('party.ticketCategory.accessWindows'),
                             type: 'repeater',
 
-                            addLabel: t('party.ticketCategory.accessWindows.add'),
+                            addLabel: t('party.ticketCategory.accessWindow.add'),
 
-                            removeLabel: t('party.ticketCategory.accessWindows.remove'),
+                            removeLabel: t('party.ticketCategory.accessWindow.remove'),
 
-                            itemLabel: t('party.ticketCategory.accessWindows.item'),
+                            itemLabel: t('party.ticketCategory.accessWindow.item'),
 
                             rows: [
                                 [

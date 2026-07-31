@@ -58,9 +58,12 @@ export default function PartyFormLayout({
             return;
         }
 
-        const { categoryIds, startDate, startTime, endDate, endTime, ...rest } = values;
+        const { categoryIds, startDate, startTime, endDate, endTime, ticketCategories, ...rest } =
+            values;
 
         const timezone = values.location?.timezone;
+
+        console.log(ticketCategories);
 
         onSubmit({
             ...rest,
@@ -70,6 +73,18 @@ export default function PartyFormLayout({
             endAt: buildDateTime(endDate!, endTime!, timezone!),
 
             categories: categoryIds ?? [],
+
+            ticketCategories: (ticketCategories ?? []).map((category) => ({
+                ...category,
+
+                accessWindows: (category.accessWindows ?? []).map((window) => ({
+                    id: window.id,
+
+                    startsAt: buildDateTime(window.startDate, window.startTime, timezone!),
+
+                    endsAt: buildDateTime(window.endDate, window.endTime, timezone!),
+                })),
+            })),
         } as CreatePartyRequest | UpdatePartyRequest);
     }
 
