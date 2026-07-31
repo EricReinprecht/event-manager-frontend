@@ -50,11 +50,13 @@ export interface PartyFormValues {
 
     locationName?: string;
 
-    location: PartyLocation;
+    location?: PartyLocation;
 
-    startAt: string;
+    startDate: string;
+    startTime: string;
 
-    endAt: string;
+    endDate: string;
+    endTime: string;
 
     categoryIds: string[];
 

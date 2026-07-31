@@ -13,6 +13,7 @@ import type {
     PartyFormValues,
     UpdatePartyRequest,
 } from '@user/types/party.types';
+import buildDateTime from '@/helper/build-datetime';
 
 interface Props {
     mode: 'create' | 'edit' | 'view';
@@ -57,10 +58,22 @@ export default function PartyFormLayout({
             return;
         }
 
-        const { categoryIds, ...rest } = values;
+        const { categoryIds, startDate, startTime, endDate, endTime, ...rest } = values;
+
+        const timezone = values.location?.timezone;
+
+        if (!timezone) {
+            console.error('Missing location timezone');
+            return;
+        }
 
         onSubmit({
             ...rest,
+
+            startAt: buildDateTime(startDate!, startTime!, timezone),
+
+            endAt: buildDateTime(endDate!, endTime!, timezone),
+
             categories: categoryIds ?? [],
         } as CreatePartyRequest | UpdatePartyRequest);
     }

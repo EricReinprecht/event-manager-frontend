@@ -6,6 +6,7 @@ import { useParty } from '@user/hooks/useParty';
 import { useUpdateParty } from '@user/hooks/useUpdateParty';
 
 import { ROUTES } from '@routes/paths';
+import splitDateTime from '@/helper/split-datetime';
 
 export default function UserEditPartyPage() {
     const { t } = useTranslation('user');
@@ -34,6 +35,10 @@ export default function UserEditPartyPage() {
         );
     }
 
+    const start = splitDateTime(party.startAt, party.location.timezone);
+
+    const end = splitDateTime(party.endAt, party.location.timezone);
+
     return (
         <PartyFormLayout
             mode="edit"
@@ -42,8 +47,10 @@ export default function UserEditPartyPage() {
                 description: party.description,
                 locationName: party.locationName,
                 location: party.location,
-                startAt: party.startAt,
-                endAt: party.endAt,
+                startDate: start.date,
+                startTime: start.time,
+                endDate: end.date,
+                endTime: end.time,
                 thumbnailID: party.thumbnailID,
                 categoryIds: party.categories?.map((category) => category.id) ?? [],
             }}
