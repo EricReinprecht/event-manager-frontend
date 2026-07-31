@@ -57,13 +57,15 @@ export interface PartyDetailed {
     id: string;
     title: string;
     description?: string;
+
     locationName: string;
-    latitude: number;
-    longitude: number;
-    timezone: string;
+    location: PartyLocation;
+
     startAt: string;
     endAt: string;
+
     thumbnailID?: string;
+
     categories: Category[];
 }
 
@@ -71,9 +73,7 @@ export interface CreatePartyRequest {
     title: string;
     description?: string;
     locationName?: string;
-    latitude?: number;
-    longitude?: number;
-    timezone?: string;
+    location: PartyLocation;
     startAt: string;
     endAt: string;
     categories: string[];
@@ -85,9 +85,7 @@ export interface UpdatePartyRequest {
     title: string;
     description?: string;
     locationName?: string;
-    latitude?: number;
-    longitude?: number;
-    timezone?: string;
+    location: PartyLocation;
     startAt: string;
     endAt: string;
     categories: string[];
