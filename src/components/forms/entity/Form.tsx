@@ -3,6 +3,8 @@ import FormSection from './FormSection';
 import '@styles/forms/entity-form.scss';
 
 interface Props {
+    title: string;
+
     sections: FormSectionConfig[];
 
     values: Record<string, any>;
@@ -19,6 +21,7 @@ interface Props {
 }
 
 export default function Form({
+    title,
     sections,
     values,
     onChange,
@@ -28,35 +31,39 @@ export default function Form({
     actionButton,
 }: Props) {
     return (
-        <form
-            className="entity-form"
-            onSubmit={(e) => {
-                e.preventDefault();
+        <>
+            <form
+                className="entity-form"
+                onSubmit={(e) => {
+                    e.preventDefault();
 
-                if (!disabled) {
-                    onSubmit?.();
-                }
-            }}
-        >
-            {sections.map((section) => (
-                <FormSection
-                    key={section.title}
-                    section={section}
-                    values={values}
-                    onChange={onChange}
-                    disabled={disabled}
-                />
-            ))}
+                    if (!disabled) {
+                        onSubmit?.();
+                    }
+                }}
+            >
+                <div className="form-content">
+                    <h1>{title}</h1>
+                    {sections.map((section) => (
+                        <FormSection
+                            key={section.title}
+                            section={section}
+                            values={values}
+                            onChange={onChange}
+                            disabled={disabled}
+                        />
+                    ))}
+                </div>
+                <div className="form-actions">
+                    {onSubmit && (
+                        <button type="submit" className="form-button" disabled={disabled}>
+                            {submitLabel}
+                        </button>
+                    )}
 
-            <div className="form-actions">
-                {onSubmit && (
-                    <button type="submit" className="form-button" disabled={disabled}>
-                        {submitLabel}
-                    </button>
-                )}
-
-                {actionButton}
-            </div>
-        </form>
+                    {actionButton}
+                </div>
+            </form>
+        </>
     );
 }

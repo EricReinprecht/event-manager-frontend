@@ -88,42 +88,23 @@ export default function PartyFormLayout({
         } as CreatePartyRequest | UpdatePartyRequest);
     }
 
-    if (categoriesLoading) {
-        return (
-            <div className="base-form">
-                <div className="base-form__container">{t('party.create.loadingCategories')}</div>
-            </div>
-        );
-    }
-
     const categoryOptions = categories.map((category) => ({
         label: category.name,
         value: category.id,
     }));
 
     return (
-        <div className="base-form">
-            <div className="base-form__container">
-                <h1>
-                    {mode === 'create'
-                        ? t('party.create.title')
-                        : mode === 'edit'
-                          ? t('party.edit.title')
-                          : t('party.view.title')}
-                </h1>
+        <Form
+            title={'Party'}
+            sections={createPartyForm(categoryOptions, t)}
+            values={values}
+            onChange={update}
+            onSubmit={disabled ? undefined : submit}
+            disabled={disabled}
+            submitLabel={loading ? t(`party.${mode}.saving`) : t(`party.${mode}.submit`)}
+            actionButton={actionButton}
+        />
 
-                <Form
-                    sections={createPartyForm(categoryOptions, t)}
-                    values={values}
-                    onChange={update}
-                    onSubmit={disabled ? undefined : submit}
-                    disabled={disabled}
-                    submitLabel={loading ? t(`party.${mode}.saving`) : t(`party.${mode}.submit`)}
-                    actionButton={actionButton}
-                />
-
-                {error && !disabled && <p className="form-error">{t(`party.${mode}.error`)}</p>}
-            </div>
-        </div>
+        // {error && !disabled && <p className="form-error">{t(`party.${mode}.error`)}</p>}
     );
 }
