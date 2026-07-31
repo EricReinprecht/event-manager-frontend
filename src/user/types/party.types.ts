@@ -14,9 +14,10 @@ export interface PartyLocation {
 
     source?: 'autocomplete' | 'map';
 }
+
 export interface Party {
     id: string;
-    Title: string;
+    title: string;
     startAt: string;
     endAt: string;
     locationName: string;
@@ -32,40 +33,49 @@ export interface PaginatedParties {
 export interface PartyFilter {
     page: number;
     limit: number;
+
     name?: string;
+    locationName?: string;
+
     startAt?: string;
     endAt?: string;
-    locationName?: string;
+
     sorts?: string;
 }
+
 export interface PartyFormValues {
     title: string;
+
     description?: string;
 
     locationName?: string;
 
-    location?: PartyLocation;
-
-    endDate: string;
-    endTime: string;
+    location: PartyLocation;
 
     startAt: string;
+
     endAt: string;
 
     categoryIds: string[];
 
     thumbnailID?: string;
+
     imageIDs?: string[];
 }
+
 export interface PartyDetailed {
     id: string;
+
     title: string;
+
     description?: string;
 
     locationName: string;
+
     location: PartyLocation;
 
     startAt: string;
+
     endAt: string;
 
     thumbnailID?: string;
@@ -75,24 +85,40 @@ export interface PartyDetailed {
 
 export interface CreatePartyRequest {
     title: string;
+
     description?: string;
+
     locationName?: string;
+
     location: PartyLocation;
+
     startAt: string;
+
     endAt: string;
+
     categories: string[];
+
     thumbnailID?: string;
+
     imageIDs?: string[];
 }
 
 export interface UpdatePartyRequest {
     title: string;
+
     description?: string;
+
     locationName?: string;
+
     location: PartyLocation;
+
     startAt: string;
+
     endAt: string;
+
     categories: string[];
+
     thumbnailId?: string;
+
     imageIds?: string[];
 }
