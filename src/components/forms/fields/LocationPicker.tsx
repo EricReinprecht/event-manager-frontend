@@ -352,7 +352,7 @@ export default function LocationPicker({ value, onChange, disabled = false }: Pr
                         lat: 47.414,
                         lng: 9.741,
                     }}
-                    gestureHandling="greedy"
+                    gestureHandling="cooperative"
                     disableDefaultUI
                 >
                     <MapController position={position} disabled={disabled} />

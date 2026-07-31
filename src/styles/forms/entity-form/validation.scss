@@ -1,0 +1,15 @@
+.form-error {
+    margin-top: var(--space-xs);
+
+    color: var(--color-danger);
+
+    font-size: 0.85rem;
+}
+
+.has-error {
+    input,
+    textarea,
+    select {
+        border-color: var(--color-danger);
+    }
+}

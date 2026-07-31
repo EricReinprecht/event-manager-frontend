@@ -1,0 +1,137 @@
+.form-multiselect {
+    width: 100%;
+}
+
+.select__control {
+    min-height: 48px;
+
+    border-radius: var(--radius-md) !important;
+
+    border: 1px solid var(--color-border) !important;
+
+    background: var(--color-surface) !important;
+
+    box-shadow: none !important;
+
+    cursor: pointer;
+
+    &:hover {
+        border-color: var(--color-primary) !important;
+    }
+}
+
+.select__value-container {
+    padding: 0 var(--space-sm);
+}
+
+.select__single-value {
+    color: var(--color-text);
+}
+
+.select__input-container {
+    color: var(--color-text);
+}
+
+.select__menu {
+    background: var(--color-surface);
+
+    border: 1px solid var(--color-border);
+
+    border-radius: var(--radius-md);
+
+    overflow: hidden;
+
+    box-shadow: var(--shadow-lg);
+}
+
+.select__option {
+    background: transparent;
+
+    color: var(--color-text);
+
+    cursor: pointer;
+
+    &:hover {
+        background: var(--color-background);
+    }
+
+    &--is-selected {
+        background: var(--color-primary);
+
+        color: var(--color-text-inverse, white);
+    }
+
+    &--is-focused {
+        background: var(--color-background);
+    }
+}
+
+.select__multi-value {
+    background: var(--color-primary);
+
+    border-radius: var(--radius-sm);
+}
+
+.select__multi-value__label {
+    color: var(--color-text-inverse, white);
+}
+
+.select__multi-value__remove {
+    color: var(--color-text-inverse, white);
+
+    cursor: pointer;
+
+    &:hover {
+        background: rgba(0, 0, 0, 0.15);
+
+        color: white;
+    }
+}
+
+/* Disabled React Select */
+
+.select__control--is-disabled {
+    min-height: 48px !important;
+
+    background: var(--color-surface) !important;
+
+    opacity: 1 !important;
+
+    cursor: not-allowed;
+}
+
+.select__control--is-disabled .select__value-container {
+    padding-top: 0 !important;
+
+    padding-bottom: 0 !important;
+
+    align-items: center;
+
+    input {
+        display: none;
+    }
+
+    .select__multi-value__label {
+        padding-right: 6px;
+    }
+
+    .select__multi-value__remove {
+        display: none;
+    }
+}
+
+.select__control--is-disabled .select__multi-value {
+    margin-top: 0 !important;
+
+    margin-bottom: 0 !important;
+}
+
+.select__control--is-disabled .select__multi-value__label {
+    padding-top: 4px;
+
+    padding-bottom: 4px;
+}
+
+.select__control--is-disabled .select__indicators {
+    height: 48px;
+}

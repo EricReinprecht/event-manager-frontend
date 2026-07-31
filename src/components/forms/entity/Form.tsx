@@ -1,6 +1,6 @@
 import type { FormSectionConfig } from './types';
 import FormSection from './FormSection';
-import '@styles/forms/entity-form.scss';
+import '@styles/forms/entity-form/index.scss';
 
 interface Props {
     title: string;

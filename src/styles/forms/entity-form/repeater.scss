@@ -1,0 +1,125 @@
+.form-repeater {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: var(--space-md);
+
+    width: 100%;
+
+    &__item {
+        padding: var(--space-md);
+
+        border-radius: var(--radius-lg);
+
+        background: var(--color-background);
+
+        display: flex;
+
+        flex-direction: column;
+
+        gap: var(--space-md);
+    }
+
+    &__fields {
+        display: flex;
+
+        flex-direction: column;
+
+        gap: var(--space-md);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Collapsible repeater items
+    |--------------------------------------------------------------------------
+    */
+
+    .form-section--collapsible {
+        border: 1px solid var(--color-border);
+
+        border-radius: var(--radius-lg);
+
+        overflow: hidden;
+
+        background: var(--color-background);
+    }
+
+    .form-section__header {
+        display: flex;
+
+        align-items: center;
+
+        justify-content: space-between;
+
+        width: 100%;
+
+        padding: var(--space-md);
+
+        background: var(--color-background);
+
+        border: none;
+
+        cursor: pointer;
+
+        color: var(--color-text);
+
+        font-size: 1rem;
+
+        font-weight: 600;
+
+        text-align: left;
+
+        &:hover {
+            background: var(--color-background-hover);
+        }
+
+        svg {
+            transition: transform 0.2s ease;
+        }
+
+        svg.is-open {
+            transform: rotate(180deg);
+        }
+    }
+
+    .form-section__body {
+        padding: var(--space-md);
+
+        border-top: 1px solid var(--color-border);
+    }
+
+    .form-row {
+        display: flex;
+
+        gap: var(--space-md);
+
+        width: 100%;
+
+        .form-input {
+            flex: 1;
+        }
+    }
+
+    .form-button {
+        width: auto;
+
+        margin-top: 0;
+    }
+
+    .form-button--success {
+        background: var(--color-success);
+
+        &:hover {
+            background: var(--color-success-hover);
+        }
+    }
+
+    .form-button--danger {
+        background: var(--color-danger);
+
+        &:hover {
+            background: var(--color-danger-hover);
+        }
+    }
+}
