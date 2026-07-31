@@ -19,6 +19,7 @@
             "error": "Party konnte nicht erstellt werden.",
             "sections": {
                 "general": "Allgemeine Informationen",
+                "location": "Geografische Angaben",
                 "schedule": "Zeitplan"
             }
         },

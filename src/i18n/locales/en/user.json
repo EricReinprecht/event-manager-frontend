@@ -19,6 +19,7 @@
             "error": "Failed to create party.",
             "sections": {
                 "general": "General Information",
+                "location": "Location Data",
                 "schedule": "Schedule"
             }
         },

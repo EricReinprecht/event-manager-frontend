@@ -26,20 +26,6 @@ export function createPartyForm(
                 },
 
                 {
-                    name: 'categoryIds',
-                    label: t('party.fields.categories'),
-                    type: 'multiselect',
-                    required: true,
-                    options: categories,
-                },
-            ],
-        },
-
-        {
-            title: t('party.create.sections.location'),
-
-            fields: [
-                {
                     name: 'locationName',
                     label: t('party.fields.locationName'),
                     type: 'text',
@@ -50,6 +36,14 @@ export function createPartyForm(
                     name: 'location',
                     label: 'Search location',
                     type: 'location',
+                },
+
+                {
+                    name: 'categoryIds',
+                    label: t('party.fields.categories'),
+                    type: 'multiselect',
+                    required: true,
+                    options: categories,
                 },
             ],
         },
