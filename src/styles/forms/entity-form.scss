@@ -566,5 +566,38 @@
                 }
             }
         }
+        .location-picker__metadata {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+
+            h4 {
+                margin: 0;
+                font-size: 0.95rem;
+                font-weight: 600;
+            }
+        }
+
+        .location-picker__row {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .location-picker__field {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            gap: 0.35rem;
+
+            label {
+                font-size: 0.8rem;
+                font-weight: 600;
+                color: var(--text-secondary);
+            }
+        }
+
+        .location-picker__field--small {
+            flex: 0 0 120px;
+        }
     }
 }

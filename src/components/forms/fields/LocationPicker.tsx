@@ -293,21 +293,55 @@ export default function LocationPicker({ value, onChange, disabled = false }: Pr
             {warning && <p className="location-picker__warning">⚠ {warning}</p>}
 
             <div className="location-picker__metadata">
-                <input value={value?.street ?? ''} placeholder="Street" disabled />
+                <h4>Address details</h4>
 
-                <input value={value?.houseNumber ?? ''} placeholder="House number" disabled />
+                <div className="location-picker__row">
+                    <div className="location-picker__field">
+                        <label>Street</label>
+                        <input value={value?.street ?? ''} disabled />
+                    </div>
 
-                <input value={value?.city ?? ''} placeholder="City" disabled />
+                    <div className="location-picker__field">
+                        <label>House No.</label>
+                        <input value={value?.houseNumber ?? ''} disabled />
+                    </div>
+                </div>
 
-                <input value={value?.country ?? ''} placeholder="Country" disabled />
+                <div className="location-picker__row">
+                    <div className="location-picker__field">
+                        <label>City</label>
+                        <input value={value?.city ?? ''} disabled />
+                    </div>
 
-                <input value={value?.postalCode ?? ''} placeholder="Postal code" disabled />
+                    <div className="location-picker__field">
+                        <label>Postal code</label>
+                        <input value={value?.postalCode ?? ''} disabled />
+                    </div>
+                </div>
 
-                <input value={value?.latitude ?? ''} placeholder="Latitude" disabled />
+                <div className="location-picker__row">
+                    <div className="location-picker__field">
+                        <label>Country</label>
+                        <input value={value?.country ?? ''} disabled />
+                    </div>
 
-                <input value={value?.longitude ?? ''} placeholder="Longitude" disabled />
+                    <div className="location-picker__field">
+                        <label>Timezone</label>
+                        <input value={value?.timezone ?? ''} disabled />
+                    </div>
+                </div>
 
-                <input value={value?.timezone ?? ''} placeholder="Timezone" disabled />
+                <div className="location-picker__row">
+                    <div className="location-picker__field">
+                        <label>Latitude</label>
+                        <input value={value?.latitude ?? ''} disabled />
+                    </div>
+
+                    <div className="location-picker__field">
+                        <label>Longitude</label>
+                        <input value={value?.longitude ?? ''} disabled />
+                    </div>
+                </div>
             </div>
 
             <div className="location-picker__map">
