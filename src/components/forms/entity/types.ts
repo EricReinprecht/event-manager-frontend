@@ -46,6 +46,10 @@ export interface FormFieldConfig {
     collapsible?: boolean;
 
     defaultOpen?: boolean;
+
+    titleField?: string;
+
+    titleFormatter?: (item: any, index: number) => string;
 }
 
 export interface FormSectionConfig {

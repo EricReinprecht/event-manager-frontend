@@ -90,6 +90,7 @@
             "accessWindows": "Access Windows",
 
             "accessWindow": {
+                "title": "Access Window",
                 "add": "Add Access Window",
                 "remove": "Remove Access Window",
                 "item": "Access Window",

@@ -113,6 +113,8 @@ export function createPartyForm(
 
                     itemLabel: t('party.ticketCategory.item'),
 
+                    titleField: 'name',
+
                     fields: [
                         {
                             name: 'name',
@@ -157,6 +159,19 @@ export function createPartyForm(
                             removeLabel: t('party.ticketCategory.accessWindow.remove'),
 
                             itemLabel: t('party.ticketCategory.accessWindow.item'),
+
+                            titleFormatter: (item) => {
+                                if (
+                                    !item.startDate ||
+                                    !item.startTime ||
+                                    !item.endDate ||
+                                    !item.endTime
+                                ) {
+                                    return t('party.ticketCategory.accessWindow.title');
+                                }
+
+                                return `${item.startDate} ${item.startTime} - ${item.endDate} ${item.endTime}`;
+                            },
 
                             rows: [
                                 [

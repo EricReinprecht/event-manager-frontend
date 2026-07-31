@@ -234,6 +234,8 @@ export default function FormField({ field, value, onChange, disabled = false }: 
                     onChange={(items) => onChange(field.name, items)}
                     collapsible={field.collapsible}
                     defaultOpen={field.defaultOpen}
+                    titleField={field.titleField}
+                    titleFormatter={field.titleFormatter}
                 />
             )}
         </div>

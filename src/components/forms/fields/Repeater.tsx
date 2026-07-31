@@ -22,6 +22,10 @@ interface Props {
     collapsible?: boolean;
 
     defaultOpen?: boolean;
+
+    titleField?: string;
+
+    titleFormatter?: (item: any, index: number) => string;
 }
 
 export default function Repeater({
@@ -35,6 +39,8 @@ export default function Repeater({
     itemLabel = 'Item',
     collapsible = true,
     defaultOpen = false,
+    titleField,
+    titleFormatter,
 }: Props) {
     function addItem() {
         onChange([...value, {}]);
@@ -53,6 +59,18 @@ export default function Repeater({
         };
 
         onChange(items);
+    }
+
+    function getTitle(item: any, index: number) {
+        if (titleFormatter) {
+            return titleFormatter(item, index);
+        }
+
+        if (titleField && item[titleField]) {
+            return item[titleField];
+        }
+
+        return `${itemLabel} ${index + 1}`;
     }
 
     function renderItem(item: any, index: number) {
@@ -104,7 +122,7 @@ export default function Repeater({
                 collapsible ? (
                     <CollapsibleSection
                         key={index}
-                        title={`${itemLabel} ${index + 1}`}
+                        title={getTitle(item, index)}
                         defaultOpen={defaultOpen}
                     >
                         {renderItem(item, index)}

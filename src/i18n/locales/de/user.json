@@ -91,6 +91,7 @@
             "accessWindows": "Zutrittsfenster",
 
             "accessWindow": {
+                "title": "Zutrittsfenster",
                 "add": "Zutrittsfenster hinzufügen",
                 "remove": "Zutrittsfenster entfernen",
                 "item": "Zutrittsfenster",
