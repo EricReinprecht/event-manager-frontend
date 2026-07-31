@@ -19,7 +19,7 @@ export interface Party {
     Title: string;
     startAt: string;
     endAt: string;
-    location: string;
+    locationName: string;
 }
 
 export interface PaginatedParties {
@@ -35,6 +35,7 @@ export interface PartyFilter {
     name?: string;
     startAt?: string;
     endAt?: string;
+    locationName?: string;
     sorts?: string;
 }
 export interface PartyFormValues {

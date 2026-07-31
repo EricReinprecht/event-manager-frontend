@@ -27,8 +27,8 @@ export function USER_PARTIES_COLUMNS(t: TFunction<'user'>): DataListColumn<Party
         },
 
         {
-            key: 'location',
-            label: t('party.table.location'),
+            key: 'locationName',
+            label: t('party.table.locationName'),
             sortable: true,
         },
     ];

@@ -79,6 +79,7 @@ export default function UserPartiesPage() {
                     name: filters.name ?? '',
                     startAt: filters.startAt ?? '',
                     endAt: filters.endAt ?? '',
+                    locationName: filters.locationName ?? '',
                 }}
 
                 sorts={filters.sorts ?? ''}

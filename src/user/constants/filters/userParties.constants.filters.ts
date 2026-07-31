@@ -21,5 +21,11 @@ export function USER_PARTIES_FILTERS(t: TFunction<'user'>): DataListFilter[] {
             label: t('party.filters.endDate'),
             type: 'date',
         },
+
+        {
+            key: 'locationName',
+            label: t('party.filters.locationName'),
+            type: 'text',
+        },
     ];
 }

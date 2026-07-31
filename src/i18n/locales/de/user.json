@@ -39,24 +39,25 @@
             "name": "Name",
             "start": "Start",
             "end": "Ende",
-            "location": "Ort"
+            "locationName": "Ort"
         },
         "filters": {
             "name": "Name",
             "startDate": "Startdatum",
             "endDate": "Enddatum",
+            "locationName": "Ort",
             "actions": "Aktionen"
         },
         "columns": {
             "name": "Name",
             "start": "Beginn",
             "end": "Ende",
-            "location": "Ort"
+            "locationName": "Ort"
         },
         "fields": {
             "title": "Titel",
             "description": "Beschreibung",
-            "location": "Ort",
+            "locationName": "Ort",
             "categories": "Kategorien",
             "start": "Start",
             "end": "Ende"

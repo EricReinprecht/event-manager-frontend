@@ -27,7 +27,7 @@ export function createPartyForm(
 
                 {
                     name: 'locationName',
-                    label: t('party.fields.location'),
+                    label: t('party.fields.locationName'),
                     type: 'text',
                     required: true,
                 },
