@@ -58,7 +58,7 @@ export default function PartyFormLayout({
 
     const [values, setValues] = useState<Partial<PartyFormValues>>(initialValues);
 
-    const [errors, setErrors] = useState<Record<string, string>>({});
+    const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
 
     const [validationAttempt, setValidationAttempt] = useState(0);
 
@@ -78,7 +78,7 @@ export default function PartyFormLayout({
             if (hasSubmittedRef.current) {
                 const validationErrors = validateCurrentValues(nextValues);
 
-                setErrors(validationErrors);
+                setValidationErrors(validationErrors);
             }
 
             return nextValues;
@@ -94,7 +94,7 @@ export default function PartyFormLayout({
 
         const validationErrors = validateCurrentValues(values);
 
-        setErrors(validationErrors);
+        setValidationErrors(validationErrors);
 
         if (Object.keys(validationErrors).length > 0) {
             setValidationAttempt((current) => current + 1);
@@ -105,6 +105,8 @@ export default function PartyFormLayout({
 
             return;
         }
+
+        setValidationErrors({});
 
         const { categoryIds, startDate, startTime, endDate, endTime, ticketCategories, ...rest } =
             values;
@@ -133,8 +135,6 @@ export default function PartyFormLayout({
             })),
         } as CreatePartyRequest | UpdatePartyRequest;
 
-        setErrors({});
-
         onSubmit(payload);
     }
 
@@ -148,7 +148,7 @@ export default function PartyFormLayout({
             disabled={disabled}
             submitLabel={loading ? t(`party.${mode}.saving`) : t(`party.${mode}.submit`)}
             actionButton={actionButton}
-            errors={errors}
+            errors={validationErrors}
             validationAttempt={validationAttempt}
         />
     );
