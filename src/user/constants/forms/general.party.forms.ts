@@ -16,7 +16,7 @@ export default function createGeneralSection(categories: any[], t: any): FormSec
 
                 validation: {
                     required: true,
-                    minLength: 5,
+                    minLength: 1,
                     maxLength: 100,
                 },
             },
