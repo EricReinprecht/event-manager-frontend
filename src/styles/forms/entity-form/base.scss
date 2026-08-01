@@ -28,4 +28,20 @@
             flex: 1;
         }
     }
+
+    .form-validation-summary {
+        padding: var(--space-md);
+
+        margin-bottom: var(--space-lg);
+
+        border: 1px solid var(--color-danger);
+
+        border-radius: var(--radius-lg);
+
+        background: var(--color-danger-background);
+
+        color: var(--color-danger);
+
+        line-height: 1.5;
+    }
 }

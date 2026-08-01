@@ -2,6 +2,8 @@ import type { FormSectionConfig } from './types';
 import FormSection from './FormSection';
 import '@styles/forms/entity-form/index.scss';
 
+import { useTranslation } from 'react-i18next';
+
 interface Props {
     title: string;
 
@@ -30,48 +32,64 @@ export default function Form({
     values,
     onChange,
     onSubmit,
-    submitLabel = 'Save',
     disabled = false,
+    submitLabel,
     actionButton,
     errors = {},
     validationAttempt = 0,
 }: Props) {
+    const { t } = useTranslation('entityForm');
+
+    const errorCount = Object.keys(errors).length;
+
     return (
-        <>
-            <form
-                className="entity-form"
-                onSubmit={(e) => {
-                    e.preventDefault();
+        <form
+            className="entity-form"
+            onSubmit={(event) => {
+                event.preventDefault();
 
-                    if (!disabled) {
-                        onSubmit?.();
-                    }
-                }}
-            >
-                <div className="form-content">
-                    <h1>{title}</h1>
-                    {sections.map((section) => (
-                        <FormSection
-                            key={section.title}
-                            section={section}
-                            values={values}
-                            onChange={onChange}
-                            disabled={disabled}
-                            errors={errors}
-                            validationAttempt={validationAttempt}
-                        />
-                    ))}
-                </div>
-                <div className="form-actions">
-                    {onSubmit && (
-                        <button type="submit" className="form-button" disabled={disabled}>
-                            {submitLabel}
-                        </button>
-                    )}
+                onSubmit?.();
+            }}
+        >
+            <div className="entity-form__header">
+                <h1>{title}</h1>
+            </div>
 
-                    {actionButton}
+            {errorCount > 0 && (
+                <div className="form-validation-summary" role="alert" aria-live="polite">
+                    <strong>
+                        {t('validation.summary', {
+                            count: errorCount,
+                        })}
+                    </strong>
                 </div>
-            </form>
-        </>
+            )}
+
+            {sections.map((section) => (
+                <FormSection
+                    key={section.id}
+                    section={section}
+                    values={values}
+                    onChange={onChange}
+                    disabled={disabled}
+                    errors={errors}
+                    validationAttempt={validationAttempt}
+                />
+            ))}
+
+            <div className="form-actions">
+                {onSubmit && (
+                    <button
+                        type="submit"
+                        className="form-button form-button--primary"
+                        disabled={disabled}
+                    >
+                        {submitLabel}
+                    </button>
+                )}
+
+                {actionButton}
+            </div>
+        </form>
     );
 }

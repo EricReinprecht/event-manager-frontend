@@ -1,0 +1,6 @@
+{
+    "validation": {
+        "summary_one": "Please fix {{count}} validation error before continuing.",
+        "summary_other": "Please fix {{count}} validation errors before continuing."
+    }
+}

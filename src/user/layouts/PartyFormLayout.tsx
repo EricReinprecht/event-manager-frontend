@@ -1,7 +1,9 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import Form from '@components/forms/entity/Form';
+import validateForm from '@components/forms/entity/validateForm';
+import scrollToFirstError from '@/components/forms/entity/helper';
 
 import { createPartyForm } from '../constants/forms/create.party.forms';
 
@@ -14,9 +16,6 @@ import type {
 } from '@user/types/party.types';
 
 import buildDateTime from '@/helper/build-datetime';
-
-import validateForm from '@components/forms/entity/validateForm';
-import scrollToFirstError from '@/components/forms/entity/helper';
 
 interface Props {
     mode: 'create' | 'edit' | 'view';
@@ -39,13 +38,23 @@ export default function PartyFormLayout({
     initialValues = {},
     onSubmit,
     loading = false,
-    error = false,
     disabled = false,
     actionButton,
 }: Props) {
     const { t } = useTranslation('user');
 
-    const { data: categories = [], isLoading: categoriesLoading } = useCategories();
+    const { data: categories = [] } = useCategories();
+
+    const categoryOptions = useMemo(
+        () =>
+            categories.map((category) => ({
+                label: category.name,
+                value: category.id,
+            })),
+        [categories],
+    );
+
+    const sections = useMemo(() => createPartyForm(categoryOptions, t), [categoryOptions, t]);
 
     const [values, setValues] = useState<Partial<PartyFormValues>>(initialValues);
 
@@ -53,11 +62,27 @@ export default function PartyFormLayout({
 
     const [validationAttempt, setValidationAttempt] = useState(0);
 
+    const hasSubmittedRef = useRef(false);
+
+    function validateCurrentValues(nextValues: Partial<PartyFormValues>) {
+        return validateForm(nextValues, sections);
+    }
+
     function update(name: string, value: unknown) {
-        setValues((current) => ({
-            ...current,
-            [name]: value,
-        }));
+        setValues((current) => {
+            const nextValues = {
+                ...current,
+                [name]: value,
+            };
+
+            if (hasSubmittedRef.current) {
+                const validationErrors = validateCurrentValues(nextValues);
+
+                setErrors(validationErrors);
+            }
+
+            return nextValues;
+        });
     }
 
     function submit() {
@@ -65,13 +90,13 @@ export default function PartyFormLayout({
             return;
         }
 
-        const validationErrors = validateForm(values, sections);
+        hasSubmittedRef.current = true;
+
+        const validationErrors = validateCurrentValues(values);
 
         setErrors(validationErrors);
 
         if (Object.keys(validationErrors).length > 0) {
-            setErrors(validationErrors);
-
             setValidationAttempt((current) => current + 1);
 
             window.setTimeout(() => {
@@ -86,7 +111,7 @@ export default function PartyFormLayout({
 
         const timezone = values.location?.timezone;
 
-        onSubmit({
+        const payload = {
             ...rest,
 
             startAt: buildDateTime(startDate!, startTime!, timezone!),
@@ -106,19 +131,12 @@ export default function PartyFormLayout({
                     endsAt: buildDateTime(window.endDate, window.endTime, timezone!),
                 })),
             })),
-        } as CreatePartyRequest | UpdatePartyRequest);
+        } as CreatePartyRequest | UpdatePartyRequest;
+
+        setErrors({});
+
+        onSubmit(payload);
     }
-
-    const categoryOptions = useMemo(
-        () =>
-            categories.map((category) => ({
-                label: category.name,
-                value: category.id,
-            })),
-        [categories],
-    );
-
-    const sections = useMemo(() => createPartyForm(categoryOptions, t), [categoryOptions, t]);
 
     return (
         <Form
