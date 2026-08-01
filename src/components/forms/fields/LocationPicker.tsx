@@ -363,7 +363,7 @@ export default function LocationPicker({
                     gestureHandling="cooperative"
                     disableDefaultUI
                 >
-                    <MapController position={position} disabled={disabled} />
+                    <MapController position={position} />
 
                     <MapClickHandler />
 
@@ -378,13 +378,11 @@ export default function LocationPicker({
 
 function MapController({
     position,
-    disabled,
 }: {
     position: {
         lat: number;
         lng: number;
     } | null;
-    disabled: boolean;
 }) {
     const map = useMap();
 
