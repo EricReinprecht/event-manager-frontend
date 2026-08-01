@@ -23,16 +23,18 @@ export default function FormSection({
     disabled = false,
     errors = {},
 }: Props) {
-    function getFieldErrors(name: string) {
-        return Object.entries(errors)
-            .filter(([key]) => key.startsWith(name))
-            .reduce(
-                (acc, [key, value]) => ({
-                    ...acc,
-                    [key]: value,
-                }),
-                {} as Record<string, string>,
-            );
+    function getFieldErrors(fieldName: string): Record<string, string> {
+        const prefix = `${fieldName}.`;
+
+        return Object.entries(errors).reduce<Record<string, string>>((result, [key, message]) => {
+            if (!key.startsWith(prefix)) {
+                return result;
+            }
+
+            result[key.substring(prefix.length)] = message;
+
+            return result;
+        }, {});
     }
 
     const sectionError = errors[`_section_${section.id}`];

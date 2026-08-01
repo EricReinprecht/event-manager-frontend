@@ -1,26 +1,34 @@
-import type { FormSectionConfig, FormFieldConfig } from '@components/forms/entity/types';
+import type { FormFieldConfig, FormSectionConfig } from '@components/forms/entity/types';
 
 export default function validateForm(values: Record<string, any>, sections: FormSectionConfig[]) {
     const errors: Record<string, string> = {};
 
     function validateField(field: FormFieldConfig, value: any, path?: string) {
         const name = path ?? field.name;
-
         const rules = field.validation;
 
         if (rules) {
             if (rules.required && (value === undefined || value === null || value === '')) {
                 errors[name] = rules.message?.required ?? 'This field is required.';
+
                 return;
             }
 
-            if (typeof value === 'string' && rules.minLength && value.length < rules.minLength) {
+            if (
+                typeof value === 'string' &&
+                rules.minLength !== undefined &&
+                value.length < rules.minLength
+            ) {
                 errors[name] = rules.message?.minLength ?? `Minimum length is ${rules.minLength}`;
 
                 return;
             }
 
-            if (typeof value === 'string' && rules.maxLength && value.length > rules.maxLength) {
+            if (
+                typeof value === 'string' &&
+                rules.maxLength !== undefined &&
+                value.length > rules.maxLength
+            ) {
                 errors[name] = rules.message?.maxLength ?? `Maximum length is ${rules.maxLength}`;
 
                 return;
@@ -45,35 +53,35 @@ export default function validateForm(values: Record<string, any>, sections: Form
             }
         }
 
-        // repeater validation
-        if (field.type === 'repeater' && Array.isArray(value)) {
-            value.forEach((item, index) => {
-                // custom repeater validator
-                if (field.validate) {
-                    const itemErrors = field.validate(item, values);
-
-                    Object.entries(itemErrors).forEach(([message]) => {
-                        if (message) {
-                            errors[`${name}.${index}._repeater`] = message;
-                        }
-                    });
-                }
-
-                // nested fields
-                field.fields?.forEach((child) => {
-                    validateField(child, item[child.name], `${name}.${index}.${child.name}`);
-                });
-
-                // nested rows
-                field.rows?.flat().forEach((child) => {
-                    validateField(child, item[child.name], `${name}.${index}.${child.name}`);
-                });
-            });
+        if (field.type !== 'repeater' || !Array.isArray(value)) {
+            return;
         }
+
+        value.forEach((item, index) => {
+            if (field.validate) {
+                const itemErrors = field.validate(item, values);
+
+                const repeaterMessage = Object.values(itemErrors).find(
+                    (message): message is string =>
+                        typeof message === 'string' && message.length > 0,
+                );
+
+                if (repeaterMessage) {
+                    errors[`${name}.${index}._repeater`] = repeaterMessage;
+                }
+            }
+
+            field.fields?.forEach((child) => {
+                validateField(child, item[child.name], `${name}.${index}.${child.name}`);
+            });
+
+            field.rows?.flat().forEach((child) => {
+                validateField(child, item[child.name], `${name}.${index}.${child.name}`);
+            });
+        });
     }
 
     sections.forEach((section) => {
-        // section validation
         if (section.validate) {
             const sectionError = section.validate(values);
 
@@ -82,12 +90,10 @@ export default function validateForm(values: Record<string, any>, sections: Form
             }
         }
 
-        // normal fields
         section.fields?.forEach((field) => {
             validateField(field, values[field.name]);
         });
 
-        // row fields
         section.rows?.flat().forEach((field) => {
             validateField(field, values[field.name]);
         });

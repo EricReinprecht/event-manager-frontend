@@ -79,46 +79,62 @@ export default function Repeater({
         return `${itemLabel} ${index + 1}`;
     }
 
-    function getItemErrors(index: number) {
-        const prefix = `${name}.${index}.`;
-
-        return Object.entries(errors)
-            .filter(([key]) => key.startsWith(prefix))
-            .map(([, message]) => message);
+    function getFieldError(index: number, fieldName: string) {
+        return errors[`${index}.${fieldName}`];
     }
 
+    function getRepeaterError(index: number) {
+        return errors[`${index}._repeater`];
+    }
+
+    function getChildErrors(index: number, fieldName: string) {
+        const prefix = `${index}.${fieldName}.`;
+
+        return Object.entries(errors).reduce<Record<string, string>>((result, [key, message]) => {
+            if (!key.startsWith(prefix)) {
+                return result;
+            }
+
+            result[key.substring(prefix.length)] = message;
+
+            return result;
+        }, {});
+    }
+
+    function renderField(field: FormFieldConfig, item: any, index: number) {
+        return (
+            <FormField
+                key={field.name}
+                field={field}
+                value={item[field.name]}
+                disabled={disabled}
+                error={getFieldError(index, field.name)}
+                fieldErrors={getChildErrors(index, field.name)}
+                onChange={(fieldName, newValue) => updateItem(index, fieldName, newValue)}
+            />
+        );
+    }
+
+    console.log(errors);
+
     function renderItem(item: any, index: number) {
-        const itemErrors = getItemErrors(index);
+        const repeaterError = getRepeaterError(index);
+
+        console.log(repeaterError);
 
         return (
             <div className="form-repeater__item">
                 <div className="form-repeater__fields">
-                    {fields.map((field) => (
-                        <FormField
-                            key={field.name}
-                            field={field}
-                            value={item[field.name]}
-                            disabled={disabled}
-                            onChange={(fieldName, value) => updateItem(index, fieldName, value)}
-                        />
-                    ))}
+                    {fields.map((field) => renderField(field, item, index))}
 
                     {rows.map((row, rowIndex) => (
                         <div className="form-row" key={rowIndex}>
-                            {row.map((field) => (
-                                <FormField
-                                    key={field.name}
-                                    field={field}
-                                    value={item[field.name]}
-                                    disabled={disabled}
-                                    onChange={(fieldName, value) =>
-                                        updateItem(index, fieldName, value)
-                                    }
-                                />
-                            ))}
+                            {row.map((field) => renderField(field, item, index))}
                         </div>
                     ))}
                 </div>
+
+                {repeaterError && <p className="form-error">{repeaterError}</p>}
 
                 {!disabled && (
                     <button
@@ -128,14 +144,6 @@ export default function Repeater({
                     >
                         {removeLabel}
                     </button>
-                )}
-
-                {itemErrors.length > 0 && (
-                    <div className="form-error">
-                        {itemErrors.map((message, errorIndex) => (
-                            <p key={errorIndex}>{message}</p>
-                        ))}
-                    </div>
                 )}
             </div>
         );
