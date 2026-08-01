@@ -389,7 +389,7 @@ function MapController({
     const map = useMap();
 
     useEffect(() => {
-        if (!map || !position || disabled) {
+        if (!map || !position) {
             return;
         }
 
