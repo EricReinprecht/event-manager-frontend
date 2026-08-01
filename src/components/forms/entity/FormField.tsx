@@ -16,6 +16,7 @@ interface Props {
     disabled?: boolean;
     error?: string;
     fieldErrors?: Record<string, string>;
+    repeaterDepth?: number;
 }
 
 export default function FormField({
@@ -25,6 +26,7 @@ export default function FormField({
     disabled = false,
     error,
     fieldErrors = {},
+    repeaterDepth = 0,
 }: Props) {
     if (field.type === 'hidden') {
         return (
@@ -235,6 +237,7 @@ export default function FormField({
                     titleField={field.titleField}
                     titleFormatter={field.titleFormatter}
                     errors={fieldErrors}
+                    depth={repeaterDepth}
                 />
             )}
 

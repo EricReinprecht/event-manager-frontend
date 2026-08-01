@@ -1,4 +1,8 @@
 .form-repeater {
+    --repeater-header-background: var(--color-background);
+    --repeater-body-background: var(--color-background);
+    --repeater-hover-background: var(--color-background-hover);
+
     display: flex;
 
     flex-direction: column;
@@ -7,12 +11,18 @@
 
     width: 100%;
 
+    &[data-theme='odd'] {
+        --repeater-header-background: var(--color-surface);
+        --repeater-body-background: var(--color-surface);
+        --repeater-hover-background: var(--color-surface-hover);
+    }
+
     &__item {
         padding: var(--space-md);
 
         border-radius: var(--radius-lg);
 
-        background: var(--color-background);
+        background: var(--repeater-body-background);
 
         display: flex;
 
@@ -42,7 +52,7 @@
 
         overflow: hidden;
 
-        background: var(--color-background);
+        background: var(--repeater-header-background);
     }
 
     .form-section__header {
@@ -56,7 +66,7 @@
 
         padding: var(--space-md);
 
-        background: var(--color-background);
+        background: var(--repeater-header-background);
 
         border: none;
 
@@ -70,8 +80,10 @@
 
         text-align: left;
 
+        transition: background-color 0.2s ease;
+
         &:hover {
-            background: var(--color-background-hover);
+            background: var(--repeater-hover-background);
         }
 
         svg {
@@ -85,6 +97,8 @@
 
     .form-section__body {
         padding: var(--space-md);
+
+        background: var(--repeater-body-background);
 
         border-top: 1px solid var(--color-border);
     }
