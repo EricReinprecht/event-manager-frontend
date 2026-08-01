@@ -101,15 +101,24 @@ export default function Repeater({
     function getChildErrors(index: number, fieldName: string) {
         const prefix = `${index}.${fieldName}.`;
 
-        return Object.entries(errors).reduce<Record<string, string>>((result, [key, message]) => {
-            if (!key.startsWith(prefix)) {
+        return Object.entries(errors).reduce<Record<string, string>>(
+            (result, [errorPath, message]) => {
+                if (!errorPath.startsWith(prefix)) {
+                    return result;
+                }
+
+                result[errorPath.substring(prefix.length)] = message;
+
                 return result;
-            }
+            },
+            {},
+        );
+    }
 
-            result[key.substring(prefix.length)] = message;
+    function getItemErrorCount(index: number) {
+        const prefix = `${index}.`;
 
-            return result;
-        }, {});
+        return Object.keys(errors).filter((errorPath) => errorPath.startsWith(prefix)).length;
     }
 
     function renderField(field: FormFieldConfig, item: any, index: number) {
@@ -163,27 +172,33 @@ export default function Repeater({
         );
     }
 
-    function itemHasErrors(index: number) {
-        return Object.keys(errors).some((errorPath) => errorPath.startsWith(`${index}.`));
-    }
-
     return (
-        <div className="form-repeater">
-            {value.map((item, index) =>
-                collapsible ? (
-                    <CollapsibleSection
-                        key={index}
-                        title={getTitle(item, index)}
-                        defaultOpen={defaultOpen}
-                        forceOpen={itemHasErrors(index)}
-                        forceOpenKey={validationAttempt}
-                    >
-                        {renderItem(item, index)}
-                    </CollapsibleSection>
-                ) : (
-                    <div key={index}>{renderItem(item, index)}</div>
-                ),
-            )}
+        <div
+            className="form-repeater"
+            data-depth={depth}
+            data-theme={depth % 2 === 0 ? 'even' : 'odd'}
+        >
+            {value.map((item, index) => {
+                const errorCount = getItemErrorCount(index);
+
+                if (collapsible) {
+                    return (
+                        <CollapsibleSection
+                            key={index}
+                            title={getTitle(item, index)}
+                            defaultOpen={defaultOpen}
+                            forceOpen={errorCount > 0}
+                            forceOpenKey={validationAttempt}
+                            errorCount={errorCount}
+                            variant="repeater"
+                        >
+                            {renderItem(item, index)}
+                        </CollapsibleSection>
+                    );
+                }
+
+                return <div key={index}>{renderItem(item, index)}</div>;
+            })}
 
             {!disabled && (
                 <button

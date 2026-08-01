@@ -137,3 +137,8 @@
         }
     }
 }
+.form-section--repeater {
+    border-color: var(--color-danger);
+
+    box-shadow: 0 0 0 1px var(--color-danger);
+}

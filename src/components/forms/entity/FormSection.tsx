@@ -29,36 +29,50 @@ export default function FormSection({
     function getFieldErrors(fieldName: string): Record<string, string> {
         const prefix = `${fieldName}.`;
 
-        return Object.entries(errors).reduce<Record<string, string>>((result, [key, message]) => {
-            if (!key.startsWith(prefix)) {
+        return Object.entries(errors).reduce<Record<string, string>>(
+            (result, [errorPath, message]) => {
+                if (!errorPath.startsWith(prefix)) {
+                    return result;
+                }
+
+                result[errorPath.substring(prefix.length)] = message;
+
                 return result;
-            }
-
-            result[key.substring(prefix.length)] = message;
-
-            return result;
-        }, {});
+            },
+            {},
+        );
     }
 
-    const sectionError = errors[`_section_${section.id}`];
+    const sectionErrorKey = `_section_${section.id}`;
+
+    const sectionError = errors[sectionErrorKey];
 
     const sectionFieldNames = [
         ...(section.fields ?? []).map((field) => field.name),
+
         ...(section.rows ?? []).flat().map((field) => field.name),
     ];
 
-    const hasErrors =
-        Boolean(sectionError) ||
-        Object.keys(errors).some((errorPath) =>
-            sectionFieldNames.some(
-                (fieldName) => errorPath === fieldName || errorPath.startsWith(`${fieldName}.`),
-            ),
+    function belongsToSection(errorPath: string): boolean {
+        if (errorPath === sectionErrorKey) {
+            return true;
+        }
+
+        return sectionFieldNames.some(
+            (fieldName) => errorPath === fieldName || errorPath.startsWith(`${fieldName}.`),
         );
+    }
+
+    const sectionErrorPaths = Object.keys(errors).filter(belongsToSection);
+
+    const hasErrors = sectionErrorPaths.length > 0;
+
+    const errorCount = sectionErrorPaths.length;
 
     const content = (
         <>
-            {section.rows?.map((row, index) => (
-                <div className="form-row" key={index}>
+            {section.rows?.map((row, rowIndex) => (
+                <div className="form-row" key={rowIndex}>
                     {row.map((field) => (
                         <FormField
                             key={field.name}
@@ -95,12 +109,14 @@ export default function FormSection({
 
     if (section.collapsible) {
         return (
-            <div data-error-key={`_section_${section.id}`}>
+            <div data-error-key={sectionErrorKey}>
                 <CollapsibleSection
                     title={section.title}
                     defaultOpen={section.defaultOpen}
                     forceOpen={hasErrors}
                     forceOpenKey={validationAttempt}
+                    errorCount={errorCount}
+                    variant="section"
                 >
                     {content}
                 </CollapsibleSection>
@@ -109,8 +125,15 @@ export default function FormSection({
     }
 
     return (
-        <section className="form-section" data-error-key={`_section_${section.id}`}>
-            <h2>{section.title}</h2>
+        <section
+            className={`form-section ${hasErrors ? 'form-section--has-errors' : ''}`}
+            data-error-key={sectionErrorKey}
+        >
+            <div className="form-section__title">
+                <h2>{section.title}</h2>
+
+                {errorCount > 0 && <span className="form-section__error-badge">{errorCount}</span>}
+            </div>
 
             {content}
         </section>
