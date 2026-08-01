@@ -69,6 +69,7 @@ export default function FormSection({
                             error={errors[field.name]}
                             fieldErrors={getFieldErrors(field.name)}
                             validationAttempt={validationAttempt}
+                            errorKey={field.name}
                         />
                     ))}
                 </div>
@@ -84,6 +85,7 @@ export default function FormSection({
                     error={errors[field.name]}
                     fieldErrors={getFieldErrors(field.name)}
                     validationAttempt={validationAttempt}
+                    errorKey={field.name}
                 />
             ))}
 
@@ -93,19 +95,21 @@ export default function FormSection({
 
     if (section.collapsible) {
         return (
-            <CollapsibleSection
-                title={section.title}
-                defaultOpen={section.defaultOpen}
-                forceOpen={hasErrors}
-                forceOpenKey={validationAttempt}
-            >
-                {content}
-            </CollapsibleSection>
+            <div data-error-key={`_section_${section.id}`}>
+                <CollapsibleSection
+                    title={section.title}
+                    defaultOpen={section.defaultOpen}
+                    forceOpen={hasErrors}
+                    forceOpenKey={validationAttempt}
+                >
+                    {content}
+                </CollapsibleSection>
+            </div>
         );
     }
 
     return (
-        <section className="form-section">
+        <section className="form-section" data-error-key={`_section_${section.id}`}>
             <h2>{section.title}</h2>
 
             {content}

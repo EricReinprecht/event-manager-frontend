@@ -18,6 +18,7 @@ interface Props {
     fieldErrors?: Record<string, string>;
     repeaterDepth?: number;
     validationAttempt?: number;
+    errorKey?: string;
 }
 
 export default function FormField({
@@ -29,6 +30,7 @@ export default function FormField({
     fieldErrors = {},
     repeaterDepth = 0,
     validationAttempt = 0,
+    errorKey,
 }: Props) {
     if (field.type === 'hidden') {
         return (
@@ -58,7 +60,7 @@ export default function FormField({
     };
 
     return (
-        <div className={`form-input ${inputClass}`}>
+        <div className={`form-input ${inputClass}`} data-error-key={errorKey ?? field.name}>
             <label>{field.label}</label>
 
             {field.type === 'text' && (
@@ -226,6 +228,7 @@ export default function FormField({
             {field.type === 'repeater' && (
                 <Repeater
                     name={field.name}
+                    path={errorKey ?? field.name}
                     value={value ?? []}
                     fields={field.fields ?? []}
                     rows={field.rows ?? []}

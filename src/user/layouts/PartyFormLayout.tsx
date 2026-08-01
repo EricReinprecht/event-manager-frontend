@@ -16,6 +16,7 @@ import type {
 import buildDateTime from '@/helper/build-datetime';
 
 import validateForm from '@components/forms/entity/validateForm';
+import scrollToFirstError from '@/components/forms/entity/helper';
 
 interface Props {
     mode: 'create' | 'edit' | 'view';
@@ -69,7 +70,14 @@ export default function PartyFormLayout({
         setErrors(validationErrors);
 
         if (Object.keys(validationErrors).length > 0) {
+            setErrors(validationErrors);
+
             setValidationAttempt((current) => current + 1);
+
+            window.setTimeout(() => {
+                scrollToFirstError(validationErrors);
+            }, 100);
+
             return;
         }
 

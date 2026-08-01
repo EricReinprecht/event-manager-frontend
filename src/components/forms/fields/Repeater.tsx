@@ -34,6 +34,8 @@ interface Props {
     depth?: number;
 
     validationAttempt?: number;
+
+    path?: string;
 }
 
 export default function Repeater({
@@ -53,7 +55,10 @@ export default function Repeater({
     errors = {},
     depth = 0,
     validationAttempt = 0,
+    path,
 }: Props) {
+    const repeaterPath = path ?? name;
+
     function addItem() {
         onChange([...value, {}]);
     }
@@ -108,6 +113,8 @@ export default function Repeater({
     }
 
     function renderField(field: FormFieldConfig, item: any, index: number) {
+        const fieldPath = `${repeaterPath}.${index}.${field.name}`;
+
         return (
             <FormField
                 key={field.name}
@@ -118,6 +125,7 @@ export default function Repeater({
                 fieldErrors={getChildErrors(index, field.name)}
                 repeaterDepth={depth + 1}
                 validationAttempt={validationAttempt}
+                errorKey={fieldPath}
                 onChange={(fieldName, newValue) => updateItem(index, fieldName, newValue)}
             />
         );
@@ -126,8 +134,10 @@ export default function Repeater({
     function renderItem(item: any, index: number) {
         const repeaterError = getRepeaterError(index);
 
+        const repeaterErrorKey = `${repeaterPath}.${index}._repeater`;
+
         return (
-            <div className="form-repeater__item">
+            <div className="form-repeater__item" data-error-key={repeaterErrorKey}>
                 <div className="form-repeater__fields">
                     {fields.map((field) => renderField(field, item, index))}
 
