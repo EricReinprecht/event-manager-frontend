@@ -26,6 +26,8 @@ interface Props {
     titleField?: string;
 
     titleFormatter?: (item: any, index: number) => string;
+
+    errors?: Record<string, string>;
 }
 
 export default function Repeater({
@@ -41,6 +43,7 @@ export default function Repeater({
     defaultOpen = false,
     titleField,
     titleFormatter,
+    errors = {},
 }: Props) {
     function addItem() {
         onChange([...value, {}]);
@@ -73,20 +76,24 @@ export default function Repeater({
         return `${itemLabel} ${index + 1}`;
     }
 
+    function getError(index: number, name: string) {
+        return errors[`${index}.${name}`];
+    }
+
     function renderItem(item: any, index: number) {
         return (
             <div className="form-repeater__item">
                 <div className="form-repeater__fields">
-                    {fields.length > 0 &&
-                        fields.map((field) => (
-                            <FormField
-                                key={field.name}
-                                field={field}
-                                value={item[field.name]}
-                                disabled={disabled}
-                                onChange={(name, value) => updateItem(index, name, value)}
-                            />
-                        ))}
+                    {fields.map((field) => (
+                        <FormField
+                            key={field.name}
+                            field={field}
+                            value={item[field.name]}
+                            disabled={disabled}
+                            error={getError(index, field.name)}
+                            onChange={(name, value) => updateItem(index, name, value)}
+                        />
+                    ))}
 
                     {rows.map((row, rowIndex) => (
                         <div className="form-row" key={rowIndex}>
@@ -96,6 +103,7 @@ export default function Repeater({
                                     field={field}
                                     value={item[field.name]}
                                     disabled={disabled}
+                                    error={getError(index, field.name)}
                                     onChange={(name, value) => updateItem(index, name, value)}
                                 />
                             ))}

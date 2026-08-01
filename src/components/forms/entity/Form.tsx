@@ -18,6 +18,8 @@ interface Props {
     disabled?: boolean;
 
     actionButton?: React.ReactNode;
+
+    errors?: Record<string, string>;
 }
 
 export default function Form({
@@ -29,6 +31,7 @@ export default function Form({
     submitLabel = 'Save',
     disabled = false,
     actionButton,
+    errors = {},
 }: Props) {
     return (
         <>
@@ -51,6 +54,7 @@ export default function Form({
                             values={values}
                             onChange={onChange}
                             disabled={disabled}
+                            errors={errors}
                         />
                     ))}
                 </div>

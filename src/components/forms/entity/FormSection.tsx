@@ -12,9 +12,17 @@ interface Props {
     onChange(name: string, value: any): void;
 
     disabled?: boolean;
+
+    errors?: Record<string, string>;
 }
 
-export default function FormSection({ section, values, onChange, disabled = false }: Props) {
+export default function FormSection({
+    section,
+    values,
+    onChange,
+    disabled = false,
+    errors = {},
+}: Props) {
     const content = (
         <>
             {section.rows?.map((row, index) => (
@@ -26,6 +34,7 @@ export default function FormSection({ section, values, onChange, disabled = fals
                             value={values[field.name]}
                             onChange={onChange}
                             disabled={disabled}
+                            error={errors[field.name]}
                         />
                     ))}
                 </div>
@@ -38,6 +47,7 @@ export default function FormSection({ section, values, onChange, disabled = fals
                     value={values[field.name]}
                     onChange={onChange}
                     disabled={disabled}
+                    error={errors[field.name]}
                 />
             ))}
         </>

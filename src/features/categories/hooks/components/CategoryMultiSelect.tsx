@@ -11,6 +11,8 @@ interface Props {
     onChange(value: string[]): void;
 
     disabled?: boolean;
+
+    error?: string;
 }
 
 export default function CategoryMultiSelect({
@@ -18,32 +20,30 @@ export default function CategoryMultiSelect({
     options,
     onChange,
     disabled = false,
+    error,
 }: Props) {
     const selected = options.filter((option) => value.includes(option.value));
 
     return (
-        <Select
-            classNamePrefix="select"
+        <div className={`form-multiselect ${error ? 'has-error' : ''}`}>
+            <Select
+                classNamePrefix="select"
+                isMulti
+                isSearchable={!disabled}
+                isDisabled={disabled}
+                options={options}
+                value={selected}
+                onChange={(items) => {
+                    if (disabled) {
+                        return;
+                    }
 
-            isMulti
+                    onChange(items.map((item) => item.value));
+                }}
+                placeholder="Select categories..."
+            />
 
-            isSearchable={!disabled}
-
-            isDisabled={disabled}
-
-            options={options}
-
-            value={selected}
-
-            onChange={(items) => {
-                if (disabled) {
-                    return;
-                }
-
-                onChange(items.map((item) => item.value));
-            }}
-
-            placeholder="Select categories..."
-        />
+            {error && <p className="form-error">{error}</p>}
+        </div>
     );
 }

@@ -1,8 +1,9 @@
+import type { ValidationConfig } from '../types';
+
 export type FormFieldType =
     | 'text'
     | 'textarea'
     | 'date'
-    | 'time'
     | 'time'
     | 'datetime'
     | 'number'
@@ -29,9 +30,23 @@ export interface FormFieldConfig {
 
     options?: FormFieldOption[];
 
+    disabled?: boolean;
+
+    /*
+    |--------------------------------------------------------------------------
+    | Validation
+    |--------------------------------------------------------------------------
+    */
+
     required?: boolean;
 
-    disabled?: boolean;
+    validation?: ValidationConfig;
+
+    /*
+    |--------------------------------------------------------------------------
+    | Repeater
+    |--------------------------------------------------------------------------
+    */
 
     fields?: FormFieldConfig[];
 
@@ -50,16 +65,4 @@ export interface FormFieldConfig {
     titleField?: string;
 
     titleFormatter?: (item: any, index: number) => string;
-}
-
-export interface FormSectionConfig {
-    title: string;
-
-    fields?: FormFieldConfig[];
-
-    rows?: FormFieldConfig[][];
-
-    collapsible?: boolean;
-
-    defaultOpen?: boolean;
 }

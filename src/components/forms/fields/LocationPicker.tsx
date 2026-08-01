@@ -10,13 +10,20 @@ interface Props {
     onChange(value: PartyLocation): void;
 
     disabled?: boolean;
+
+    error?: string;
 }
 
 interface Suggestion {
     placePrediction: google.maps.places.PlacePrediction;
 }
 
-export default function LocationPicker({ value, onChange, disabled = false }: Props) {
+export default function LocationPicker({
+    value,
+    onChange,
+    disabled = false,
+    error: validationError,
+}: Props) {
     const [search, setSearch] = useState('');
 
     const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
@@ -266,6 +273,7 @@ export default function LocationPicker({ value, onChange, disabled = false }: Pr
                         ref={inputRef}
                         value={search}
                         placeholder="Search full address"
+                        className={`${validationError ? 'has-error' : ''}`}
                         onChange={(e) => {
                             setSearch(e.target.value);
                             setError('');
@@ -345,7 +353,7 @@ export default function LocationPicker({ value, onChange, disabled = false }: Pr
                 </div>
             </div>
 
-            <div className="location-picker__map">
+            <div className={`location-picker__map ${validationError ? 'has-error' : ''}`}>
                 <Map
                     defaultZoom={16}
                     defaultCenter={{
@@ -362,6 +370,8 @@ export default function LocationPicker({ value, onChange, disabled = false }: Pr
                     {position && <Marker position={position} />}
                 </Map>
             </div>
+
+            {validationError && <p className="form-error">{validationError}</p>}
         </div>
     );
 }

@@ -4,20 +4,20 @@ import 'react-datepicker/dist/react-datepicker.css';
 
 import CategoryMultiSelect from '@/features/categories/hooks/components/CategoryMultiSelect';
 
-import type { FormFieldConfig } from './types';
-
 import LocationPicker from '../fields/LocationPicker';
 import Repeater from '../fields/Repeater';
 import Checkbox from '../fields/Checkbox';
+import type { FormFieldConfig } from './types';
 
 interface Props {
     field: FormFieldConfig;
     value: any;
     onChange(name: string, value: any): void;
     disabled?: boolean;
+    error?: string;
 }
 
-export default function FormField({ field, value, onChange, disabled = false }: Props) {
+export default function FormField({ field, value, onChange, disabled = false, error }: Props) {
     if (field.type === 'hidden') {
         return (
             <input
@@ -27,6 +27,8 @@ export default function FormField({ field, value, onChange, disabled = false }: 
             />
         );
     }
+
+    const inputClass = error ? 'has-error' : '';
 
     const showClear =
         !disabled && !field.disabled && value !== undefined && value !== null && value !== '';
@@ -44,12 +46,13 @@ export default function FormField({ field, value, onChange, disabled = false }: 
     };
 
     return (
-        <div className="form-input">
+        <div className={`form-input ${inputClass}`}>
             <label>{field.label}</label>
 
             {field.type === 'text' && (
                 <div className="form-input__wrapper">
                     <input
+                        className={inputClass}
                         value={value ?? ''}
                         disabled={disabled || field.disabled}
                         onChange={(e) => onChange(field.name, e.target.value)}
@@ -66,6 +69,7 @@ export default function FormField({ field, value, onChange, disabled = false }: 
             {field.type === 'textarea' && (
                 <div className="form-input__wrapper">
                     <textarea
+                        className={inputClass}
                         value={value ?? ''}
                         placeholder={field.placeholder}
                         required={field.required}
@@ -88,6 +92,7 @@ export default function FormField({ field, value, onChange, disabled = false }: 
             {field.type === 'number' && (
                 <div className="form-input__wrapper">
                     <input
+                        className={inputClass}
                         type="number"
                         value={value ?? ''}
                         required={field.required}
@@ -110,6 +115,7 @@ export default function FormField({ field, value, onChange, disabled = false }: 
 
             {field.type === 'select' && (
                 <select
+                    className={inputClass}
                     value={value ?? ''}
                     disabled={disabled || field.disabled}
                     onChange={(e) => onChange(field.name, e.target.value)}
@@ -124,63 +130,43 @@ export default function FormField({ field, value, onChange, disabled = false }: 
                 </select>
             )}
 
-            {field.type === 'date' && (
+            {(field.type === 'date' || field.type === 'time' || field.type === 'datetime') && (
                 <div className="form-input__wrapper">
                     <DatePicker
-                        selected={value ? new Date(value) : null}
-                        onChange={(date: Date | null) =>
-                            onChange(field.name, date?.toISOString() ?? '')
+                        selected={
+                            value
+                                ? field.type === 'time'
+                                    ? new Date(`1970-01-01T${value}`)
+                                    : new Date(value)
+                                : null
                         }
-                        dateFormat="dd.MM.yyyy"
-                        placeholderText="Select date"
-                        className="form-datepicker"
-                        disabled={disabled || field.disabled}
-                    />
+                        onChange={(date: Date | null) => {
+                            if (field.type === 'time') {
+                                onChange(field.name, date ? date.toTimeString().slice(0, 5) : '');
+                                return;
+                            }
 
-                    {showClear && (
-                        <button type="button" className="form-input__clear" onClick={clearValue}>
-                            <X size={16} />
-                        </button>
-                    )}
-                </div>
-            )}
-
-            {field.type === 'time' && (
-                <div className="form-input__wrapper">
-                    <DatePicker
-                        selected={value ? new Date(`1970-01-01T${value}`) : null}
-                        onChange={(date: Date | null) =>
-                            onChange(field.name, date ? date.toTimeString().slice(0, 5) : '')
-                        }
-                        showTimeSelect
-                        showTimeSelectOnly
+                            onChange(field.name, date?.toISOString() ?? '');
+                        }}
+                        showTimeSelect={field.type !== 'date'}
+                        showTimeSelectOnly={field.type === 'time'}
                         timeIntervals={15}
                         timeFormat="HH:mm"
-                        dateFormat="HH:mm"
-                        placeholderText="Select time"
-                        className="form-datepicker"
-                        disabled={disabled || field.disabled}
-                    />
-
-                    {showClear && (
-                        <button type="button" className="form-input__clear" onClick={clearValue}>
-                            <X size={16} />
-                        </button>
-                    )}
-                </div>
-            )}
-            {field.type === 'datetime' && (
-                <div className="form-input__wrapper">
-                    <DatePicker
-                        selected={value ? new Date(value) : null}
-                        onChange={(date: Date | null) =>
-                            onChange(field.name, date?.toISOString() ?? '')
+                        dateFormat={
+                            field.type === 'datetime'
+                                ? 'dd.MM.yyyy HH:mm'
+                                : field.type === 'time'
+                                  ? 'HH:mm'
+                                  : 'dd.MM.yyyy'
                         }
-                        showTimeSelect
-                        timeIntervals={15}
-                        dateFormat="dd.MM.yyyy HH:mm"
-                        placeholderText="Select date and time"
-                        className="form-datepicker"
+                        placeholderText={
+                            field.type === 'datetime'
+                                ? 'Select date and time'
+                                : field.type === 'time'
+                                  ? 'Select time'
+                                  : 'Select date'
+                        }
+                        className={`form-datepicker ${inputClass}`}
                         popperPlacement="bottom-start"
                         disabled={disabled || field.disabled}
                     />
@@ -198,6 +184,7 @@ export default function FormField({ field, value, onChange, disabled = false }: 
                     value={value ?? []}
                     options={field.options ?? []}
                     disabled={disabled || field.disabled}
+                    error={error}
                     onChange={(value) => onChange(field.name, value)}
                 />
             )}
@@ -206,10 +193,11 @@ export default function FormField({ field, value, onChange, disabled = false }: 
                 <LocationPicker
                     value={value}
                     disabled={disabled}
+                    error={error}
                     onChange={(location) => {
                         if (disabled) return;
 
-                        onChange('location', location);
+                        onChange(field.name, location);
                     }}
                 />
             )}
@@ -218,6 +206,7 @@ export default function FormField({ field, value, onChange, disabled = false }: 
                 <Checkbox
                     checked={value ?? false}
                     disabled={disabled || field.disabled}
+                    error={error}
                     onChange={(checked) => onChange(field.name, checked)}
                 />
             )}
@@ -236,8 +225,11 @@ export default function FormField({ field, value, onChange, disabled = false }: 
                     defaultOpen={field.defaultOpen}
                     titleField={field.titleField}
                     titleFormatter={field.titleFormatter}
+                    errors={error ? { [field.name]: error } : {}}
                 />
             )}
+
+            {error && <p className="form-error">{error}</p>}
         </div>
     );
 }

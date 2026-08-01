@@ -1,19 +1,22 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import Form from '@components/forms/entity/Form';
 
-import { createPartyForm } from '@user/constants/forms/createParty.constants.forms';
+import { createPartyForm } from '../constants/forms/create.party.forms';
 
 import { useCategories } from '@/features/categories/hooks/useCategories';
 
 import type {
     CreatePartyRequest,
-    PartyDetailed,
     PartyFormValues,
     UpdatePartyRequest,
 } from '@user/types/party.types';
+
 import buildDateTime from '@/helper/build-datetime';
+import type { FormErrors } from '@/components/forms/entity/types/error.types';
+
+import validateForm from '@components/forms/entity/validateForm';
 
 interface Props {
     mode: 'create' | 'edit' | 'view';
@@ -46,8 +49,10 @@ export default function PartyFormLayout({
 
     const [values, setValues] = useState<Partial<PartyFormValues>>(initialValues);
 
+    const [errors, setErrors] = useState<Record<string, string>>({});
+
     function update(name: string, value: unknown) {
-        setValues((current: Partial<PartyFormValues>) => ({
+        setValues((current) => ({
             ...current,
             [name]: value,
         }));
@@ -58,12 +63,18 @@ export default function PartyFormLayout({
             return;
         }
 
+        const validationErrors = validateForm(values, createPartyForm(categoryOptions, t));
+
+        setErrors(validationErrors);
+
+        if (Object.keys(validationErrors).length > 0) {
+            return;
+        }
+
         const { categoryIds, startDate, startTime, endDate, endTime, ticketCategories, ...rest } =
             values;
 
         const timezone = values.location?.timezone;
-
-        console.log(ticketCategories);
 
         onSubmit({
             ...rest,
@@ -88,23 +99,28 @@ export default function PartyFormLayout({
         } as CreatePartyRequest | UpdatePartyRequest);
     }
 
-    const categoryOptions = categories.map((category) => ({
-        label: category.name,
-        value: category.id,
-    }));
+    const categoryOptions = useMemo(
+        () =>
+            categories.map((category) => ({
+                label: category.name,
+                value: category.id,
+            })),
+        [categories],
+    );
+
+    const sections = useMemo(() => createPartyForm(categoryOptions, t), [categoryOptions, t]);
 
     return (
         <Form
-            title={'Party'}
-            sections={createPartyForm(categoryOptions, t)}
+            title={t(`party.${mode}.title`)}
+            sections={sections}
             values={values}
             onChange={update}
             onSubmit={disabled ? undefined : submit}
             disabled={disabled}
             submitLabel={loading ? t(`party.${mode}.saving`) : t(`party.${mode}.submit`)}
             actionButton={actionButton}
+            errors={errors}
         />
-
-        // {error && !disabled && <p className="form-error">{t(`party.${mode}.error`)}</p>}
     );
 }
