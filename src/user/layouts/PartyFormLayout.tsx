@@ -1,9 +1,9 @@
-import { useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import Form from '@components/forms/entity/Form';
 import validateForm from '@components/forms/entity/validateForm';
-import scrollToFirstError from '@/components/forms/entity/helper';
+import scrollToFirstError from '@components/forms/entity/helper';
 
 import { createPartyForm } from '../constants/forms/create.party.forms';
 
@@ -31,6 +31,8 @@ interface Props {
     disabled?: boolean;
 
     actionButton?: React.ReactNode;
+
+    serverErrors?: Record<string, string>;
 }
 
 export default function PartyFormLayout({
@@ -40,6 +42,7 @@ export default function PartyFormLayout({
     loading = false,
     disabled = false,
     actionButton,
+    serverErrors = {},
 }: Props) {
     const { t } = useTranslation('user');
 
@@ -60,15 +63,45 @@ export default function PartyFormLayout({
 
     const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
 
+    const [backendErrors, setBackendErrors] = useState<Record<string, string>>(serverErrors);
+
     const [validationAttempt, setValidationAttempt] = useState(0);
 
     const hasSubmittedRef = useRef(false);
+
+    const errors = useMemo(
+        () => ({
+            ...validationErrors,
+            ...backendErrors,
+        }),
+        [validationErrors, backendErrors],
+    );
 
     function validateCurrentValues(nextValues: Partial<PartyFormValues>) {
         return validateForm(nextValues, sections);
     }
 
+    function clearBackendErrorsForField(fieldName: string) {
+        setBackendErrors((current) =>
+            Object.entries(current).reduce<Record<string, string>>(
+                (result, [errorPath, message]) => {
+                    const belongsToField =
+                        errorPath === fieldName || errorPath.startsWith(`${fieldName}.`);
+
+                    if (!belongsToField) {
+                        result[errorPath] = message;
+                    }
+
+                    return result;
+                },
+                {},
+            ),
+        );
+    }
+
     function update(name: string, value: unknown) {
+        clearBackendErrorsForField(name);
+
         setValues((current) => {
             const nextValues = {
                 ...current,
@@ -76,9 +109,7 @@ export default function PartyFormLayout({
             };
 
             if (hasSubmittedRef.current) {
-                const validationErrors = validateCurrentValues(nextValues);
-
-                setValidationErrors(validationErrors);
+                setValidationErrors(validateCurrentValues(nextValues));
             }
 
             return nextValues;
@@ -92,15 +123,15 @@ export default function PartyFormLayout({
 
         hasSubmittedRef.current = true;
 
-        const validationErrors = validateCurrentValues(values);
+        const currentValidationErrors = validateCurrentValues(values);
 
-        setValidationErrors(validationErrors);
+        setValidationErrors(currentValidationErrors);
 
-        if (Object.keys(validationErrors).length > 0) {
+        if (Object.keys(currentValidationErrors).length > 0) {
             setValidationAttempt((current) => current + 1);
 
             window.setTimeout(() => {
-                scrollToFirstError(validationErrors);
+                scrollToFirstError(currentValidationErrors);
             }, 100);
 
             return;
@@ -138,6 +169,26 @@ export default function PartyFormLayout({
         onSubmit(payload);
     }
 
+    useEffect(() => {
+        setBackendErrors(serverErrors);
+
+        if (Object.keys(serverErrors).length === 0) {
+            return;
+        }
+
+        hasSubmittedRef.current = true;
+
+        setValidationAttempt((current) => current + 1);
+
+        const timeout = window.setTimeout(() => {
+            scrollToFirstError(serverErrors);
+        }, 100);
+
+        return () => {
+            window.clearTimeout(timeout);
+        };
+    }, [serverErrors]);
+
     return (
         <Form
             title={t(`party.${mode}.title`)}
@@ -148,7 +199,7 @@ export default function PartyFormLayout({
             disabled={disabled}
             submitLabel={loading ? t(`party.${mode}.saving`) : t(`party.${mode}.submit`)}
             actionButton={actionButton}
-            errors={validationErrors}
+            errors={errors}
             validationAttempt={validationAttempt}
         />
     );

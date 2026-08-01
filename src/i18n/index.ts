@@ -4,7 +4,7 @@ import { initReactI18next } from 'react-i18next';
 
 import enAuth from './locales/en/auth.json';
 import enCommon from './locales/en/common.json';
-import enUser from './locales/de/user.json';
+import enUser from './locales/en/user.json';
 import enEntityForm from './locales/en/entity-form.json';
 
 import deAuth from './locales/de/auth.json';

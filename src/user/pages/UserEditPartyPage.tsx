@@ -6,6 +6,7 @@ import { useParty } from '@user/hooks/useParty';
 import { useUpdateParty } from '@user/hooks/useUpdateParty';
 
 import { ROUTES } from '@routes/paths';
+
 import splitDateTime from '@/helper/split-datetime';
 
 export default function UserEditPartyPage() {
@@ -41,63 +42,88 @@ export default function UserEditPartyPage() {
 
     const end = splitDateTime(party.endAt, timezone);
 
-    const ticketCategories = party.ticketCategories?.map((category) => ({
-        id: category.id,
-        name: category.name,
-        price: category.price,
-        capacity: category.capacity,
-        requiresVerification: category.requiresVerification,
-        refundRequiresApproval: category.refundRequiresApproval,
-        refundPolicyId: category.refundPolicyId,
+    const ticketCategories =
+        party.ticketCategories?.map((category) => ({
+            id: category.id,
+            name: category.name,
+            price: category.price,
+            capacity: category.capacity,
+            requiresVerification: category.requiresVerification,
+            refundRequiresApproval: category.refundRequiresApproval,
+            refundPolicyId: category.refundPolicyId,
 
-        accessWindows:
-            category.accessWindows?.map((window) => {
-                const start = splitDateTime(window.startsAt, timezone);
-                const end = splitDateTime(window.endsAt, timezone);
+            accessWindows:
+                category.accessWindows?.map((window) => {
+                    const windowStart = splitDateTime(window.startsAt, timezone);
 
-                return {
-                    id: window.id,
-                    startDate: start.date,
-                    startTime: start.time,
-                    endDate: end.date,
-                    endTime: end.time,
-                };
-            }) ?? [],
-    }));
+                    const windowEnd = splitDateTime(window.endsAt, timezone);
+
+                    return {
+                        id: window.id,
+
+                        startDate: windowStart.date,
+
+                        startTime: windowStart.time,
+
+                        endDate: windowEnd.date,
+
+                        endTime: windowEnd.time,
+                    };
+                }) ?? [],
+        })) ?? [];
+
+    function handleSubmit(
+        values: Parameters<
+            NonNullable<React.ComponentProps<typeof PartyFormLayout>['onSubmit']>
+        >[0],
+    ) {
+        if (!id) {
+            return;
+        }
+
+        updatePartyMutation.clearValidationErrors();
+
+        updatePartyMutation.mutate(
+            {
+                id,
+                data: values,
+            },
+            {
+                onSuccess() {
+                    navigate(ROUTES.USER_PARTY_VIEW(id));
+                },
+            },
+        );
+    }
 
     return (
         <PartyFormLayout
             mode="edit"
             initialValues={{
                 title: party.title,
+
                 description: party.description,
+
                 locationName: party.locationName,
+
                 location: party.location,
+
                 startDate: start.date,
+
                 startTime: start.time,
+
                 endDate: end.date,
+
                 endTime: end.time,
+
                 thumbnailID: party.thumbnailID,
+
                 categoryIds: party.categories?.map((category) => category.id) ?? [],
+
                 ticketCategories,
             }}
-            onSubmit={(values) => {
-                if (!id) {
-                    return;
-                }
-
-                updatePartyMutation.mutate(
-                    {
-                        id,
-                        data: values,
-                    },
-                    {
-                        onSuccess() {
-                            navigate(ROUTES.USER_PARTY_VIEW(id));
-                        },
-                    },
-                );
-            }}
+            serverErrors={updatePartyMutation.validationErrors}
+            onSubmit={handleSubmit}
             loading={updatePartyMutation.isPending}
             error={updatePartyMutation.isError}
         />
