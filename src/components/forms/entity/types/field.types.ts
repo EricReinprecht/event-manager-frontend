@@ -65,4 +65,6 @@ export interface FormFieldConfig {
     titleField?: string;
 
     titleFormatter?: (item: any, index: number) => string;
+
+    validate?: (value: any, values?: Record<string, any>) => Partial<Record<string, string>>;
 }

@@ -22,6 +22,24 @@ export default function createTicketCategoryAccessWindows(t: any): FormFieldConf
             return `${item.startDate} ${item.startTime} - ${item.endDate} ${item.endTime}`;
         },
 
+        validate(item) {
+            if (!item.startDate || !item.startTime || !item.endDate || !item.endTime) {
+                return {};
+            }
+
+            const start = new Date(`${item.startDate}T${item.startTime}`);
+
+            const end = new Date(`${item.endDate}T${item.endTime}`);
+
+            if (start >= end) {
+                return {
+                    endDate: t('party.validation.endAfterStart'),
+                };
+            }
+
+            return {};
+        },
+
         rows: [
             [
                 {

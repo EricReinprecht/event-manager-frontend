@@ -100,6 +100,9 @@
                 "endDate": "End Date",
                 "endTime": "End Time"
             }
+        },
+        "validation": {
+            "endAfterStart": "The end date and time must be after the start date and time."
         }
     }
 }

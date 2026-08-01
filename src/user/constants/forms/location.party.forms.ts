@@ -2,6 +2,8 @@ import type { FormSectionConfig } from '@components/forms/entity/types';
 
 export default function createLocationSection(t: any): FormSectionConfig {
     return {
+        id: 'location',
+
         title: t('party.create.sections.location'),
 
         collapsible: true,

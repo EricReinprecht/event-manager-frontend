@@ -1,6 +1,8 @@
 import type { FormFieldConfig } from './field.types';
 
 export interface FormSectionConfig {
+    id: string;
+
     title: string;
 
     fields?: FormFieldConfig[];
@@ -10,4 +12,6 @@ export interface FormSectionConfig {
     collapsible?: boolean;
 
     defaultOpen?: boolean;
+
+    validate?: (values: Record<string, any>) => string | null;
 }

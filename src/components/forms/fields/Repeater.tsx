@@ -3,6 +3,8 @@ import type { FormFieldConfig } from '../entity/types';
 import CollapsibleSection from '../entity/CollapsibleSection';
 
 interface Props {
+    name: string;
+
     value?: any[];
 
     fields: FormFieldConfig[];
@@ -31,6 +33,7 @@ interface Props {
 }
 
 export default function Repeater({
+    name,
     value = [],
     fields = [],
     rows = [],
@@ -53,12 +56,12 @@ export default function Repeater({
         onChange(value.filter((_, itemIndex) => itemIndex !== index));
     }
 
-    function updateItem(index: number, name: string, newValue: unknown) {
+    function updateItem(index: number, fieldName: string, newValue: unknown) {
         const items = [...value];
 
         items[index] = {
             ...items[index],
-            [name]: newValue,
+            [fieldName]: newValue,
         };
 
         onChange(items);
@@ -76,11 +79,17 @@ export default function Repeater({
         return `${itemLabel} ${index + 1}`;
     }
 
-    function getError(index: number, name: string) {
-        return errors[`${index}.${name}`];
+    function getItemErrors(index: number) {
+        const prefix = `${name}.${index}.`;
+
+        return Object.entries(errors)
+            .filter(([key]) => key.startsWith(prefix))
+            .map(([, message]) => message);
     }
 
     function renderItem(item: any, index: number) {
+        const itemErrors = getItemErrors(index);
+
         return (
             <div className="form-repeater__item">
                 <div className="form-repeater__fields">
@@ -90,8 +99,7 @@ export default function Repeater({
                             field={field}
                             value={item[field.name]}
                             disabled={disabled}
-                            error={getError(index, field.name)}
-                            onChange={(name, value) => updateItem(index, name, value)}
+                            onChange={(fieldName, value) => updateItem(index, fieldName, value)}
                         />
                     ))}
 
@@ -103,8 +111,9 @@ export default function Repeater({
                                     field={field}
                                     value={item[field.name]}
                                     disabled={disabled}
-                                    error={getError(index, field.name)}
-                                    onChange={(name, value) => updateItem(index, name, value)}
+                                    onChange={(fieldName, value) =>
+                                        updateItem(index, fieldName, value)
+                                    }
                                 />
                             ))}
                         </div>
@@ -119,6 +128,14 @@ export default function Repeater({
                     >
                         {removeLabel}
                     </button>
+                )}
+
+                {itemErrors.length > 0 && (
+                    <div className="form-error">
+                        {itemErrors.map((message, errorIndex) => (
+                            <p key={errorIndex}>{message}</p>
+                        ))}
+                    </div>
                 )}
             </div>
         );

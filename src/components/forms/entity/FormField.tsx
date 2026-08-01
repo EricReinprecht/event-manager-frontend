@@ -15,9 +15,17 @@ interface Props {
     onChange(name: string, value: any): void;
     disabled?: boolean;
     error?: string;
+    fieldErrors?: Record<string, string>;
 }
 
-export default function FormField({ field, value, onChange, disabled = false, error }: Props) {
+export default function FormField({
+    field,
+    value,
+    onChange,
+    disabled = false,
+    error,
+    fieldErrors = {},
+}: Props) {
     if (field.type === 'hidden') {
         return (
             <input
@@ -213,6 +221,7 @@ export default function FormField({ field, value, onChange, disabled = false, er
 
             {field.type === 'repeater' && (
                 <Repeater
+                    name={field.name}
                     value={value ?? []}
                     fields={field.fields ?? []}
                     rows={field.rows ?? []}
@@ -225,7 +234,7 @@ export default function FormField({ field, value, onChange, disabled = false, er
                     defaultOpen={field.defaultOpen}
                     titleField={field.titleField}
                     titleFormatter={field.titleFormatter}
-                    errors={error ? { [field.name]: error } : {}}
+                    errors={fieldErrors}
                 />
             )}
 

@@ -14,7 +14,6 @@ import type {
 } from '@user/types/party.types';
 
 import buildDateTime from '@/helper/build-datetime';
-import type { FormErrors } from '@/components/forms/entity/types/error.types';
 
 import validateForm from '@components/forms/entity/validateForm';
 
@@ -63,7 +62,7 @@ export default function PartyFormLayout({
             return;
         }
 
-        const validationErrors = validateForm(values, createPartyForm(categoryOptions, t));
+        const validationErrors = validateForm(values, sections);
 
         setErrors(validationErrors);
 

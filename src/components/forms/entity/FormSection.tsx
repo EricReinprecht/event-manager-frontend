@@ -23,6 +23,20 @@ export default function FormSection({
     disabled = false,
     errors = {},
 }: Props) {
+    function getFieldErrors(name: string) {
+        return Object.entries(errors)
+            .filter(([key]) => key.startsWith(name))
+            .reduce(
+                (acc, [key, value]) => ({
+                    ...acc,
+                    [key]: value,
+                }),
+                {} as Record<string, string>,
+            );
+    }
+
+    const sectionError = errors[`_section_${section.id}`];
+
     const content = (
         <>
             {section.rows?.map((row, index) => (
@@ -35,6 +49,7 @@ export default function FormSection({
                             onChange={onChange}
                             disabled={disabled}
                             error={errors[field.name]}
+                            fieldErrors={getFieldErrors(field.name)}
                         />
                     ))}
                 </div>
@@ -48,8 +63,11 @@ export default function FormSection({
                     onChange={onChange}
                     disabled={disabled}
                     error={errors[field.name]}
+                    fieldErrors={getFieldErrors(field.name)}
                 />
             ))}
+
+            {sectionError && <p className="form-error">{sectionError}</p>}
         </>
     );
 

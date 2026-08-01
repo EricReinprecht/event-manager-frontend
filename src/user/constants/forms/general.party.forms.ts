@@ -2,6 +2,8 @@ import type { FormSectionConfig } from '@components/forms/entity/types';
 
 export default function createGeneralSection(categories: any[], t: any): FormSectionConfig {
     return {
+        id: 'general',
+
         title: t('party.create.sections.general'),
 
         collapsible: true,

@@ -4,6 +4,8 @@ import createAccessWindows from './accessWindows.party.forms';
 
 export default function createTicketCategoriesSection(t: any): FormSectionConfig {
     return {
+        id: 'ticketCategories',
+
         title: t('party.sections.ticketCategories'),
 
         collapsible: true,
