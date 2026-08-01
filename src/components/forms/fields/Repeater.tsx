@@ -32,6 +32,8 @@ interface Props {
     errors?: Record<string, string>;
 
     depth?: number;
+
+    validationAttempt?: number;
 }
 
 export default function Repeater({
@@ -50,6 +52,7 @@ export default function Repeater({
     titleFormatter,
     errors = {},
     depth = 0,
+    validationAttempt = 0,
 }: Props) {
     function addItem() {
         onChange([...value, {}]);
@@ -114,6 +117,7 @@ export default function Repeater({
                 error={getFieldError(index, field.name)}
                 fieldErrors={getChildErrors(index, field.name)}
                 repeaterDepth={depth + 1}
+                validationAttempt={validationAttempt}
                 onChange={(fieldName, newValue) => updateItem(index, fieldName, newValue)}
             />
         );
@@ -149,18 +153,20 @@ export default function Repeater({
         );
     }
 
+    function itemHasErrors(index: number) {
+        return Object.keys(errors).some((errorPath) => errorPath.startsWith(`${index}.`));
+    }
+
     return (
-        <div
-            className="form-repeater"
-            data-depth={depth}
-            data-theme={depth % 2 === 0 ? 'even' : 'odd'}
-        >
+        <div className="form-repeater">
             {value.map((item, index) =>
                 collapsible ? (
                     <CollapsibleSection
                         key={index}
                         title={getTitle(item, index)}
                         defaultOpen={defaultOpen}
+                        forceOpen={itemHasErrors(index)}
+                        forceOpenKey={validationAttempt}
                     >
                         {renderItem(item, index)}
                     </CollapsibleSection>

@@ -1,28 +1,46 @@
-import { useState } from 'react';
 import { ChevronDown } from 'lucide-react';
+import { useEffect, useState, type ReactNode } from 'react';
 
 interface Props {
     title: string;
-    children: React.ReactNode;
+
+    children: ReactNode;
+
     defaultOpen?: boolean;
+
+    forceOpen?: boolean;
+
+    forceOpenKey?: number;
 }
 
-export default function CollapsibleSection({ title, children, defaultOpen = true }: Props) {
-    const [open, setOpen] = useState(defaultOpen);
+export default function CollapsibleSection({
+    title,
+    children,
+    defaultOpen = false,
+    forceOpen = false,
+    forceOpenKey = 0,
+}: Props) {
+    const [isOpen, setIsOpen] = useState(defaultOpen || forceOpen);
+
+    useEffect(() => {
+        if (forceOpen) {
+            setIsOpen(true);
+        }
+    }, [forceOpen, forceOpenKey]);
 
     return (
-        <div className="form-section form-section--collapsible">
+        <section className="form-section form-section--collapsible">
             <button
                 type="button"
                 className="form-section__header"
-                onClick={() => setOpen((prev) => !prev)}
+                onClick={() => setIsOpen((current) => !current)}
             >
                 <span>{title}</span>
 
-                <ChevronDown size={18} className={open ? 'is-open' : ''} />
+                <ChevronDown className={isOpen ? 'is-open' : ''} />
             </button>
 
-            {open && <div className="form-section__body">{children}</div>}
-        </div>
+            {isOpen && <div className="form-section__body">{children}</div>}
+        </section>
     );
 }

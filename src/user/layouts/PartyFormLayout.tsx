@@ -50,6 +50,8 @@ export default function PartyFormLayout({
 
     const [errors, setErrors] = useState<Record<string, string>>({});
 
+    const [validationAttempt, setValidationAttempt] = useState(0);
+
     function update(name: string, value: unknown) {
         setValues((current) => ({
             ...current,
@@ -67,6 +69,7 @@ export default function PartyFormLayout({
         setErrors(validationErrors);
 
         if (Object.keys(validationErrors).length > 0) {
+            setValidationAttempt((current) => current + 1);
             return;
         }
 
@@ -120,6 +123,7 @@ export default function PartyFormLayout({
             submitLabel={loading ? t(`party.${mode}.saving`) : t(`party.${mode}.submit`)}
             actionButton={actionButton}
             errors={errors}
+            validationAttempt={validationAttempt}
         />
     );
 }

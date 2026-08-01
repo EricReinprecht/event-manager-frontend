@@ -20,6 +20,8 @@ interface Props {
     actionButton?: React.ReactNode;
 
     errors?: Record<string, string>;
+
+    validationAttempt?: number;
 }
 
 export default function Form({
@@ -32,6 +34,7 @@ export default function Form({
     disabled = false,
     actionButton,
     errors = {},
+    validationAttempt = 0,
 }: Props) {
     return (
         <>
@@ -55,6 +58,7 @@ export default function Form({
                             onChange={onChange}
                             disabled={disabled}
                             errors={errors}
+                            validationAttempt={validationAttempt}
                         />
                     ))}
                 </div>

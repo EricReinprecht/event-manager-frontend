@@ -14,6 +14,8 @@ interface Props {
     disabled?: boolean;
 
     errors?: Record<string, string>;
+
+    validationAttempt?: number;
 }
 
 export default function FormSection({
@@ -22,6 +24,7 @@ export default function FormSection({
     onChange,
     disabled = false,
     errors = {},
+    validationAttempt = 0,
 }: Props) {
     function getFieldErrors(fieldName: string): Record<string, string> {
         const prefix = `${fieldName}.`;
@@ -39,6 +42,19 @@ export default function FormSection({
 
     const sectionError = errors[`_section_${section.id}`];
 
+    const sectionFieldNames = [
+        ...(section.fields ?? []).map((field) => field.name),
+        ...(section.rows ?? []).flat().map((field) => field.name),
+    ];
+
+    const hasErrors =
+        Boolean(sectionError) ||
+        Object.keys(errors).some((errorPath) =>
+            sectionFieldNames.some(
+                (fieldName) => errorPath === fieldName || errorPath.startsWith(`${fieldName}.`),
+            ),
+        );
+
     const content = (
         <>
             {section.rows?.map((row, index) => (
@@ -52,6 +68,7 @@ export default function FormSection({
                             disabled={disabled}
                             error={errors[field.name]}
                             fieldErrors={getFieldErrors(field.name)}
+                            validationAttempt={validationAttempt}
                         />
                     ))}
                 </div>
@@ -66,6 +83,7 @@ export default function FormSection({
                     disabled={disabled}
                     error={errors[field.name]}
                     fieldErrors={getFieldErrors(field.name)}
+                    validationAttempt={validationAttempt}
                 />
             ))}
 
@@ -75,7 +93,12 @@ export default function FormSection({
 
     if (section.collapsible) {
         return (
-            <CollapsibleSection title={section.title} defaultOpen={section.defaultOpen}>
+            <CollapsibleSection
+                title={section.title}
+                defaultOpen={section.defaultOpen}
+                forceOpen={hasErrors}
+                forceOpenKey={validationAttempt}
+            >
                 {content}
             </CollapsibleSection>
         );
