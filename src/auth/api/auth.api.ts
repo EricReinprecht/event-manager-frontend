@@ -1,6 +1,6 @@
 import apiClient from '@api/client';
 import type { RegisterRequest } from '@auth/types/register.types';
-import { getRefreshToken } from '@auth/storage/refresh-token.storage';
+import { setToken, removeToken } from '@auth/storage/token.storage';
 
 export async function register(data: RegisterRequest) {
     const response = await apiClient.post('/auth/register', data);
@@ -21,13 +21,17 @@ export async function verifyEmail(token: string) {
 import type { LoginRequest, LoginResponse } from '@auth/types/login.types';
 
 export async function login(data: LoginRequest): Promise<LoginResponse> {
-    const response = await apiClient.post('/auth/login', data);
+    const response = await apiClient.post<LoginResponse>('/auth/login', data);
+
+    setToken(response.data.accessToken);
 
     return response.data;
 }
 
-export function logoutRequest() {
-    return apiClient.post('/auth/logout', {
-        refreshToken: getRefreshToken(),
-    });
+export async function logoutRequest() {
+    try {
+        await apiClient.post('/auth/logout');
+    } finally {
+        removeToken();
+    }
 }
