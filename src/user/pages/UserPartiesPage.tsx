@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
@@ -64,12 +64,20 @@ export default function UserPartiesPage() {
         }));
     }
 
+    const changePageSize = useCallback((limit: number) => {
+        setFilters((current) =>
+            current.limit === limit
+                ? current
+                : {
+                      ...current,
+                      page: 1,
+                      limit,
+                  },
+        );
+    }, []);
+
     function openDeleteModal(party: Party) {
         setPartyToDelete(party);
-    }
-
-    if (isLoading) {
-        return <p>{t('party.list.loading')}</p>;
     }
 
     return (
@@ -82,6 +90,8 @@ export default function UserPartiesPage() {
                 getRowKey={(party) => party.id}
 
                 pageSize={filters.limit}
+
+                onPageSizeChange={changePageSize}
 
                 columns={USER_PARTIES_COLUMNS(t)}
 
@@ -134,15 +144,16 @@ export default function UserPartiesPage() {
                     {
                         label: t('actions.edit'),
 
-                        render: (party) => !party.isPublished ? (
-                            <Link
-                                to={ROUTES.USER_PARTY_EDIT(party.id)}
-                                className="action"
-                                title={t('actions.edit')}
-                            >
-                                <EditPen size={24} />
-                            </Link>
-                        ) : null,
+                        render: (party) =>
+                            !party.isPublished ? (
+                                <Link
+                                    to={ROUTES.USER_PARTY_EDIT(party.id)}
+                                    className="action"
+                                    title={t('actions.edit')}
+                                >
+                                    <EditPen size={24} />
+                                </Link>
+                            ) : null,
                     },
 
                     {
@@ -162,19 +173,22 @@ export default function UserPartiesPage() {
 
                         danger: true,
 
-                        render: (party) => !party.isPublished ? (
-                            <button
-                                type="button"
-                                className="action action--danger"
-                                title={t('actions.delete')}
-                                onClick={() => openDeleteModal(party)}
-                            >
-                                <Trash size={24} />
-                            </button>
-                        ) : null,
+                        render: (party) =>
+                            !party.isPublished ? (
+                                <button
+                                    type="button"
+                                    className="action action--danger"
+                                    title={t('actions.delete')}
+                                    onClick={() => openDeleteModal(party)}
+                                >
+                                    <Trash size={24} />
+                                </button>
+                            ) : null,
                     },
                 ]}
             />
+
+            {isLoading && !data && <p>{t('party.list.loading')}</p>}
 
             {partyToDelete && (
                 <DeletePartyModal
@@ -207,9 +221,7 @@ export default function UserPartiesPage() {
                 />
             )}
 
-            {deletePartyMutation.isError && (
-                <p className="form-error">{t('party.delete.error')}</p>
-            )}
+            {deletePartyMutation.isError && <p className="form-error">{t('party.delete.error')}</p>}
         </>
     );
 }

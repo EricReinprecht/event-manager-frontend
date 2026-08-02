@@ -43,6 +43,8 @@ interface Props<T> {
     getRowKey?(item: T): string | number;
 
     pageSize?: number;
+
+    onPageSizeChange?(pageSize: number): void;
 }
 
 export default function DataList<T>({
@@ -60,7 +62,10 @@ export default function DataList<T>({
     actionsLabel = '',
     getRowKey,
     pageSize,
+    onPageSizeChange,
 }: Props<T>) {
+    const listRef = useRef<HTMLDivElement | null>(null);
+    const tableRef = useRef<HTMLDivElement | null>(null);
     const lastDataRowRef = useRef<HTMLDivElement | null>(null);
     const [dataRowHeight, setDataRowHeight] = useState(0);
 
@@ -79,6 +84,57 @@ export default function DataList<T>({
 
         return () => observer.disconnect();
     }, [data?.data]);
+
+    useLayoutEffect(() => {
+        if (!onPageSizeChange) return;
+
+        const list = listRef.current;
+        const table = tableRef.current;
+        if (!list || !table) return;
+        const content = list.closest('.user-layout__content') as HTMLElement | null;
+
+        const measureCapacity = () => {
+            const contentStyles = content ? window.getComputedStyle(content) : null;
+            const contentBottom = content?.getBoundingClientRect().bottom ?? window.innerHeight;
+            const bottomPadding = Number.parseFloat(contentStyles?.paddingBottom ?? '0');
+            const listStyles = window.getComputedStyle(list);
+            const listGap = Number.parseFloat(listStyles.rowGap || listStyles.gap || '0');
+            const pagination = list.querySelector<HTMLElement>('.data-list__pagination');
+            const paginationStyles = pagination ? window.getComputedStyle(pagination) : null;
+            const paginationSpace = pagination
+                ? pagination.getBoundingClientRect().height +
+                  Number.parseFloat(paginationStyles?.marginTop ?? '0') +
+                  listGap
+                : 102;
+
+            const fixedRows = Array.from(
+                table.querySelectorAll<HTMLElement>(
+                    ':scope > .data-list__row--header, :scope > .data-list__filters',
+                ),
+            ).reduce((height, row) => height + row.getBoundingClientRect().height, 0);
+            const rowHeight = dataRowHeight || 65;
+            const availableHeight =
+                contentBottom - bottomPadding - table.getBoundingClientRect().top - paginationSpace;
+            const capacity = Math.max(
+                1,
+                Math.min(100, Math.floor((availableHeight - fixedRows) / rowHeight)),
+            );
+
+            if (capacity !== pageSize) onPageSizeChange(capacity);
+        };
+
+        measureCapacity();
+
+        const observer = new ResizeObserver(measureCapacity);
+        observer.observe(list);
+        if (content) observer.observe(content);
+        window.addEventListener('resize', measureCapacity);
+
+        return () => {
+            observer.disconnect();
+            window.removeEventListener('resize', measureCapacity);
+        };
+    }, [dataRowHeight, onPageSizeChange, pageSize]);
 
     function changeSort(key: string) {
         const currentSorts = parseSorts(sorts);
@@ -118,7 +174,7 @@ export default function DataList<T>({
     }
 
     return (
-        <div className="data-list">
+        <div ref={listRef} className="data-list">
             <div className="data-list__header">
                 <h1>{title}</h1>
 
@@ -126,6 +182,7 @@ export default function DataList<T>({
             </div>
 
             <div
+                ref={tableRef}
                 className="data-list__table"
                 style={
                     {
@@ -159,7 +216,9 @@ export default function DataList<T>({
                     >
                         {columns.map((column) => (
                             <div key={column.key.toString()} className="data-list__cell">
-                                {column.render ? column.render(item) : (item as any)[column.key]}
+                                {column.render
+                                    ? column.render(item)
+                                    : (item[column.key as keyof T] as ReactNode)}
                             </div>
                         ))}
                         {actions.length > 0 && (
