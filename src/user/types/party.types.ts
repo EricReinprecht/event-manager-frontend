@@ -81,10 +81,12 @@ export interface PartyLocation {
 
 export interface Party {
     id: string;
+    organizerId: string;
     title: string;
     startAt: string;
     endAt: string;
     locationName: string;
+    isPublished: boolean;
 }
 
 export interface PaginatedParties {

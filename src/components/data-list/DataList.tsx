@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import { useLayoutEffect, useRef, useState, type ReactNode } from 'react';
 
 import type {
     DataListColumn,
@@ -39,6 +39,10 @@ interface Props<T> {
     actions?: DataAction<T>[];
 
     actionsLabel?: string;
+
+    getRowKey?(item: T): string | number;
+
+    pageSize?: number;
 }
 
 export default function DataList<T>({
@@ -54,7 +58,28 @@ export default function DataList<T>({
     action,
     actions = [],
     actionsLabel = '',
+    getRowKey,
+    pageSize,
 }: Props<T>) {
+    const lastDataRowRef = useRef<HTMLDivElement | null>(null);
+    const [dataRowHeight, setDataRowHeight] = useState(0);
+
+    useLayoutEffect(() => {
+        const observedRow = lastDataRowRef.current;
+        if (!observedRow) return;
+
+        const measureRow = () => {
+            setDataRowHeight(observedRow.getBoundingClientRect().height);
+        };
+
+        measureRow();
+
+        const observer = new ResizeObserver(measureRow);
+        observer.observe(observedRow);
+
+        return () => observer.disconnect();
+    }, [data?.data]);
+
     function changeSort(key: string) {
         const currentSorts = parseSorts(sorts);
 
@@ -127,7 +152,11 @@ export default function DataList<T>({
                 )}
 
                 {data?.data.map((item, index) => (
-                    <div key={index} className="data-list__row">
+                    <div
+                        key={getRowKey?.(item) ?? index}
+                        ref={index === data.data.length - 1 ? lastDataRowRef : undefined}
+                        className="data-list__row"
+                    >
                         {columns.map((column) => (
                             <div key={column.key.toString()} className="data-list__cell">
                                 {column.render ? column.render(item) : (item as any)[column.key]}
@@ -135,11 +164,15 @@ export default function DataList<T>({
                         ))}
                         {actions.length > 0 && (
                             <div className="data-list__cell data-list__cell--actions">
-                                {actions.map((action, actionIndex) => (
-                                    <div key={actionIndex}>
-                                        {action.render ? action.render(item) : null}
-                                    </div>
-                                ))}
+                                {actions
+                                    .map((action, actionIndex) => ({
+                                        actionIndex,
+                                        content: action.render?.(item) ?? null,
+                                    }))
+                                    .filter(({ content }) => content !== null)
+                                    .map(({ actionIndex, content }) => (
+                                        <div key={actionIndex}>{content}</div>
+                                    ))}
                             </div>
                         )}
                     </div>
@@ -150,6 +183,8 @@ export default function DataList<T>({
                 <DataListPagination
                     page={data.page}
                     totalPages={data.totalPages}
+                    emptyRows={Math.max(0, (pageSize ?? data.data.length) - data.data.length)}
+                    rowHeight={dataRowHeight}
                     onChange={onPageChange}
                 />
             )}

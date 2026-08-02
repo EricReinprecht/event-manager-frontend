@@ -10,9 +10,11 @@ interface Props {
     onClose(): void;
 
     onConfirm(): void;
+
+    pending?: boolean;
 }
 
-export default function DeletePartyModal({ party, onClose, onConfirm }: Props) {
+export default function DeletePartyModal({ party, onClose, onConfirm, pending = false }: Props) {
     const { t } = useTranslation('user');
     const { t: tc } = useTranslation('common');
 
@@ -22,12 +24,12 @@ export default function DeletePartyModal({ party, onClose, onConfirm }: Props) {
             onClose={onClose}
             footer={
                 <>
-                    <button className="btn" onClick={onClose}>
-                        {tc('common.cancel')}
+                    <button type="button" className="btn" disabled={pending} onClick={onClose}>
+                        {tc('cancel')}
                     </button>
 
-                    <button className="btn btn-danger" onClick={onConfirm}>
-                        {tc('common.delete')}
+                    <button type="button" className="btn btn-danger" disabled={pending} onClick={onConfirm}>
+                        {pending ? t('party.delete.deleting') : tc('delete')}
                     </button>
                 </>
             }

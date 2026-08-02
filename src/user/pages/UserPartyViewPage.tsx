@@ -44,15 +44,17 @@ export default function UserPartyViewPage() {
             showPublication={user?.id === party.organizerId}
             actionButton={
                 <div className="party-view-actions">
-                    <button
-                        className="form-button"
-                        type="button"
-                        onClick={() => id && navigate(ROUTES.USER_PARTY_EDIT(id))}
-                    >
-                        {t('party.view.edit')}
-                    </button>
+                    {!party.isPublished && (
+                        <button
+                            className="form-button"
+                            type="button"
+                            onClick={() => id && navigate(ROUTES.USER_PARTY_EDIT(id))}
+                        >
+                            {t('party.view.edit')}
+                        </button>
+                    )}
                     {user?.id === party.organizerId && !party.isPublished && (
-                        <PartyPublishButton partyId={party.id} />
+                        <PartyPublishButton partyId={party.id} partyTitle={party.title} />
                     )}
                 </div>
             }

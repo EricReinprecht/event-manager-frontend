@@ -50,6 +50,10 @@
             "selectTime": "Uhrzeit auswählen",
             "schedule": "Veröffentlichung planen",
             "publishNow": "Jetzt veröffentlichen",
+            "publishing": "Wird veröffentlicht…",
+            "confirmTitle": "Party veröffentlichen",
+            "confirm": "Möchtest du diese Party wirklich veröffentlichen?",
+            "irreversible": "Nach der Veröffentlichung kann die Party nicht mehr bearbeitet werden.",
             "error": "Die Veröffentlichungseinstellungen konnten nicht aktualisiert werden."
         },
         "list": {
@@ -91,7 +95,9 @@
         },
         "delete": {
             "title": "Party löschen",
-            "confirm": "Möchtest du diese Party wirklich löschen:"
+            "confirm": "Möchtest du diese Party wirklich löschen:",
+            "deleting": "Wird gelöscht…",
+            "error": "Die Party konnte nicht gelöscht werden."
         },
         "ticketCategory": {
             "add": "Ticketkategorie hinzufügen",

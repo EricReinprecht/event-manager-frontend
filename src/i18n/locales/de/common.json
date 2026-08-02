@@ -2,5 +2,6 @@
     "loading": "Lädt...",
     "error": "Etwas ist schiefgelaufen",
     "cancel": "Abbrechen",
-    "delete": "Löschen"
+    "delete": "Löschen",
+    "publish": "Veröffentlichen"
 }

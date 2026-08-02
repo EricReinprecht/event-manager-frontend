@@ -20,6 +20,8 @@ export default function DataListFilters({ filters, values, onChange }: Props) {
                     {filter.type === 'text' && (
                         <input
                             type="text"
+                            className="data-list__filter-control"
+                            placeholder={filter.label}
                             value={values[filter.key] ?? ''}
                             onChange={(e) => onChange?.(filter.key, e.target.value)}
                         />
@@ -27,6 +29,8 @@ export default function DataListFilters({ filters, values, onChange }: Props) {
 
                     {filter.type === 'date' && (
                         <DatePicker
+                            className="data-list__filter-control"
+                            placeholder={filter.label}
                             value={values[filter.key] ?? ''}
                             onChange={(value) => onChange?.(filter.key, value)}
                         />
@@ -34,6 +38,7 @@ export default function DataListFilters({ filters, values, onChange }: Props) {
 
                     {filter.type === 'select' && (
                         <select
+                            className="data-list__filter-control"
                             value={values[filter.key] ?? ''}
                             onChange={(e) => onChange?.(filter.key, e.target.value)}
                         >

@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
 
 import PartyFormLayout from '@user/layouts/PartyFormLayout';
 import { useParty } from '@user/hooks/useParty';
@@ -37,6 +37,10 @@ export default function UserEditPartyPage() {
                 <div className="base-form__container">{t('party.common.notFound')}</div>
             </div>
         );
+    }
+
+    if (party.isPublished && id) {
+        return <Navigate to={ROUTES.USER_PARTY_VIEW(id)} replace />;
     }
 
     function handleSubmit(

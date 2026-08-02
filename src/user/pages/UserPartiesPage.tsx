@@ -17,11 +17,19 @@ import EditPen from '@/components/icons/EditPen';
 import Trash from '@/components/icons/Trash';
 import EyeIcon from '@/components/icons/Eye';
 import { USER_PARTIES_COLUMNS } from '@user/constants/columns/userParties.constants.columns';
+import { useDeleteParty } from '@user/hooks/useDeleteParty';
+import QuickPublishPartyAction from '@user/components/QuickPublishPartyAction';
+import PublishPartyModal from '@user/components/PublishPartyModal';
+import { usePublishParty } from '@user/hooks/usePublishParty';
 
 export default function UserPartiesPage() {
     const { t } = useTranslation('user');
 
     const [partyToDelete, setPartyToDelete] = useState<Party | null>(null);
+    const [partyToPublish, setPartyToPublish] = useState<Party | null>(null);
+
+    const deletePartyMutation = useDeleteParty();
+    const publishPartyMutation = usePublishParty();
 
     const [filters, setFilters] = useState<PartyFilter>({
         page: 1,
@@ -70,6 +78,10 @@ export default function UserPartiesPage() {
                 title={t('party.list.title')}
 
                 data={data}
+
+                getRowKey={(party) => party.id}
+
+                pageSize={filters.limit}
 
                 columns={USER_PARTIES_COLUMNS(t)}
 
@@ -122,7 +134,7 @@ export default function UserPartiesPage() {
                     {
                         label: t('actions.edit'),
 
-                        render: (party) => (
+                        render: (party) => !party.isPublished ? (
                             <Link
                                 to={ROUTES.USER_PARTY_EDIT(party.id)}
                                 className="action"
@@ -130,7 +142,19 @@ export default function UserPartiesPage() {
                             >
                                 <EditPen size={24} />
                             </Link>
-                        ),
+                        ) : null,
+                    },
+
+                    {
+                        label: t('party.publication.publishNow'),
+
+                        render: (party) =>
+                            !party.isPublished ? (
+                                <QuickPublishPartyAction
+                                    party={party}
+                                    onPublish={setPartyToPublish}
+                                />
+                            ) : null,
                     },
 
                     {
@@ -138,15 +162,16 @@ export default function UserPartiesPage() {
 
                         danger: true,
 
-                        render: (party) => (
+                        render: (party) => !party.isPublished ? (
                             <button
+                                type="button"
                                 className="action action--danger"
                                 title={t('actions.delete')}
                                 onClick={() => openDeleteModal(party)}
                             >
                                 <Trash size={24} />
                             </button>
-                        ),
+                        ) : null,
                     },
                 ]}
             />
@@ -155,14 +180,35 @@ export default function UserPartiesPage() {
                 <DeletePartyModal
                     party={partyToDelete}
 
+                    pending={deletePartyMutation.isPending}
+
                     onClose={() => setPartyToDelete(null)}
 
                     onConfirm={() => {
-                        console.log('delete', partyToDelete.id);
-
-                        setPartyToDelete(null);
+                        deletePartyMutation.mutate(partyToDelete.id, {
+                            onSuccess: () => setPartyToDelete(null),
+                        });
                     }}
                 />
+            )}
+
+            {partyToPublish && (
+                <PublishPartyModal
+                    partyTitle={partyToPublish.title}
+                    pending={publishPartyMutation.isPending}
+                    error={publishPartyMutation.isError}
+                    onClose={() => setPartyToPublish(null)}
+                    onConfirm={() => {
+                        const partyId = partyToPublish.id;
+                        publishPartyMutation.mutate(partyId, {
+                            onSuccess: () => setPartyToPublish(null),
+                        });
+                    }}
+                />
+            )}
+
+            {deletePartyMutation.isError && (
+                <p className="form-error">{t('party.delete.error')}</p>
             )}
         </>
     );
