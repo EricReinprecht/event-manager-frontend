@@ -1,4 +1,4 @@
-import { NavLink, Outlet } from 'react-router-dom';
+import { NavLink, Outlet, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 import { ROUTES } from '@routes/paths';
@@ -10,6 +10,8 @@ import '@styles/layouts/user-layout.scss';
 
 export default function UserLayout() {
     const { t } = useTranslation('user');
+
+    const location = useLocation();
 
     const links = [
         {
@@ -61,7 +63,7 @@ export default function UserLayout() {
             </aside>
 
             <main className="user-layout__content">
-                <Outlet />
+                <Outlet key={location.pathname} />
             </main>
         </div>
     );

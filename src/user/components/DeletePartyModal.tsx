@@ -34,7 +34,7 @@ export default function DeletePartyModal({ party, onClose, onConfirm }: Props) {
         >
             <p>{t('party.delete.confirm')}</p>
 
-            <strong>{party.Title}</strong>
+            <strong>{party.title}</strong>
         </Modal>
     );
 }

@@ -2,5 +2,29 @@
     "validation": {
         "summary_one": "Please fix {{count}} validation error before continuing.",
         "summary_other": "Please fix {{count}} validation errors before continuing."
+    },
+    "actions": {
+        "clearAll": "Clear all"
+    },
+    "datepicker": {
+        "selectDate": "Select date",
+        "selectTime": "Select time",
+        "selectDateTime": "Select date and time"
+    },
+    "media": {
+        "uploadFailed": "Upload failed. Please try again.",
+        "fileTooLarge": "Images must not exceed 10 MB.",
+        "unsupported": "Only supported image files can be uploaded.",
+        "remove": "Remove image",
+        "uploading": "Uploading…",
+        "choose": "Choose an image",
+        "replace": "Replace image",
+        "dropSingle": "Drop image here",
+        "chooseCover": "Choose cover image",
+        "formats": "PNG, JPG, WebP or GIF · max. 10 MB",
+        "chooseGallery": "Choose gallery images",
+        "dropMultiple": "Drop images here",
+        "addGallery": "Add gallery images",
+        "multipleHint": "Select up to 10 images · max. 10 MB each"
     }
 }

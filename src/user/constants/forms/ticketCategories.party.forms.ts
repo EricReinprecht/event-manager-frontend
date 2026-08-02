@@ -20,6 +20,18 @@ export default function createTicketCategoriesSection(t: any): FormSectionConfig
 
                 type: 'repeater',
 
+                validate(category: any, values: Record<string, any> = {}) {
+                    const normalizedName = String(category.name ?? '').trim().toLowerCase();
+                    const duplicates = (values.ticketCategories ?? []).filter(
+                        (item: { name?: string }) =>
+                            String(item.name ?? '').trim().toLowerCase() === normalizedName,
+                    ).length;
+                    if (normalizedName && duplicates > 1) {
+                        return { name: t('party.validation.ticketCategoryNameUnique') };
+                    }
+                    return {};
+                },
+
                 addLabel: t('party.ticketCategory.add'),
 
                 removeLabel: t('party.ticketCategory.remove'),

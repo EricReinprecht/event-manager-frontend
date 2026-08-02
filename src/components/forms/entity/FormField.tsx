@@ -1,5 +1,7 @@
 import { X } from 'lucide-react';
 import DatePicker from 'react-datepicker';
+import { format } from 'date-fns';
+import { useTranslation } from 'react-i18next';
 import 'react-datepicker/dist/react-datepicker.css';
 
 import CategoryMultiSelect from '@/features/categories/hooks/components/CategoryMultiSelect';
@@ -7,6 +9,8 @@ import CategoryMultiSelect from '@/features/categories/hooks/components/Category
 import LocationPicker from '../fields/LocationPicker';
 import Repeater from '../fields/Repeater';
 import Checkbox from '../fields/Checkbox';
+import SingleImageUpload from '../fields/SingleImageUpload';
+import MultipleImageUpload from '../fields/MultipleImageUpload';
 import type { FormFieldConfig } from './types';
 
 interface Props {
@@ -19,6 +23,8 @@ interface Props {
     repeaterDepth?: number;
     validationAttempt?: number;
     errorKey?: string;
+    formValues?: Record<string, any>;
+    itemValues?: Record<string, any>;
 }
 
 export default function FormField({
@@ -31,7 +37,10 @@ export default function FormField({
     repeaterDepth = 0,
     validationAttempt = 0,
     errorKey,
+    formValues = {},
+    itemValues,
 }: Props) {
+    const { t } = useTranslation('entityForm');
     if (field.type === 'hidden') {
         return (
             <input
@@ -58,6 +67,27 @@ export default function FormField({
                 break;
         }
     };
+
+    const dateBoundary = (boundary?: string) => {
+        if (!boundary) return undefined;
+        const [year, month, day] = boundary.split('T')[0].split('-').map(Number);
+        return new Date(year, month - 1, day);
+    };
+
+    const timeBoundary = (boundary?: string) =>
+        boundary ? new Date(`1970-01-01T${boundary}:00`) : undefined;
+
+    const fieldDisabled = disabled || field.disabled || field.disabledWhen?.(formValues, itemValues);
+
+    const minTimeValue = field.minTime?.(formValues, itemValues);
+    const maxTimeValue = field.maxTime?.(formValues, itemValues);
+    const timeRange =
+        minTimeValue || maxTimeValue
+            ? {
+                  minTime: timeBoundary(minTimeValue ?? '00:00'),
+                  maxTime: timeBoundary(maxTimeValue ?? '23:59'),
+              }
+            : {};
 
     return (
         <div className={`form-input ${inputClass}`} data-error-key={errorKey ?? field.name}>
@@ -151,12 +181,29 @@ export default function FormField({
                             value
                                 ? field.type === 'time'
                                     ? new Date(`1970-01-01T${value}`)
+                                    : field.type === 'date'
+                                      ? (() => {
+                                            const [year, month, day] = String(value)
+                                                .split('T')[0]
+                                                .split('-')
+                                                .map(Number);
+                                            return new Date(year, month - 1, day);
+                                        })()
                                     : new Date(value)
                                 : null
                         }
                         onChange={(date: Date | null) => {
                             if (field.type === 'time') {
                                 onChange(field.name, date ? date.toTimeString().slice(0, 5) : '');
+                                return;
+                            }
+
+                            if (field.type === 'date') {
+                                const nextDate = date ? format(date, 'yyyy-MM-dd') : '';
+                                onChange(field.name, nextDate);
+                                if (!nextDate) {
+                                    field.clearFieldsOnEmpty?.forEach((name) => onChange(name, ''));
+                                }
                                 return;
                             }
 
@@ -175,14 +222,20 @@ export default function FormField({
                         }
                         placeholderText={
                             field.type === 'datetime'
-                                ? 'Select date and time'
+                                ? t('datepicker.selectDateTime')
                                 : field.type === 'time'
-                                  ? 'Select time'
-                                  : 'Select date'
+                                  ? t('datepicker.selectTime')
+                                  : t('datepicker.selectDate')
                         }
                         className={`form-datepicker ${inputClass}`}
                         popperPlacement="bottom-start"
-                        disabled={disabled || field.disabled}
+                        minDate={dateBoundary(field.minDate?.(formValues, itemValues))}
+                        maxDate={dateBoundary(field.maxDate?.(formValues, itemValues))}
+                        showMonthDropdown={field.showMonthDropdown}
+                        showYearDropdown={field.showYearDropdown}
+                        dropdownMode="select"
+                        {...timeRange}
+                        disabled={fieldDisabled}
                     />
 
                     {showClear && (
@@ -225,6 +278,24 @@ export default function FormField({
                 />
             )}
 
+            {field.type === 'media' && (
+                field.multiple ? (
+                    <MultipleImageUpload
+                        value={value}
+                        accept={field.accept}
+                        disabled={disabled || field.disabled}
+                        onChange={(media) => onChange(field.name, media)}
+                    />
+                ) : (
+                    <SingleImageUpload
+                        value={value}
+                        accept={field.accept}
+                        disabled={disabled || field.disabled}
+                        onChange={(media) => onChange(field.name, media)}
+                    />
+                )
+            )}
+
             {field.type === 'repeater' && (
                 <Repeater
                     name={field.name}
@@ -239,11 +310,14 @@ export default function FormField({
                     onChange={(items) => onChange(field.name, items)}
                     collapsible={field.collapsible}
                     defaultOpen={field.defaultOpen}
+                    clearable={field.clearable}
+                    clearLabel={field.clearLabel}
                     titleField={field.titleField}
                     titleFormatter={field.titleFormatter}
                     errors={fieldErrors}
                     depth={repeaterDepth}
                     validationAttempt={validationAttempt}
+                    formValues={formValues}
                 />
             )}
 

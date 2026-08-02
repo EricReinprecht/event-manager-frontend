@@ -2,5 +2,29 @@
     "validation": {
         "summary_one": "Bitte behebe {{count}} Validierungsfehler, bevor du fortfährst.",
         "summary_other": "Bitte behebe {{count}} Validierungsfehler, bevor du fortfährst."
+    },
+    "actions": {
+        "clearAll": "Alles leeren"
+    },
+    "datepicker": {
+        "selectDate": "Datum auswählen",
+        "selectTime": "Uhrzeit auswählen",
+        "selectDateTime": "Datum und Uhrzeit auswählen"
+    },
+    "media": {
+        "uploadFailed": "Upload fehlgeschlagen. Bitte versuche es erneut.",
+        "fileTooLarge": "Bilder dürfen nicht größer als 10 MB sein.",
+        "unsupported": "Es können nur unterstützte Bilddateien hochgeladen werden.",
+        "remove": "Bild entfernen",
+        "uploading": "Wird hochgeladen…",
+        "choose": "Bild auswählen",
+        "replace": "Bild ersetzen",
+        "dropSingle": "Bild hier ablegen",
+        "chooseCover": "Titelbild auswählen",
+        "formats": "PNG, JPG, WebP oder GIF · max. 10 MB",
+        "chooseGallery": "Galeriebilder auswählen",
+        "dropMultiple": "Bilder hier ablegen",
+        "addGallery": "Galeriebilder hinzufügen",
+        "multipleHint": "Bis zu 10 Bilder auswählen · jeweils max. 10 MB"
     }
 }

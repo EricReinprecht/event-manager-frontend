@@ -12,6 +12,7 @@ export type FormFieldType =
     | 'multiselect'
     | 'location'
     | 'hidden'
+    | 'media'
     | 'repeater';
 
 export interface FormFieldOption {
@@ -62,9 +63,33 @@ export interface FormFieldConfig {
 
     defaultOpen?: boolean;
 
+    clearable?: boolean;
+
+    clearLabel?: string;
+
     titleField?: string;
 
     titleFormatter?: (item: any, index: number) => string;
 
     validate?: (value: any, values?: Record<string, any>) => Partial<Record<string, string>>;
+
+    multiple?: boolean;
+
+    accept?: string;
+
+    minDate?: (formValues: Record<string, any>, itemValues?: Record<string, any>) => string | undefined;
+
+    maxDate?: (formValues: Record<string, any>, itemValues?: Record<string, any>) => string | undefined;
+
+    showMonthDropdown?: boolean;
+
+    showYearDropdown?: boolean;
+
+    minTime?: (formValues: Record<string, any>, itemValues?: Record<string, any>) => string | undefined;
+
+    maxTime?: (formValues: Record<string, any>, itemValues?: Record<string, any>) => string | undefined;
+
+    disabledWhen?: (formValues: Record<string, any>, itemValues?: Record<string, any>) => boolean;
+
+    clearFieldsOnEmpty?: string[];
 }

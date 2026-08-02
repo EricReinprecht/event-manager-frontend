@@ -21,6 +21,8 @@ interface Props {
 
     actionButton?: React.ReactNode;
 
+    beforeActions?: React.ReactNode;
+
     errors?: Record<string, string>;
 
     validationAttempt?: number;
@@ -35,6 +37,7 @@ export default function Form({
     disabled = false,
     submitLabel,
     actionButton,
+    beforeActions,
     errors = {},
     validationAttempt = 0,
 }: Props) {
@@ -76,6 +79,8 @@ export default function Form({
                     validationAttempt={validationAttempt}
                 />
             ))}
+
+            {beforeActions}
 
             <div className="form-actions">
                 {onSubmit && (

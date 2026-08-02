@@ -15,7 +15,12 @@ import type {
     UpdatePartyRequest,
 } from '@user/types/party.types';
 
-import buildDateTime from '@/helper/build-datetime';
+import {
+    emptyPartyFormValues,
+    formValuesToPartyRequest,
+} from '@user/mappers/party-form.mapper';
+
+const EMPTY_SERVER_ERRORS: Record<string, string> = {};
 
 interface Props {
     mode: 'create' | 'edit' | 'view';
@@ -32,6 +37,10 @@ interface Props {
 
     actionButton?: React.ReactNode;
 
+    beforeActions?: React.ReactNode;
+
+    showPublication?: boolean;
+
     serverErrors?: Record<string, string>;
 }
 
@@ -42,7 +51,9 @@ export default function PartyFormLayout({
     loading = false,
     disabled = false,
     actionButton,
-    serverErrors = {},
+    beforeActions,
+    showPublication = false,
+    serverErrors = EMPTY_SERVER_ERRORS,
 }: Props) {
     const { t } = useTranslation('user');
 
@@ -57,9 +68,15 @@ export default function PartyFormLayout({
         [categories],
     );
 
-    const sections = useMemo(() => createPartyForm(categoryOptions, t), [categoryOptions, t]);
+    const sections = useMemo(
+        () => createPartyForm(categoryOptions, t, showPublication),
+        [categoryOptions, showPublication, t],
+    );
 
-    const [values, setValues] = useState<Partial<PartyFormValues>>(initialValues);
+    const [values, setValues] = useState<PartyFormValues>({
+        ...emptyPartyFormValues,
+        ...initialValues,
+    });
 
     const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
 
@@ -68,6 +85,8 @@ export default function PartyFormLayout({
     const [validationAttempt, setValidationAttempt] = useState(0);
 
     const hasSubmittedRef = useRef(false);
+
+    const isDisabled = mode === 'view' || disabled;
 
     const errors = useMemo(
         () => ({
@@ -123,6 +142,11 @@ export default function PartyFormLayout({
 
         hasSubmittedRef.current = true;
 
+        if (document.querySelector('.media-upload[data-uploading="true"]')) {
+            setValidationErrors({ _media: t('party.validation.waitForUploads') });
+            return;
+        }
+
         const currentValidationErrors = validateCurrentValues(values);
 
         setValidationErrors(currentValidationErrors);
@@ -139,38 +163,19 @@ export default function PartyFormLayout({
 
         setValidationErrors({});
 
-        const { categoryIds, startDate, startTime, endDate, endTime, ticketCategories, ...rest } =
-            values;
-
-        const timezone = values.location?.timezone;
-
-        const payload = {
-            ...rest,
-
-            startAt: buildDateTime(startDate!, startTime!, timezone!),
-
-            endAt: buildDateTime(endDate!, endTime!, timezone!),
-
-            categories: categoryIds ?? [],
-
-            ticketCategories: (ticketCategories ?? []).map((category) => ({
-                ...category,
-
-                accessWindows: (category.accessWindows ?? []).map((window) => ({
-                    id: window.id,
-
-                    startsAt: buildDateTime(window.startDate, window.startTime, timezone!),
-
-                    endsAt: buildDateTime(window.endDate, window.endTime, timezone!),
-                })),
-            })),
-        } as CreatePartyRequest | UpdatePartyRequest;
-
-        onSubmit(payload);
+        onSubmit(formValuesToPartyRequest(values, mode === 'edit' ? 'edit' : 'create'));
     }
 
     useEffect(() => {
-        setBackendErrors(serverErrors);
+        setBackendErrors((current) => {
+            const currentEntries = Object.entries(current);
+            const serverEntries = Object.entries(serverErrors);
+            const unchanged =
+                currentEntries.length === serverEntries.length &&
+                serverEntries.every(([path, message]) => current[path] === message);
+
+            return unchanged ? current : serverErrors;
+        });
 
         if (Object.keys(serverErrors).length === 0) {
             return;
@@ -189,16 +194,32 @@ export default function PartyFormLayout({
         };
     }, [serverErrors]);
 
+    useEffect(() => {
+        const dirty = JSON.stringify(values) !== JSON.stringify({
+            ...emptyPartyFormValues,
+            ...initialValues,
+        });
+        if (!dirty || mode === 'view') return;
+        const warn = (event: BeforeUnloadEvent) => {
+            event.preventDefault();
+            event.returnValue = '';
+        };
+        window.addEventListener('beforeunload', warn);
+        return () => window.removeEventListener('beforeunload', warn);
+    }, [values, initialValues, mode]);
+
     return (
         <Form
+            key={mode}
             title={t(`party.${mode}.title`)}
             sections={sections}
             values={values}
             onChange={update}
-            onSubmit={disabled ? undefined : submit}
-            disabled={disabled}
+            onSubmit={isDisabled ? undefined : submit}
+            disabled={isDisabled}
             submitLabel={loading ? t(`party.${mode}.saving`) : t(`party.${mode}.submit`)}
             actionButton={actionButton}
+            beforeActions={beforeActions}
             errors={errors}
             validationAttempt={validationAttempt}
         />

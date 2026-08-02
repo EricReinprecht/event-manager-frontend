@@ -25,6 +25,8 @@ export default function UserCreatePartyPage() {
 
             loading={mutation.isPending}
 
+            serverErrors={mutation.validationErrors}
+
             error={mutation.isError}
         />
     );

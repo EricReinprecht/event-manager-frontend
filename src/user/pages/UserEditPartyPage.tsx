@@ -7,7 +7,8 @@ import { useUpdateParty } from '@user/hooks/useUpdateParty';
 
 import { ROUTES } from '@routes/paths';
 
-import splitDateTime from '@/helper/split-datetime';
+import { partyToFormValues } from '@user/mappers/party-form.mapper';
+import { useMe } from '@user/hooks/useMe';
 
 export default function UserEditPartyPage() {
     const { t } = useTranslation('user');
@@ -19,6 +20,8 @@ export default function UserEditPartyPage() {
     const updatePartyMutation = useUpdateParty();
 
     const { data: party, isLoading, isError } = useParty(id);
+
+    const { data: user } = useMe();
 
     if (isLoading) {
         return (
@@ -35,42 +38,6 @@ export default function UserEditPartyPage() {
             </div>
         );
     }
-
-    const timezone = party.location.timezone;
-
-    const start = splitDateTime(party.startAt, timezone);
-
-    const end = splitDateTime(party.endAt, timezone);
-
-    const ticketCategories =
-        party.ticketCategories?.map((category) => ({
-            id: category.id,
-            name: category.name,
-            price: category.price,
-            capacity: category.capacity,
-            requiresVerification: category.requiresVerification,
-            refundRequiresApproval: category.refundRequiresApproval,
-            refundPolicyId: category.refundPolicyId,
-
-            accessWindows:
-                category.accessWindows?.map((window) => {
-                    const windowStart = splitDateTime(window.startsAt, timezone);
-
-                    const windowEnd = splitDateTime(window.endsAt, timezone);
-
-                    return {
-                        id: window.id,
-
-                        startDate: windowStart.date,
-
-                        startTime: windowStart.time,
-
-                        endDate: windowEnd.date,
-
-                        endTime: windowEnd.time,
-                    };
-                }) ?? [],
-        })) ?? [];
 
     function handleSubmit(
         values: Parameters<
@@ -99,29 +66,8 @@ export default function UserEditPartyPage() {
     return (
         <PartyFormLayout
             mode="edit"
-            initialValues={{
-                title: party.title,
-
-                description: party.description,
-
-                locationName: party.locationName,
-
-                location: party.location,
-
-                startDate: start.date,
-
-                startTime: start.time,
-
-                endDate: end.date,
-
-                endTime: end.time,
-
-                thumbnailID: party.thumbnailID,
-
-                categoryIds: party.categories?.map((category) => category.id) ?? [],
-
-                ticketCategories,
-            }}
+            initialValues={partyToFormValues(party)}
+            showPublication={user?.id === party.organizerId && !party.isPublished}
             serverErrors={updatePartyMutation.validationErrors}
             onSubmit={handleSubmit}
             loading={updatePartyMutation.isPending}

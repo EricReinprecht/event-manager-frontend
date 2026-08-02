@@ -1,6 +1,7 @@
 import FormField from '../entity/FormField';
 import type { FormFieldConfig } from '../entity/types';
 import CollapsibleSection from '../entity/CollapsibleSection';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
     name: string;
@@ -25,6 +26,10 @@ interface Props {
 
     defaultOpen?: boolean;
 
+    clearable?: boolean;
+
+    clearLabel?: string;
+
     titleField?: string;
 
     titleFormatter?: (item: any, index: number) => string;
@@ -36,6 +41,7 @@ interface Props {
     validationAttempt?: number;
 
     path?: string;
+    formValues?: Record<string, any>;
 }
 
 export default function Repeater({
@@ -50,13 +56,17 @@ export default function Repeater({
     itemLabel = 'Item',
     collapsible = true,
     defaultOpen = false,
+    clearable = false,
+    clearLabel,
     titleField,
     titleFormatter,
     errors = {},
     depth = 0,
     validationAttempt = 0,
     path,
+    formValues = {},
 }: Props) {
+    const { t } = useTranslation('entityForm');
     const repeaterPath = path ?? name;
 
     function addItem() {
@@ -65,6 +75,10 @@ export default function Repeater({
 
     function removeItem(index: number) {
         onChange(value.filter((_, itemIndex) => itemIndex !== index));
+    }
+
+    function clearItem(index: number) {
+        onChange(value.map((item, itemIndex) => (itemIndex === index ? {} : item)));
     }
 
     function updateItem(index: number, fieldName: string, newValue: unknown) {
@@ -135,6 +149,8 @@ export default function Repeater({
                 repeaterDepth={depth + 1}
                 validationAttempt={validationAttempt}
                 errorKey={fieldPath}
+                formValues={formValues}
+                itemValues={item}
                 onChange={(fieldName, newValue) => updateItem(index, fieldName, newValue)}
             />
         );
@@ -160,13 +176,26 @@ export default function Repeater({
                 {repeaterError && <p className="form-error">{repeaterError}</p>}
 
                 {!disabled && (
-                    <button
-                        type="button"
-                        className="form-button form-button--danger"
-                        onClick={() => removeItem(index)}
-                    >
-                        {removeLabel}
-                    </button>
+                    <div className="form-repeater__item-actions">
+                        {clearable && (
+                            <button
+                                type="button"
+                                className="form-clear-button"
+                                disabled={Object.keys(item).length === 0}
+                                onClick={() => clearItem(index)}
+                            >
+                                {clearLabel ?? t('actions.clearAll')}
+                            </button>
+                        )}
+
+                        <button
+                            type="button"
+                            className="form-button form-button--danger"
+                            onClick={() => removeItem(index)}
+                        >
+                            {removeLabel}
+                        </button>
+                    </div>
                 )}
             </div>
         );
@@ -201,13 +230,15 @@ export default function Repeater({
             })}
 
             {!disabled && (
-                <button
-                    type="button"
-                    className="form-button form-button--success"
-                    onClick={addItem}
-                >
-                    {addLabel}
-                </button>
+                <div className="form-repeater__actions">
+                    <button
+                        type="button"
+                        className="form-button form-button--success"
+                        onClick={addItem}
+                    >
+                        {addLabel}
+                    </button>
+                </div>
             )}
         </div>
     );

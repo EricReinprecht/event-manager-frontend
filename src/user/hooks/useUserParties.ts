@@ -1,9 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
 
 import { getUserParties } from '@user/api/user-parties.api';
-import type { UserPartiesFilter } from '@user/types/parties.types';
+import type { PartyFilter } from '@user/types/party.types';
 
-export function useUserParties(filters: UserPartiesFilter) {
+export function useUserParties(filters: PartyFilter) {
     return useQuery({
         queryKey: ['user-parties', filters],
 

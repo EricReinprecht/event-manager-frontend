@@ -8,8 +8,8 @@
     },
     "party": {
         "common": {
-            "loading": "Veranstaltung wird geladen...",
-            "notFound": "Veranstaltung nicht gefunden"
+            "loading": "Party wird geladen...",
+            "notFound": "Party nicht gefunden"
         },
         "create": {
             "title": "Party erstellen",
@@ -19,14 +19,14 @@
             "error": "Party konnte nicht erstellt werden.",
             "sections": {
                 "general": "Allgemeine Informationen",
-                "location": "Geografische Angaben",
+                "location": "Ort",
                 "schedule": "Zeitplan",
                 "ticketCategories": "Tickets"
             }
         },
         "sections": {
             "general": "Allgemeine Informationen",
-            "location": "Geografische Angaben",
+            "location": "Ort",
             "schedule": "Zeitplan",
             "ticketCategories": "Tickets"
         },
@@ -38,6 +38,20 @@
             "title": "Party",
             "edit": "Party bearbeiten"
         },
+        "publication": {
+            "title": "Veröffentlichung",
+            "draft": "Entwurf — diese Party ist noch nicht öffentlich.",
+            "published": "Veröffentlicht",
+            "scheduledFor": "Veröffentlichung geplant für {{date}}",
+            "publishAt": "Zeitpunkt der automatischen Veröffentlichung",
+            "publishDate": "Veröffentlichungsdatum",
+            "publishTime": "Veröffentlichungszeit",
+            "selectDate": "Datum auswählen",
+            "selectTime": "Uhrzeit auswählen",
+            "schedule": "Veröffentlichung planen",
+            "publishNow": "Jetzt veröffentlichen",
+            "error": "Die Veröffentlichungseinstellungen konnten nicht aktualisiert werden."
+        },
         "list": {
             "title": "Meine Partys",
             "loading": "Partys werden geladen...",
@@ -45,7 +59,7 @@
         },
         "table": {
             "name": "Name",
-            "start": "Start",
+            "start": "Beginn",
             "end": "Ende",
             "locationName": "Ort"
         },
@@ -69,33 +83,31 @@
             "categories": "Kategorien",
             "startDate": "Startdatum",
             "endDate": "Enddatum",
-            "startTime": "Starturzeit",
-            "endTime": "Endurzeit",
-            "ticketCategories": "Ticketkategorien"
+            "startTime": "Startzeit",
+            "endTime": "Endzeit",
+            "ticketCategories": "Ticketkategorien",
+            "thumbnail": "Titelbild",
+            "galleryImages": "Galeriebilder"
         },
         "delete": {
             "title": "Party löschen",
-            "confirm": "Bist su sicher das du diese Party löschen willst:"
+            "confirm": "Möchtest du diese Party wirklich löschen:"
         },
         "ticketCategory": {
             "add": "Ticketkategorie hinzufügen",
             "remove": "Ticketkategorie entfernen",
             "item": "Ticketkategorie",
-
             "name": "Name",
             "price": "Preis",
             "capacity": "Kapazität",
             "requiresVerification": "Verifizierung erforderlich",
             "refundRequiresApproval": "Rückerstattung benötigt Genehmigung",
-
             "accessWindows": "Zutrittsfenster",
-
             "accessWindow": {
                 "title": "Zutrittsfenster",
                 "add": "Zutrittsfenster hinzufügen",
                 "remove": "Zutrittsfenster entfernen",
                 "item": "Zutrittsfenster",
-
                 "startDate": "Startdatum",
                 "startTime": "Startzeit",
                 "endDate": "Enddatum",
@@ -103,7 +115,12 @@
             }
         },
         "validation": {
-            "endAfterStart": "Das Enddatum und die Endzeit müssen nach dem Startdatum und der Startzeit liegen."
+            "endAfterStart": "Enddatum und Endzeit müssen nach Startdatum und Startzeit liegen.",
+            "accessWindowInsideSchedule": "Das Zutrittsfenster muss innerhalb des Partyzeitplans liegen.",
+            "ticketCategoryNameUnique": "Die Namen der Ticketkategorien müssen eindeutig sein.",
+            "waitForUploads": "Bitte warte, bis alle Medien vollständig hochgeladen wurden.",
+            "publicationDateTimeRequired": "Wähle Veröffentlichungsdatum und -zeit aus oder lasse beide Felder leer.",
+            "publishAtInvalid": "Der Veröffentlichungszeitpunkt muss in der Zukunft und vor dem Partyende liegen."
         }
     }
 }

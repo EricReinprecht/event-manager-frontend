@@ -1,0 +1,177 @@
+.media-upload {
+    display: grid;
+    gap: var(--space-md);
+
+    &__dropzone {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: var(--space-md);
+        padding: var(--space-lg);
+        border: 2px dashed color-mix(in srgb, var(--color-primary) 35%, var(--color-border));
+        border-radius: var(--radius-lg);
+        background: color-mix(in srgb, var(--color-primary) 4%, var(--color-surface));
+        color: var(--color-text);
+        text-align: left;
+        cursor: pointer;
+        transition:
+            border-color 160ms ease,
+            background 160ms ease,
+            box-shadow 160ms ease,
+            transform 160ms ease;
+
+        > svg {
+            flex: 0 0 auto;
+            color: var(--color-primary);
+        }
+
+        > div {
+            display: grid;
+            gap: 0.25rem;
+        }
+
+        strong {
+            font-size: 0.95rem;
+        }
+
+        span {
+            color: var(--color-text-muted);
+            font-size: 0.82rem;
+        }
+
+        &:hover,
+        &.is-active {
+            border-color: var(--color-primary);
+            background: color-mix(in srgb, var(--color-primary) 9%, var(--color-surface));
+            box-shadow: 0 8px 24px color-mix(in srgb, var(--color-primary) 12%, transparent);
+            transform: translateY(-1px);
+        }
+
+        &:focus-visible {
+            outline: 3px solid color-mix(in srgb, var(--color-primary) 28%, transparent);
+            outline-offset: 2px;
+        }
+    }
+
+    &__spinner {
+        animation: media-upload-spin 800ms linear infinite;
+    }
+
+    &__cover,
+    &__item {
+        position: relative;
+        margin: 0;
+        overflow: hidden;
+        border: 1px solid var(--color-border);
+        background: var(--color-background);
+        box-shadow: var(--shadow-sm);
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        > button {
+            position: absolute;
+            top: var(--space-sm);
+            right: var(--space-sm);
+            display: grid;
+            place-items: center;
+            width: 2.25rem;
+            height: 2.25rem;
+            padding: 0;
+            border: 1px solid rgb(255 255 255 / 28%);
+            border-radius: 999px;
+            background: rgb(15 23 42 / 78%);
+            color: white;
+            cursor: pointer;
+            opacity: 0;
+            transform: translateY(-4px);
+            backdrop-filter: blur(8px);
+            transition:
+                opacity 150ms ease,
+                transform 150ms ease,
+                background 150ms ease;
+
+            &:hover {
+                background: var(--color-danger);
+            }
+        }
+
+        &:hover > button,
+        &:focus-within > button {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        &.is-uploading img {
+            opacity: 0.58;
+        }
+    }
+
+    &__cover {
+        width: min(100%, 720px);
+        aspect-ratio: 16 / 9;
+        border-radius: var(--radius-lg);
+    }
+
+    &__cover-status,
+    &__item-status {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: var(--space-sm);
+        background: rgb(15 23 42 / 28%);
+        color: white;
+        font-weight: 600;
+    }
+
+    &__items {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(145px, 1fr));
+        gap: var(--space-md);
+    }
+
+    &__item {
+        aspect-ratio: 1;
+        border-radius: var(--radius-md);
+    }
+}
+
+.media-upload--single {
+    .media-upload__dropzone {
+        width: min(100%, 720px);
+        min-height: 112px;
+    }
+}
+
+.media-upload--multiple {
+    .media-upload__dropzone {
+        min-height: 112px;
+    }
+
+    .media-upload__items:empty {
+        display: none;
+    }
+}
+
+@media (max-width: 640px) {
+    .media-upload__dropzone {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .media-upload__items {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@keyframes media-upload-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}

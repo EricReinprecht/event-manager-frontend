@@ -5,6 +5,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { updateParty } from '@user/api/user-update-party.api';
 
 import { getValidationErrors } from '@/api/errors/validation.errors';
+import type { UpdatePartyRequest } from '@user/types/party.types';
 
 export function useUpdateParty() {
     const queryClient = useQueryClient();
@@ -12,16 +13,19 @@ export function useUpdateParty() {
     const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
 
     const mutation = useMutation({
-        mutationFn: ({ id, data }: { id: string; data: any }) => updateParty(id, data),
+        mutationFn: ({ id, data }: { id: string; data: UpdatePartyRequest }) =>
+            updateParty(id, data),
 
-        onSuccess(_, variables) {
+        onSuccess(updatedParty, variables) {
             setValidationErrors({});
 
-            queryClient.invalidateQueries({
+            queryClient.setQueryData(['party', variables.id], updatedParty);
+
+            void queryClient.invalidateQueries({
                 queryKey: ['party', variables.id],
             });
 
-            queryClient.invalidateQueries({
+            void queryClient.invalidateQueries({
                 queryKey: ['user-parties'],
             });
         },

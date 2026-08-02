@@ -1,4 +1,5 @@
 import ReactDatePicker from 'react-datepicker';
+import { useTranslation } from 'react-i18next';
 
 import { formatDate, parseDate } from './date.utils';
 
@@ -19,9 +20,11 @@ interface Props {
 export default function DatePicker({
     value = '',
     onChange,
-    placeholder = 'Select date',
+    placeholder,
     className,
 }: Props) {
+    const { t } = useTranslation('entityForm');
+
     return (
         <div className="date-picker">
             <ReactDatePicker
@@ -29,7 +32,7 @@ export default function DatePicker({
                 selected={parseDate(value)}
                 onChange={(date: Date | null) => onChange(formatDate(date))}
                 dateFormat="dd.MM.yyyy"
-                placeholderText={placeholder}
+                placeholderText={placeholder ?? t('datepicker.selectDate')}
                 isClearable={false}
             />
 

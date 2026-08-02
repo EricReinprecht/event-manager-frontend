@@ -3,6 +3,7 @@ import createGeneralSection from './general.party.forms';
 import createLocationSection from './location.party.forms';
 import createScheduleSection from './schedule.party.forms';
 import createTicketCategoriesSection from './ticketCategories.party.forms';
+import createPublicationSection from './publication.party.forms';
 
 export function createPartyForm(
     categories: {
@@ -10,8 +11,9 @@ export function createPartyForm(
         value: string;
     }[],
     t: any,
+    showPublication = false,
 ): FormSectionConfig[] {
-    return [
+    const sections = [
         createGeneralSection(categories, t),
 
         createLocationSection(t),
@@ -20,4 +22,10 @@ export function createPartyForm(
 
         createTicketCategoriesSection(t),
     ];
+
+    if (showPublication) {
+        sections.push(createPublicationSection(t));
+    }
+
+    return sections;
 }

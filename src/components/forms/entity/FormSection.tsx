@@ -3,6 +3,7 @@ import type { FormSectionConfig } from './types';
 import FormField from './FormField';
 
 import CollapsibleSection from './CollapsibleSection';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
     section: FormSectionConfig;
@@ -26,6 +27,7 @@ export default function FormSection({
     errors = {},
     validationAttempt = 0,
 }: Props) {
+    const { t } = useTranslation('entityForm');
     function getFieldErrors(fieldName: string): Record<string, string> {
         const prefix = `${fieldName}.`;
 
@@ -69,6 +71,10 @@ export default function FormSection({
 
     const errorCount = sectionErrorPaths.length;
 
+    function clearSection() {
+        sectionFieldNames.forEach((fieldName) => onChange(fieldName, undefined));
+    }
+
     const content = (
         <>
             {section.rows?.map((row, rowIndex) => (
@@ -84,6 +90,7 @@ export default function FormSection({
                             fieldErrors={getFieldErrors(field.name)}
                             validationAttempt={validationAttempt}
                             errorKey={field.name}
+                            formValues={values}
                         />
                     ))}
                 </div>
@@ -100,8 +107,21 @@ export default function FormSection({
                     fieldErrors={getFieldErrors(field.name)}
                     validationAttempt={validationAttempt}
                     errorKey={field.name}
+                    formValues={values}
                 />
             ))}
+
+            {section.clearable && !disabled && (
+                <div className="form-section__actions">
+                    <button
+                        type="button"
+                        className="form-clear-button"
+                        onClick={clearSection}
+                    >
+                        {section.clearLabel ?? t('actions.clearAll')}
+                    </button>
+                </div>
+            )}
 
             {sectionError && <p className="form-error">{sectionError}</p>}
         </>

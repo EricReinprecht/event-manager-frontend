@@ -4,7 +4,10 @@ import PartyFormLayout from '@user/layouts/PartyFormLayout';
 
 import { useParty } from '@user/hooks/useParty';
 import { useTranslation } from 'react-i18next';
-import splitDateTime from '@/helper/split-datetime';
+import { ROUTES } from '@routes/paths';
+import { partyToFormValues } from '@user/mappers/party-form.mapper';
+import { useMe } from '@user/hooks/useMe';
+import PartyPublishButton from '@user/components/PartyPublishButton';
 
 export default function UserPartyViewPage() {
     const { t } = useTranslation('user');
@@ -14,6 +17,8 @@ export default function UserPartyViewPage() {
     const navigate = useNavigate();
 
     const { data: party, isLoading, isError } = useParty(id);
+
+    const { data: user } = useMe();
 
     if (isLoading) {
         return (
@@ -31,61 +36,25 @@ export default function UserPartyViewPage() {
         );
     }
 
-    const timezone = party.location.timezone;
-
-    const start = splitDateTime(party.startAt, timezone);
-
-    const end = splitDateTime(party.endAt, timezone);
-
-    const ticketCategories = party.ticketCategories?.map((category) => ({
-        id: category.id,
-        name: category.name,
-        price: category.price,
-        capacity: category.capacity,
-        requiresVerification: category.requiresVerification,
-        refundRequiresApproval: category.refundRequiresApproval,
-        refundPolicyId: category.refundPolicyId,
-
-        accessWindows:
-            category.accessWindows?.map((window) => {
-                const start = splitDateTime(window.startsAt, timezone);
-                const end = splitDateTime(window.endsAt, timezone);
-
-                return {
-                    id: window.id,
-                    startDate: start.date,
-                    startTime: start.time,
-                    endDate: end.date,
-                    endTime: end.time,
-                };
-            }) ?? [],
-    }));
-
     return (
         <PartyFormLayout
             mode="view"
             disabled
-            initialValues={{
-                title: party.title,
-                description: party.description,
-                locationName: party.locationName,
-                location: party.location,
-                startDate: start.date,
-                startTime: start.time,
-                endDate: end.date,
-                endTime: end.time,
-                thumbnailID: party.thumbnailID,
-                categoryIds: party.categories?.map((category) => category.id) ?? [],
-                ticketCategories,
-            }}
+            initialValues={partyToFormValues(party)}
+            showPublication={user?.id === party.organizerId}
             actionButton={
-                <button
-                    className="form-button"
-                    type="button"
-                    onClick={() => navigate(`/user/parties/${id}/edit`)}
-                >
-                    {t('party.view.edit')}
-                </button>
+                <div className="party-view-actions">
+                    <button
+                        className="form-button"
+                        type="button"
+                        onClick={() => id && navigate(ROUTES.USER_PARTY_EDIT(id))}
+                    >
+                        {t('party.view.edit')}
+                    </button>
+                    {user?.id === party.organizerId && !party.isPublished && (
+                        <PartyPublishButton partyId={party.id} />
+                    )}
+                </div>
             }
         />
     );

@@ -44,6 +44,21 @@ export default function createGeneralSection(categories: any[], t: any): FormSec
 
                 options: categories,
             },
+
+            {
+                name: 'thumbnail',
+                label: t('party.fields.thumbnail'),
+                type: 'media',
+                accept: 'image/*',
+            },
+
+            {
+                name: 'images',
+                label: t('party.fields.galleryImages'),
+                type: 'media',
+                multiple: true,
+                accept: 'image/*',
+            },
         ],
     };
 }

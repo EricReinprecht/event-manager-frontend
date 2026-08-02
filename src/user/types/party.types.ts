@@ -1,5 +1,12 @@
 import type { Category } from '@/features/categories/types';
 
+export interface MediaReference {
+    id: string;
+    url: string;
+    filename: string;
+    mimeType?: string;
+}
+
 export interface TicketAccessWindow {
     id: string;
 
@@ -36,6 +43,7 @@ export interface TicketAccessWindowForm {
     endDate: string;
 
     endTime: string;
+
 }
 
 export interface TicketCategoryForm {
@@ -102,9 +110,9 @@ export interface PartyFilter {
 export interface PartyFormValues {
     title: string;
 
-    description?: string;
+    description: string;
 
-    locationName?: string;
+    locationName: string;
 
     location?: PartyLocation;
 
@@ -114,17 +122,23 @@ export interface PartyFormValues {
     endDate: string;
     endTime: string;
 
+    publishDate: string;
+
+    publishTime: string;
+
     categoryIds: string[];
 
-    thumbnailID?: string;
+    thumbnail?: MediaReference;
 
-    imageIDs?: string[];
+    images: MediaReference[];
 
     ticketCategories: TicketCategoryForm[];
 }
 
 export interface PartyDetailed {
     id: string;
+
+    organizerId: string;
 
     title: string;
 
@@ -138,7 +152,19 @@ export interface PartyDetailed {
 
     endAt: string;
 
-    thumbnailID?: string;
+    publishedAt?: string;
+
+    publishAt?: string;
+
+    isPublished: boolean;
+
+    thumbnailId?: string;
+
+    imageIds: string[];
+
+    thumbnail?: MediaReference;
+
+    images: MediaReference[];
 
     categories: Category[];
 
@@ -148,29 +174,9 @@ export interface PartyDetailed {
 export interface CreatePartyRequest {
     title: string;
 
-    description?: string;
+    description: string;
 
-    locationName?: string;
-
-    location: PartyLocation;
-
-    startAt: string;
-
-    endAt: string;
-
-    categories: string[];
-
-    thumbnailID?: string;
-
-    imageIDs?: string[];
-}
-
-export interface UpdatePartyRequest {
-    title: string;
-
-    description?: string;
-
-    locationName?: string;
+    locationName: string;
 
     location: PartyLocation;
 
@@ -182,5 +188,48 @@ export interface UpdatePartyRequest {
 
     thumbnailId?: string;
 
-    imageIds?: string[];
+    imageIds: string[];
+
+    ticketCategories: Array<{
+        name: string;
+        price: number;
+        capacity: number;
+        requiresVerification: boolean;
+        refundRequiresApproval: boolean;
+        refundPolicyId?: string | null;
+        accessWindows: Array<{ startsAt: string; endsAt: string }>;
+    }>;
+}
+
+export interface UpdatePartyRequest {
+    title: string;
+
+    description: string;
+
+    locationName: string;
+
+    location: PartyLocation;
+
+    startAt: string;
+
+    endAt: string;
+
+    publishAt?: string | null;
+
+    categories: string[];
+
+    thumbnailId?: string;
+
+    imageIds: string[];
+
+    ticketCategories: Array<{
+        id?: string;
+        name: string;
+        price: number;
+        capacity: number;
+        requiresVerification: boolean;
+        refundRequiresApproval: boolean;
+        refundPolicyId?: string | null;
+        accessWindows: Array<{ id?: string; startsAt: string; endsAt: string }>;
+    }>;
 }

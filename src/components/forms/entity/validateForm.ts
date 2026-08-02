@@ -8,7 +8,13 @@ export default function validateForm(values: Record<string, any>, sections: Form
         const rules = field.validation;
 
         if (rules) {
-            if (rules.required && (value === undefined || value === null || value === '')) {
+            if (
+                rules.required &&
+                (value === undefined ||
+                    value === null ||
+                    value === '' ||
+                    (Array.isArray(value) && value.length === 0))
+            ) {
                 errors[name] = rules.message?.required ?? 'This field is required.';
 
                 return;

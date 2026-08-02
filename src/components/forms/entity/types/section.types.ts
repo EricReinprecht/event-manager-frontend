@@ -13,5 +13,9 @@ export interface FormSectionConfig {
 
     defaultOpen?: boolean;
 
+    clearable?: boolean;
+
+    clearLabel?: string;
+
     validate?: (values: Record<string, any>) => string | null;
 }

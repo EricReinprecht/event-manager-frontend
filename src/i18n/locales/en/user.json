@@ -38,6 +38,20 @@
             "title": "Party",
             "edit": "Edit Party"
         },
+        "publication": {
+            "title": "Publication",
+            "draft": "Draft — this party is not public yet.",
+            "published": "Published",
+            "scheduledFor": "Scheduled to publish on {{date}}",
+            "publishAt": "Automatic publication date",
+            "publishDate": "Publication date",
+            "publishTime": "Publication time",
+            "selectDate": "Select date",
+            "selectTime": "Select time",
+            "schedule": "Schedule publication",
+            "publishNow": "Publish now",
+            "error": "The publication settings could not be updated."
+        },
         "list": {
             "title": "My Parties",
             "loading": "Loading parties...",
@@ -74,7 +88,9 @@
             "endDate": "Enddate",
             "startTime": "Starttime",
             "endTime": "Endtime",
-            "ticketCategories": "Ticket Categories"
+            "ticketCategories": "Ticket Categories",
+            "thumbnail": "Thumbnail",
+            "galleryImages": "Gallery images"
         },
         "ticketCategory": {
             "add": "Add Ticket Category",
@@ -102,7 +118,12 @@
             }
         },
         "validation": {
-            "endAfterStart": "The end date and time must be after the start date and time."
+            "endAfterStart": "The end date and time must be after the start date and time.",
+            "accessWindowInsideSchedule": "The access window must be inside the party schedule.",
+            "ticketCategoryNameUnique": "Ticket category names must be unique.",
+            "waitForUploads": "Please wait for all media uploads to finish.",
+            "publicationDateTimeRequired": "Select both a publication date and time, or leave both empty.",
+            "publishAtInvalid": "The publication time must be in the future and before the party ends."
         }
     }
 }

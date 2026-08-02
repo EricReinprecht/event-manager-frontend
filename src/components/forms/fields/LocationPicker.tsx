@@ -18,6 +18,22 @@ interface Suggestion {
     placePrediction: google.maps.places.PlacePrediction;
 }
 
+async function resolveTimezone(latitude: number, longitude: number) {
+    const fallback = Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC';
+    try {
+        const params = new URLSearchParams({
+            location: `${latitude},${longitude}`,
+            timestamp: Math.floor(Date.now() / 1000).toString(),
+            key: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
+        });
+        const response = await fetch(`https://maps.googleapis.com/maps/api/timezone/json?${params}`);
+        const data = (await response.json()) as { status?: string; timeZoneId?: string };
+        return data.status === 'OK' && data.timeZoneId ? data.timeZoneId : fallback;
+    } catch {
+        return fallback;
+    }
+}
+
 export default function LocationPicker({
     value,
     onChange,
@@ -112,6 +128,7 @@ export default function LocationPicker({
             );
         }
 
+        const timezone = await resolveTimezone(location.lat(), location.lng());
         const metadata: PartyLocation = {
             street: getPlaceComponent('route')?.longText ?? '',
 
@@ -130,7 +147,7 @@ export default function LocationPicker({
 
             longitude: location.lng(),
 
-            timezone: 'Europe/Vienna',
+            timezone,
 
             source: 'autocomplete',
         };
@@ -193,6 +210,7 @@ export default function LocationPicker({
             );
         }
 
+        const timezone = await resolveTimezone(lat, lng);
         const metadata: PartyLocation = {
             street: getGeocoderComponent('route')?.long_name ?? '',
 
@@ -211,7 +229,7 @@ export default function LocationPicker({
 
             longitude: lng,
 
-            timezone: 'Europe/Vienna',
+            timezone,
 
             source: 'map',
         };
