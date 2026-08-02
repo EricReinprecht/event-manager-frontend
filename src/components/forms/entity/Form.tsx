@@ -1,8 +1,12 @@
-import type { FormSectionConfig } from './types';
-import FormSection from './FormSection';
-import '@styles/forms/entity-form/index.scss';
-
+import { useId } from 'react';
 import { useTranslation } from 'react-i18next';
+
+import UserPageHeader from '@user/layouts/UserPageHeader';
+
+import FormSection from './FormSection';
+import type { FormSectionConfig } from './types';
+
+import '@styles/forms/entity-form/index.scss';
 
 interface Props {
     title: string;
@@ -21,8 +25,6 @@ interface Props {
 
     actionButton?: React.ReactNode;
 
-    beforeActions?: React.ReactNode;
-
     errors?: Record<string, string>;
 
     validationAttempt?: number;
@@ -37,16 +39,17 @@ export default function Form({
     disabled = false,
     submitLabel,
     actionButton,
-    beforeActions,
     errors = {},
     validationAttempt = 0,
 }: Props) {
     const { t } = useTranslation('entityForm');
+    const formId = useId();
 
     const errorCount = Object.keys(errors).length;
 
     return (
         <form
+            id={formId}
             className="entity-form"
             onSubmit={(event) => {
                 event.preventDefault();
@@ -54,9 +57,25 @@ export default function Form({
                 onSubmit?.();
             }}
         >
-            <div className="entity-form__header">
-                <h1>{title}</h1>
-            </div>
+            <UserPageHeader
+                title={title}
+                actions={
+                    <>
+                        {actionButton}
+
+                        {onSubmit && (
+                            <button
+                                type="submit"
+                                form={formId}
+                                className="form-button form-button--primary"
+                                disabled={disabled}
+                            >
+                                {submitLabel}
+                            </button>
+                        )}
+                    </>
+                }
+            />
 
             {errorCount > 0 && (
                 <div className="form-validation-summary" role="alert" aria-live="polite">
@@ -79,22 +98,6 @@ export default function Form({
                     validationAttempt={validationAttempt}
                 />
             ))}
-
-            {beforeActions}
-
-            <div className="form-actions">
-                {onSubmit && (
-                    <button
-                        type="submit"
-                        className="form-button form-button--primary"
-                        disabled={disabled}
-                    >
-                        {submitLabel}
-                    </button>
-                )}
-
-                {actionButton}
-            </div>
         </form>
     );
 }

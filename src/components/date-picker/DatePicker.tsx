@@ -15,6 +15,8 @@ interface Props {
     placeholder?: string;
 
     className?: string;
+
+    ariaLabel?: string;
 }
 
 export default function DatePicker({
@@ -22,6 +24,7 @@ export default function DatePicker({
     onChange,
     placeholder,
     className,
+    ariaLabel,
 }: Props) {
     const { t } = useTranslation('entityForm');
 
@@ -29,6 +32,7 @@ export default function DatePicker({
         <div className="date-picker">
             <ReactDatePicker
                 className={className}
+                aria-label={ariaLabel}
                 selected={parseDate(value)}
                 onChange={(date: Date | null) => onChange(formatDate(date))}
                 dateFormat="dd.MM.yyyy"

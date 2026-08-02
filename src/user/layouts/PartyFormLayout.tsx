@@ -15,10 +15,7 @@ import type {
     UpdatePartyRequest,
 } from '@user/types/party.types';
 
-import {
-    emptyPartyFormValues,
-    formValuesToPartyRequest,
-} from '@user/mappers/party-form.mapper';
+import { emptyPartyFormValues, formValuesToPartyRequest } from '@user/mappers/party-form.mapper';
 
 const EMPTY_SERVER_ERRORS: Record<string, string> = {};
 
@@ -31,13 +28,9 @@ interface Props {
 
     loading?: boolean;
 
-    error?: boolean;
-
     disabled?: boolean;
 
     actionButton?: React.ReactNode;
-
-    beforeActions?: React.ReactNode;
 
     showPublication?: boolean;
 
@@ -51,7 +44,6 @@ export default function PartyFormLayout({
     loading = false,
     disabled = false,
     actionButton,
-    beforeActions,
     showPublication = false,
     serverErrors = EMPTY_SERVER_ERRORS,
 }: Props) {
@@ -195,10 +187,12 @@ export default function PartyFormLayout({
     }, [serverErrors]);
 
     useEffect(() => {
-        const dirty = JSON.stringify(values) !== JSON.stringify({
-            ...emptyPartyFormValues,
-            ...initialValues,
-        });
+        const dirty =
+            JSON.stringify(values) !==
+            JSON.stringify({
+                ...emptyPartyFormValues,
+                ...initialValues,
+            });
         if (!dirty || mode === 'view') return;
         const warn = (event: BeforeUnloadEvent) => {
             event.preventDefault();
@@ -219,7 +213,6 @@ export default function PartyFormLayout({
             disabled={isDisabled}
             submitLabel={loading ? t(`party.${mode}.saving`) : t(`party.${mode}.submit`)}
             actionButton={actionButton}
-            beforeActions={beforeActions}
             errors={errors}
             validationAttempt={validationAttempt}
         />

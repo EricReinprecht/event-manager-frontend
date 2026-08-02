@@ -1,9 +1,11 @@
+import { useState } from 'react';
 import { NavLink, Outlet, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 import { ROUTES } from '@routes/paths';
 
 import LogoutButton from '@auth/components/LogoutButton';
+import { UserPageHeaderTargetProvider } from './UserPageHeader';
 
 import '@styles/variables/user.variables.scss';
 import '@styles/layouts/user-layout.scss';
@@ -12,6 +14,7 @@ export default function UserLayout() {
     const { t } = useTranslation('user');
 
     const location = useLocation();
+    const [pageHeaderTarget, setPageHeaderTarget] = useState<HTMLDivElement | null>(null);
 
     const links = [
         {
@@ -63,7 +66,11 @@ export default function UserLayout() {
             </aside>
 
             <main className="user-layout__content">
-                <Outlet key={location.pathname} />
+                <div ref={setPageHeaderTarget} className="user-layout__page-header" />
+
+                <UserPageHeaderTargetProvider target={pageHeaderTarget}>
+                    <Outlet key={location.pathname} />
+                </UserPageHeaderTargetProvider>
             </main>
         </div>
     );

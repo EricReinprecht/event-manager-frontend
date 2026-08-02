@@ -43,7 +43,7 @@ export default function UserPartyViewPage() {
             initialValues={partyToFormValues(party)}
             showPublication={user?.id === party.organizerId}
             actionButton={
-                <div className="party-view-actions">
+                <>
                     {!party.isPublished && (
                         <button
                             className="form-button"
@@ -56,7 +56,7 @@ export default function UserPartyViewPage() {
                     {user?.id === party.organizerId && !party.isPublished && (
                         <PartyPublishButton partyId={party.id} partyTitle={party.title} />
                     )}
-                </div>
+                </>
             }
         />
     );

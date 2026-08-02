@@ -11,9 +11,13 @@ import type {
 import DataListFilters from './DataListFilters';
 import DataListHeader from './DataListHeader';
 import DataListPagination from './DataListPagination';
+import UserPageHeader from '@user/layouts/UserPageHeader';
 
 import './data-list.scss';
 import { parseSorts, stringifySorts } from './sorts';
+
+const DEFAULT_ROW_HEIGHT = 65;
+const DEFAULT_PAGINATION_SPACE = 102;
 
 interface Props<T> {
     title: string;
@@ -105,14 +109,14 @@ export default function DataList<T>({
                 ? pagination.getBoundingClientRect().height +
                   Number.parseFloat(paginationStyles?.marginTop ?? '0') +
                   listGap
-                : 102;
+                : DEFAULT_PAGINATION_SPACE;
 
             const fixedRows = Array.from(
                 table.querySelectorAll<HTMLElement>(
                     ':scope > .data-list__row--header, :scope > .data-list__filters',
                 ),
             ).reduce((height, row) => height + row.getBoundingClientRect().height, 0);
-            const rowHeight = dataRowHeight || 65;
+            const rowHeight = dataRowHeight || DEFAULT_ROW_HEIGHT;
             const availableHeight =
                 contentBottom - bottomPadding - table.getBoundingClientRect().top - paginationSpace;
             const capacity = Math.max(
@@ -175,11 +179,7 @@ export default function DataList<T>({
 
     return (
         <div ref={listRef} className="data-list">
-            <div className="data-list__header">
-                <h1>{title}</h1>
-
-                {action && <div className="data-list__action">{action}</div>}
-            </div>
+            <UserPageHeader title={title} actions={action} />
 
             <div
                 ref={tableRef}
@@ -226,7 +226,7 @@ export default function DataList<T>({
                                 {actions
                                     .map((action, actionIndex) => ({
                                         actionIndex,
-                                        content: action.render?.(item) ?? null,
+                                        content: action.render(item),
                                     }))
                                     .filter(({ content }) => content !== null)
                                     .map(({ actionIndex, content }) => (

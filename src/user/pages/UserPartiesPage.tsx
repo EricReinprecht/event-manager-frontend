@@ -128,8 +128,6 @@ export default function UserPartiesPage() {
 
                 actions={[
                     {
-                        label: t('actions.view'),
-
                         render: (party) => (
                             <Link
                                 to={ROUTES.USER_PARTY_VIEW(party.id)}
@@ -142,8 +140,6 @@ export default function UserPartiesPage() {
                     },
 
                     {
-                        label: t('actions.edit'),
-
                         render: (party) =>
                             !party.isPublished ? (
                                 <Link
@@ -157,8 +153,6 @@ export default function UserPartiesPage() {
                     },
 
                     {
-                        label: t('party.publication.publishNow'),
-
                         render: (party) =>
                             !party.isPublished ? (
                                 <QuickPublishPartyAction
@@ -169,10 +163,6 @@ export default function UserPartiesPage() {
                     },
 
                     {
-                        label: t('actions.delete'),
-
-                        danger: true,
-
                         render: (party) =>
                             !party.isPublished ? (
                                 <button

@@ -77,7 +77,8 @@ export default function FormField({
     const timeBoundary = (boundary?: string) =>
         boundary ? new Date(`1970-01-01T${boundary}:00`) : undefined;
 
-    const fieldDisabled = disabled || field.disabled || field.disabledWhen?.(formValues, itemValues);
+    const fieldDisabled =
+        disabled || field.disabled || field.disabledWhen?.(formValues, itemValues);
 
     const minTimeValue = field.minTime?.(formValues, itemValues);
     const maxTimeValue = field.maxTime?.(formValues, itemValues);
@@ -189,7 +190,7 @@ export default function FormField({
                                                 .map(Number);
                                             return new Date(year, month - 1, day);
                                         })()
-                                    : new Date(value)
+                                      : new Date(value)
                                 : null
                         }
                         onChange={(date: Date | null) => {
@@ -278,8 +279,8 @@ export default function FormField({
                 />
             )}
 
-            {field.type === 'media' && (
-                field.multiple ? (
+            {field.type === 'media' &&
+                (field.multiple ? (
                     <MultipleImageUpload
                         value={value}
                         accept={field.accept}
@@ -293,8 +294,7 @@ export default function FormField({
                         disabled={disabled || field.disabled}
                         onChange={(media) => onChange(field.name, media)}
                     />
-                )
-            )}
+                ))}
 
             {field.type === 'repeater' && (
                 <Repeater

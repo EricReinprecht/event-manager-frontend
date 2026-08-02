@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { Navigate, useNavigate, useParams } from 'react-router-dom';
+import { Link, Navigate, useNavigate, useParams } from 'react-router-dom';
 
 import PartyFormLayout from '@user/layouts/PartyFormLayout';
 import { useParty } from '@user/hooks/useParty';
@@ -75,7 +75,16 @@ export default function UserEditPartyPage() {
             serverErrors={updatePartyMutation.validationErrors}
             onSubmit={handleSubmit}
             loading={updatePartyMutation.isPending}
-            error={updatePartyMutation.isError}
+            actionButton={
+                id ? (
+                    <Link
+                        to={ROUTES.USER_PARTY_VIEW(id)}
+                        className="form-button form-button--secondary"
+                    >
+                        {t('party.edit.backToView')}
+                    </Link>
+                ) : null
+            }
         />
     );
 }

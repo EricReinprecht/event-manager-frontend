@@ -54,3 +54,16 @@
         box-shadow: none;
     }
 }
+
+.form-button--secondary {
+    border: 1px solid var(--color-border);
+    background: var(--color-background);
+    color: var(--color-text);
+    text-decoration: none;
+
+    &:hover {
+        border-color: var(--color-primary);
+        background: color-mix(in srgb, var(--color-primary) 7%, var(--color-background));
+        color: var(--color-primary);
+    }
+}

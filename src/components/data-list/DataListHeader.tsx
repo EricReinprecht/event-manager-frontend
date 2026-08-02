@@ -19,23 +19,28 @@ export default function DataListHeader<T>({ columns, sorts, onSort }: Props<T>) 
                 const sort = getSort(column.key);
 
                 return (
-                    <div
-                        key={column.key}
-                        className={
-                            column.sortable
-                                ? 'data-list__cell data-list__cell--sortable'
-                                : 'data-list__cell'
-                        }
-                        onClick={() => column.sortable && onSort(column.key)}
-                    >
-                        {column.label}
+                    <div key={column.key} className="data-list__cell">
+                        {column.sortable ? (
+                            <button
+                                type="button"
+                                className="data-list__sort-button"
+                                onClick={() => onSort(column.key)}
+                            >
+                                {column.label}
 
-                        {sort && (
-                            <span className="data-list__sort">
-                                <span className="data-list__sort-priority">{sort.priority}</span>
-
-                                <span>{sort.direction === 'asc' ? '↑' : '↓'}</span>
-                            </span>
+                                {sort && (
+                                    <span className="data-list__sort">
+                                        <span className="data-list__sort-priority">
+                                            {sort.priority}
+                                        </span>
+                                        <span aria-hidden="true">
+                                            {sort.direction === 'asc' ? '↑' : '↓'}
+                                        </span>
+                                    </span>
+                                )}
+                            </button>
+                        ) : (
+                            column.label
                         )}
                     </div>
                 );

@@ -77,17 +77,29 @@ export interface FormFieldConfig {
 
     accept?: string;
 
-    minDate?: (formValues: Record<string, any>, itemValues?: Record<string, any>) => string | undefined;
+    minDate?: (
+        formValues: Record<string, any>,
+        itemValues?: Record<string, any>,
+    ) => string | undefined;
 
-    maxDate?: (formValues: Record<string, any>, itemValues?: Record<string, any>) => string | undefined;
+    maxDate?: (
+        formValues: Record<string, any>,
+        itemValues?: Record<string, any>,
+    ) => string | undefined;
 
     showMonthDropdown?: boolean;
 
     showYearDropdown?: boolean;
 
-    minTime?: (formValues: Record<string, any>, itemValues?: Record<string, any>) => string | undefined;
+    minTime?: (
+        formValues: Record<string, any>,
+        itemValues?: Record<string, any>,
+    ) => string | undefined;
 
-    maxTime?: (formValues: Record<string, any>, itemValues?: Record<string, any>) => string | undefined;
+    maxTime?: (
+        formValues: Record<string, any>,
+        itemValues?: Record<string, any>,
+    ) => string | undefined;
 
     disabledWhen?: (formValues: Record<string, any>, itemValues?: Record<string, any>) => boolean;
 

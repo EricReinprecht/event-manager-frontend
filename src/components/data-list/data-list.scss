@@ -3,28 +3,6 @@
     flex-direction: column;
     gap: var(--space-lg);
 
-    &__header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-
-        h1 {
-            margin: 0;
-
-            font-size: 1.8rem;
-
-            font-weight: 700;
-
-            color: var(--color-text);
-        }
-    }
-
-    &__action {
-        display: flex;
-
-        gap: var(--space-sm);
-    }
-
     &__table {
         position: relative;
 
@@ -35,7 +13,6 @@
         background: var(--color-surface);
 
         box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
-
     }
 
     /*
@@ -112,19 +89,28 @@
         Sortable headers
     */
 
-    &__cell--sortable {
+    &__sort-button {
+        width: 100%;
+        padding: 0;
+        border: 0;
+        background: transparent;
+        color: inherit;
+        font: inherit;
+        text-align: left;
         cursor: pointer;
-
         user-select: none;
-
         display: flex;
-
         align-items: center;
-
         gap: 6px;
 
         &:hover {
             color: var(--color-primary);
+        }
+
+        &:focus-visible {
+            outline: 2px solid var(--color-primary);
+            outline-offset: 3px;
+            border-radius: var(--radius-sm);
         }
     }
 
@@ -184,16 +170,6 @@
         flex-direction: column;
 
         gap: 6px;
-
-        label {
-            font-size: 0.75rem;
-
-            font-weight: 600;
-
-            color: var(--color-text-muted);
-
-            text-transform: uppercase;
-        }
 
         .data-list__filter-control {
             width: 100%;

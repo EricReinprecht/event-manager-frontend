@@ -7,7 +7,7 @@ export interface DataListColumn<T> {
 
     sortable?: boolean;
 
-    render?: (item: T) => React.ReactNode;
+    render?: (item: T) => ReactNode;
 }
 
 export interface DataListFilter {
@@ -44,8 +44,5 @@ export interface DataListSort {
 }
 
 export interface DataAction<T> {
-    label: string;
-    render?: (item: T) => ReactNode;
-    onClick?: (item: T) => void;
-    danger?: boolean;
+    render(item: T): ReactNode;
 }

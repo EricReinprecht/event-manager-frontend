@@ -113,11 +113,7 @@ export default function FormSection({
 
             {section.clearable && !disabled && (
                 <div className="form-section__actions">
-                    <button
-                        type="button"
-                        className="form-clear-button"
-                        onClick={clearSection}
-                    >
+                    <button type="button" className="form-clear-button" onClick={clearSection}>
                         {section.clearLabel ?? t('actions.clearAll')}
                     </button>
                 </div>

@@ -32,7 +32,8 @@
         },
         "edit": {
             "title": "Edit Party",
-            "submit": "Update Party"
+            "submit": "Update Party",
+            "backToView": "Back to view"
         },
         "view": {
             "title": "Party",
